@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MessHub - Online Mess & Tiffin Service | Nashik & Akole</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome 4.7 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+            background-color: #fdfdfd;
+        }
+        .top-bar {
+            background-color: #1e7e34;
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 8px 0;
+        }
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+        .hero-section {
+            background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url('https://greensoulkitchens.in/wp-content/uploads/2022/12/Mask-group-2.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+        .plan-card {
+            border: 2px solid #f0f0f0;
+            border-radius: 18px;
+            transition: all 0.3s ease;
+            background: #ffffff;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+            position: relative;
+            overflow: hidden;
+        }
+        .plan-card:hover {
+            transform: translateY(-8px);
+            border-color: #ff9800;
+            box-shadow: 0 15px 30px rgba(255, 152, 0, 0.2);
+        }
+        .price-text {
+            font-size: 34px;
+            font-weight: 800;
+            color: #d84315;
+        }
+        .floating-whatsapp {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 9999;
+            width: 62px;
+            height: 62px;
+            background-color: #25d366;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            box-shadow: 0 6px 20px rgba(37,211,102,0.45);
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+        .floating-whatsapp:hover {
+            transform: scale(1.1);
+            color: white;
+        }
+        .branch-pill {
+            cursor: pointer;
+            padding: 12px 24px;
+            font-weight: 700;
+            border-radius: 50px;
+            transition: all 0.2s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Contact Bar -->
+    <div class="top-bar">
+        <div class="container d-flex justify-content-between align-items-center flex-wrap">
+            <div>
+                <i class="fa fa-map-marker text-warning me-1"></i> शाखा: गंगापूर गाव (नाशिक) & पिंपळगाव निपाणी (अकोले)
+            </div>
+            <div>
+                <a href="tel:8263905159" class="text-white text-decoration-none me-3">
+                    <i class="fa fa-phone me-1"></i> Call: +91 8263905159
+                </a>
+                <a href="https://wa.me/918263905159?text=Hello%20MessHub" target="_blank" class="badge bg-warning text-dark px-2 py-1 text-decoration-none">
+                    <i class="fa fa-whatsapp text-success"></i> WhatsApp: 8263905159
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navigation Bar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center font-weight-bold" href="#">
+                <img src="https://d3jmn01ri1fzgl.cloudfront.net/photoadking/webp_thumbnail/green-minimalist-tiffin-logo-design-template-w7434z7cea32a4.webp" width="46" height="46" class="rounded-3 me-2" alt="MessHub Logo">
+                <span style="font-weight: 800; font-size: 24px; color: #1e7e34;">Mess<span style="color: #ff9800;">Hub</span></span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item"><a class="nav-link fw-semibold px-3" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link fw-semibold px-3" href="#plans">Offers & Plans</a></li>
+                    <li class="nav-item"><a class="nav-link fw-semibold px-3" href="#locations">Branch Maps</a></li>
+                    <li class="nav-item"><a class="nav-link fw-semibold px-3" href="#menu">Menu</a></li>
+                    <li class="nav-item ms-lg-3 my-2 my-lg-0">
+                        <button type="button" class="btn btn-warning fw-bold px-4 rounded-pill shadow-sm text-dark" data-bs-toggle="modal" data-bs-target="#bookingModal">
+                            <i class="fa fa-cutlery me-1 text-danger"></i> Book Mess Online
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="container">
+            <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold mb-3 fs-6">
+                🍛 अस्सल घरगुती चव • वेळेवर डिलिव्हरी
+            </span>
+            <h1 class="display-4 fw-bold mb-3">खात्रीशीर घरगुती मेस आणि डबा सेवा</h1>
+            <p class="lead mb-4 mx-auto" style="max-width: 750px;">
+                गंगापूर गाव (नाशिक) आणि पिंपळगाव निपाणी (अकोले) - कॉलेज विद्यार्थी, रूमवर राहणारे तरुण व नोकरदार वर्गासाठी दररोज गरमागरम आणि सकस आहार!
+            </p>
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <button type="button" class="btn btn-warning btn-lg fw-bold px-4 py-3 rounded-pill shadow" data-bs-toggle="modal" data-bs-target="#bookingModal">
+                    <i class="fa fa-shopping-basket me-2"></i> ऑनलाइन मेस बुक करा
+                </button>
+                <a href="#locations" class="btn btn-outline-light btn-lg fw-bold px-4 py-3 rounded-pill">
+                    <i class="fa fa-map-marker me-2"></i> शाखा व नकाशा पहा
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Offers & Pricing Plans Section -->
+    <section id="plans" class="py-5">
+        <div class="container py-4">
+            <div class="text-center mb-5">
+                <span class="badge bg-warning-subtle text-warning-emphasis px-3 py-2 rounded-pill fw-bold mb-2">
+                    OFFERS & PRICES IN RUPEES
+                </span>
+                <h2 class="fw-bold display-6 text-dark">आमच्या लोकप्रिय मेस ऑफर्स व मासिक दर</h2>
+                <p class="text-muted">आपल्या सोयीनुसार योग्य प्लॅन निवडा आणि घरबसल्या ऑनलाईन बुक करा:</p>
+            </div>
+
+            <div class="row g-4">
+                <!-- Plan 1 -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="card h-100 plan-card p-4 d-flex flex-column border-top border-4 border-warning">
+                        <span class="badge bg-warning text-dark fw-bold align-self-start mb-2 px-3 py-1 rounded-pill">सर्वात लोकप्रिय</span>
+                        <h4 class="fw-bold text-dark mb-1">Regular 1 Month</h4>
+                        <div class="badge bg-success-subtle text-success fw-bold align-self-start mb-3">२ वेळ टिफिन (Lunch + Dinner)</div>
+                        <div class="mb-3">
+                            <span class="price-text">₹3,500</span>
+                            <span class="text-muted">/ महिना</span>
+                            <br>
+                            <small class="text-muted text-decoration-line-through">₹4,200</small>
+                            <span class="badge bg-danger ms-1">₹700 बचत</span>
+                        </div>
+                        <p class="text-muted small">रोज दुपार आणि रात्र दोन्ही वेळ गरमागरम ताज्या जेवणाचा डबा.</p>
+                        <hr>
+                        <ul class="list-unstyled mb-4 small flex-grow-1">
+                            <li class="mb-2"><i class="fa fa-check-circle text-success me-2"></i><strong>४ चपात्या / पोळ्या</strong></li>
+                            <li class="mb-2"><i class="fa fa-check-circle text-success me-2"></i><strong>२ भाज्या (१ सुकी + १ रस्सा)</strong></li>
+                            <li class="mb-2"><i class="fa fa-check-circle text-success me-2"></i><strong>डाळ / वरण व भात</strong></li>
+                            <li class="mb-2"><i class="fa fa-check-circle text-success me-2"></i><strong>सॅलड, पापड / लोणचे</strong></li>
+                            <li class="mb-2"><i class="fa fa-check-circle text-success me-2"></i><strong>रविवार स्पेशल मेनू</strong></li>
+                            <li class="mb-2"><i class="fa fa-check-circle text-success me-2"></i><strong>मोफत होम डिलिव्हरी</strong></li>
+                        </ul>
+                        <button type="button" onclick="openBooking('Regular One Month (2 Time Tiffin)', 3500)" class="btn btn-warning w-100 fw-bold py-2 rounded-pill shadow-sm">
+                            <i class="fa fa-shopping-basket me-1"></i> बुक करा (₹3,500)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Plan 2 -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="card h-100 plan-card p-4 d-flex flex-column border-top border-4 border-primary">
+                        <span class="badge bg-primary text-white fw-bold align-self-start mb-2 px-3 py-1 rounded-pill">बेस्ट व्हॅल्यू</span>
+                        <h4 class="fw-bold text-dark mb-1">Regular 1 Month</h4>
+                        <div class="badge bg-primary-subtle text-primary fw-bold align-self-start mb-3">१ वेळ टिफिन (Lunch किंवा Dinner)</div>
+                        <div class="mb-3">
+                            <span class="price-text" style="color: #1565c0;">₹2,000</span>
+                            <span class="text-muted">/ महिना</span>
+                            <br>
+                            <small class="text-muted text-decoration-line-through">₹2,400</small>
+                            <span class="badge bg-success ms-1">₹400 बचत</span>
+                        </div>
+                        <p class="text-muted small">कॉलेज किंवा ऑफिससाठी १ वेळचा परिपूर्ण आणि पौष्टिक डबा.</p>
+                        <hr>
+                        <ul class="list-unstyled mb-4 small flex-grow-1">
+                            <li class="mb-2"><i class="fa fa-check-circle text-success me-2"></i><strong>४ चपात्या / पोळ्या</strong></li>
+                            <li class="mb-2"><i class="fa fa-check-circle text-success me-2"></i><strong>२ भाज्या (१ सुकी + १ रस्सा)</strong></li>
+                            <li class="mb-2"><i class="fa fa-check-circle text-success me-2"></i><strong>डाळ / वरण व भात</strong></li>
+                            <li class="mb-2"><i class="fa fa-check-circle text-success me-2"></i><strong>सॅलड व लोणचे</strong></li>
+                            <li class="mb-2"><i class="fa fa-check-circle text-success me-2"></i><strong>दुपार किंवा रात्री निवड</strong></li>
+                            <li class="mb-2"><i class="fa fa-check-circle text-success me-2"></i><strong>रोज वेळेवर डिलिव्हरी</strong></li>
+                        </ul>
+                        <button type="button" onclick="openBooking('Regular One Month (1 Time Tiffin)', 2000)" class="btn btn-outline-primary w-100 fw-bold py-2 rounded-pill">
+                            <i class="fa fa-shopping-basket me-1"></i> बुक करा (₹2,000)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Plan 3 -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="card h-100 plan-card p-4 d-flex flex-column border-top border-4 border-danger" style="background: #fffcf8;">
+                        <span class="badge bg-danger text-white fw-bold align-self-start mb-2 px-3 py-1 rounded-pill">शाही स्पेशल थाळी</span>
+                        <h4 class="fw-bold text-dark mb-1">Special Thali</h4>
+                        <div class="badge bg-danger-subtle text-danger fw-bold align-self-start mb-3">शाही स्पेशल मेजवानी</div>
+                        <div class="mb-3">
+                            <span class="price-text" style="color: #b71c1c;">₹140</span>
+                            <span class="text-muted">/ थाळी</span>
+                            <br>
+                            <small class="text-muted text-decoration-line-through">₹180</small>
+                            <span class="badge bg-danger ms-1">Special Deal</span>
+                        </div>
+                        <p class="text-muted small">स्पेशल पनीर भाजी, गोड पदार्थ आणि गरमागरम पुऱ्यांची मेजवानी.</p>
+                        <hr>
+                        <ul class="list-unstyled mb-4 small flex-grow-1">
+                            <li class="mb-2"><i class="fa fa-check-circle text-danger me-2"></i><strong>स्पेशल पनीर भाजी + १ सुकी भाजी</strong></li>
+                            <li class="mb-2"><i class="fa fa-check-circle text-danger me-2"></i><strong>४ बटर चपाती किंवा ५ पुऱ्या</strong></li>
+                            <li class="mb-2"><i class="fa fa-check-circle text-danger me-2"></i><strong>गुलाबजाम किंवा गोड शिरा</strong></li>
+                            <li class="mb-2"><i class="fa fa-check-circle text-danger me-2"></i><strong>दाल तडका व जीरा राईस</strong></li>
+                            <li class="mb-2"><i class="fa fa-check-circle text-danger me-2"></i><strong>दही/रायता, सॅलड, पापड</strong></li>
+                        </ul>
+                        <button type="button" onclick="openBooking('Special Deluxe Thali', 140)" class="btn btn-danger w-100 fw-bold py-2 rounded-pill shadow-sm">
+                            <i class="fa fa-cutlery me-1"></i> थाळी मागवा (₹140)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Plan 4 -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="card h-100 plan-card p-4 d-flex flex-column border-top border-4 border-success">
+                        <span class="badge bg-success text-white fw-bold align-self-start mb-2 px-3 py-1 rounded-pill">७ दिवस ट्रायल</span>
+                        <h4 class="fw-bold text-dark mb-1">Weekly Trial</h4>
+                        <div class="badge bg-success-subtle text-success fw-bold align-self-start mb-3">७ दिवस दोन्ही वेळ टिफिन</div>
+                        <div class="mb-3">
+                            <span class="price-text" style="color: #2e7d32;">₹950</span>
+                            <span class="text-muted">/ आठवडा</span>
+                            <br>
+                            <small class="text-muted text-decoration-line-through">₹1,150</small>
+                            <span class="badge bg-success ms-1">₹200 बचत</span>
+                        </div>
+                        <p class="text-muted small">मेसची चव व गुणवत्ता तपासण्यासाठी १ आठवड्याचा चाचणी पॅक.</p>
+                        <hr>
+                        <ul class="list-unstyled mb-4 small flex-grow-1">
+                            <li class="mb-2"><i class="fa fa-check-circle text-success me-2"></i><strong>७ दिवस रोज दोन्ही वेळ</strong></li>
+                            <li class="mb-2"><i class="fa fa-check-circle text-success me-2"></i><strong>संपूर्ण मेनू चाखण्याची संधी</strong></li>
+                            <li class="mb-2"><i class="fa fa-check-circle text-success me-2"></i><strong>कुठलेही लाँग-टर्म बंधन नाही</strong></li>
+                            <li class="mb-2"><i class="fa fa-check-circle text-success me-2"></i><strong>वेळेवर गरम डबा डिलिव्हरी</strong></li>
+                        </ul>
+                        <button type="button" onclick="openBooking('Weekly Trial Pack (7 Days - 2 Times)', 950)" class="btn btn-outline-success w-100 fw-bold py-2 rounded-pill">
+                            <i class="fa fa-shopping-basket me-1"></i> ट्रायल बुक करा (₹950)
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Branch Locations & Google Maps Section -->
+    <section id="locations" class="py-5 bg-light">
+        <div class="container py-4">
+            <div class="text-center mb-5">
+                <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold mb-2">GOOGLE MAPS</span>
+                <h2 class="fw-bold display-6 text-dark">आमची मेस केंद्रे व अचूक नकाशा</h2>
+                <p class="text-muted">खालील बटण दाबून नाशिक किंवा अकोले शाखेचा नकाशा व माहिती पहा:</p>
+
+                <!-- Branch Toggle Switcher -->
+                <div class="d-flex justify-content-center flex-wrap gap-3 mt-4">
+                    <button type="button" id="btn-nashik" onclick="selectMap('nashik')" class="btn btn-primary btn-lg branch-pill shadow">
+                        <i class="fa fa-map-marker me-2"></i> १. गंगापूर गाव, नाशिक (Nashik)
+                    </button>
+                    <button type="button" id="btn-akole" onclick="selectMap('akole')" class="btn btn-outline-primary btn-lg branch-pill shadow-sm">
+                        <i class="fa fa-map-marker me-2"></i> २. पिंपळगाव निपाणी, अकोले (Akole)
+                    </button>
+                </div>
+            </div>
+
+            <div class="row g-4 align-items-stretch">
+                <!-- Map Embed Column -->
+                <div class="col-lg-7">
+                    <div class="card h-100 shadow border-0 rounded-4 overflow-hidden">
+                        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center py-3">
+                            <span id="map-header-title" class="fw-bold">
+                                <i class="fa fa-map-pin text-warning me-2"></i> गंगापूर गाव, नाशिक शाखा
+                            </span>
+                            <a id="map-external-link" href="https://maps.google.com/maps?q=Gangapur+Gaon,+Nashik,+Maharashtra" target="_blank" class="btn btn-sm btn-outline-warning text-white fw-bold">
+                                <i class="fa fa-external-link me-1"></i> Google Maps वर उघडा
+                            </a>
+                        </div>
+                        <iframe id="map-iframe" 
+                            src="https://maps.google.com/maps?q=Gangapur+Gaon,+Nashik,+Maharashtra&t=&z=15&ie=UTF8&iwloc=&output=embed" 
+                            width="100%" 
+                            height="450" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy">
+                        </iframe>
+                    </div>
+                </div>
+
+                <!-- Info Box Column -->
+                <div class="col-lg-5">
+                    <div class="card h-100 shadow border-0 rounded-4 p-4 bg-white d-flex flex-column">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-warning-subtle text-warning p-3 rounded-circle me-3" style="font-size: 24px;">
+                                <i class="fa fa-cutlery"></i>
+                            </div>
+                            <div>
+                                <h4 id="info-branch" class="fw-bold text-dark mb-0">MessHub - गंगापूर गाव (नाशिक)</h4>
+                                <span class="badge bg-success">डिलिव्हरी व ऑर्डर्स सुरू आहेत</span>
+                            </div>
+                        </div>
+                        <hr>
+
+                        <div class="mb-3">
+                            <h6 class="text-muted fw-bold text-uppercase small mb-1"><i class="fa fa-map-marker text-danger me-1"></i> पत्ता (Address):</h6>
+                            <p id="info-address" class="fw-bold text-dark mb-0">
+                                गंगापूर गाव, सोमेश्वर वॉटरफॉल रोडजवळ, गंगापूर रोड, नाशिक - ४२२०१३.
+                            </p>
+                        </div>
+
+                        <div class="mb-3">
+                            <h6 class="text-muted fw-bold text-uppercase small mb-1"><i class="fa fa-phone text-success me-1"></i> फोन / WhatsApp:</h6>
+                            <p class="fw-bold text-dark mb-0">
+                                <a href="tel:8263905159" class="text-dark text-decoration-none">+91 8263905159</a>
+                                <a href="https://wa.me/918263905159" target="_blank" class="badge bg-success ms-2 text-decoration-none">
+                                    <i class="fa fa-whatsapp"></i> Chat
+                                </a>
+                            </p>
+                        </div>
+
+                        <div class="mb-3">
+                            <h6 class="text-muted fw-bold text-uppercase small mb-1"><i class="fa fa-clock-o text-warning me-1"></i> जेवणाची वेळ:</h6>
+                            <p class="fw-bold text-dark mb-0">
+                                दुपार: <strong>11:00 AM ते 03:30 PM</strong> | रात्र: <strong>07:00 PM ते 10:30 PM</strong>
+                            </p>
+                        </div>
+
+                        <div class="mt-auto pt-3">
+                            <button type="button" class="btn btn-warning w-100 fw-bold py-2 rounded-pill shadow-sm mb-2" data-bs-toggle="modal" data-bs-target="#bookingModal">
+                                <i class="fa fa-shopping-basket me-1"></i> ऑनलाइन डबा बुक करा
+                            </button>
+                            <a href="https://wa.me/918263905159?text=Hello%20MessHub" target="_blank" class="btn btn-success w-100 fw-bold py-2 rounded-pill">
+                                <i class="fa fa-whatsapp me-1"></i> WhatsApp वर चॅट करा
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Weekly Menu Showcase -->
+    <section id="menu" class="py-5">
+        <div class="container py-4">
+            <div class="text-center mb-5">
+                <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold mb-2">WEEKLY VARIETY</span>
+                <h2 class="fw-bold display-6 text-dark">आठवड्याचा नियमित मेस मेनू</h2>
+                <p class="text-muted">दररोज ताजी भाजी, गरमागरम पोळ्या आणि पौष्टिक जेवण:</p>
+            </div>
+
+            <div class="table-responsive shadow-sm rounded-4">
+                <table class="table table-bordered table-hover mb-0 text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th style="width: 20%;">वार (Day)</th>
+                            <th>दुपारचे जेवण (Lunch Menu)</th>
+                            <th>रात्रीचे जेवण (Dinner Menu)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="fw-bold bg-light">सोमवार (Monday)</td>
+                            <td>शेवभाजी + मेथी भाजी, ४ पोळ्या, डाळ, भात, कांदा-लिंबू</td>
+                            <td>वांग्याचे भरीत / भाजी, ४ पोळ्या, कढी-खिचडी, पापड</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold bg-light">मंगळवार (Tuesday)</td>
+                            <td>छोले मसाला + भेंडी भाजी, ४ पोळ्या, जिरा राईस, वरण</td>
+                            <td>मुगाची रस्सा भाजी + बटाटा भाजी, पोळ्या, भात</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold bg-light">बुधवार (Wednesday)</td>
+                            <td>सोयाबीन मसाला + पत्ताकोबी, ४ पोळ्या, डाळ, भात</td>
+                            <td>स्पेशल डाळ खिचडी / मसाला भात + कढी, पापड, लोणचे</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold bg-light">गुरुवार (Thursday)</td>
+                            <td>मटकी उसळ + शिमला मिरची, ४ पोळ्या, वरण, भात</td>
+                            <td>पिठलं-भाकरी / चपाती + ठेचा, भात, कांदा</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold bg-light">शुक्रवार (Friday)</td>
+                            <td>आलू-मटार मसाला + दुधी भाजी, पोळ्या, डाळ, भात</td>
+                            <td>चवळी उसळ + फ्लॉवर भाजी, ४ पोळ्या, भात</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold bg-light">शनिवार (Saturday)</td>
+                            <td>दाल तडका + जिरा राईस + मिक्स व्हेज भाजी, पोळ्या</td>
+                            <td>खिचडी कढी + पापड, लोणचे, सॅलड</td>
+                        </tr>
+                        <tr class="table-warning">
+                            <td class="fw-bold text-danger">रविवार स्पेशल (Sunday)</td>
+                            <td><strong>शाही पनीर मसाला + पुऱ्या / चपाती + गोड शिरा किंवा गुलाबजाम</strong></td>
+                            <td>स्पेशल पुलाव किंवा अंडा करी / व्हेज बिर्याणी</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <h4 class="fw-bold text-warning mb-3">MessHub</h4>
+                    <p class="text-white-50">
+                        नाशिक (गंगापूर गाव) आणि अकोले (पिंपळगाव निपाणी) मधील सर्वोत्तम, विश्वासू आणि स्वादिष्ट घरगुती मेस व टिफिन सेवा.
+                    </p>
+                    <p class="fw-bold text-white mb-1"><i class="fa fa-phone text-warning me-2"></i> +91 8263905159</p>
+                    <p class="fw-bold text-white"><i class="fa fa-whatsapp text-success me-2"></i> WhatsApp: 8263905159</p>
+                </div>
+                <div class="col-lg-4">
+                    <h5 class="fw-bold text-white mb-3">शाखा पत्ते (Our Branches)</h5>
+                    <p class="text-white-50 mb-2">
+                        <strong class="text-warning">१. नाशिक:</strong> गंगापूर गाव, सोमेश्वर वॉटरफॉल रोडजवळ, गंगापूर रोड, नाशिक.
+                    </p>
+                    <p class="text-white-50">
+                        <strong class="text-warning">२. अकोले:</strong> मेन रोड, पिंपळगाव निपाणी, ता. अकोले, जि. अहिल्यानगर.
+                    </p>
+                </div>
+                <div class="col-lg-4">
+                    <h5 class="fw-bold text-white mb-3">ऑनलाइन बुकिंग</h5>
+                    <p class="text-white-50">कोणतेही ॲडव्हान्स पेमेंट न देता आजच तुमचा मासिक किंवा दैनिक डबा बुक करा:</p>
+                    <button type="button" class="btn btn-warning fw-bold px-4 rounded-pill" data-bs-toggle="modal" data-bs-target="#bookingModal">
+                        <i class="fa fa-shopping-basket me-1"></i> आत्ताच बुक करा
+                    </button>
+                </div>
+            </div>
+            <hr class="my-4 border-secondary">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <p class="mb-0 text-white-50 small">© 2026 MessHub. All Rights Reserved. Developed by Sanket Vijay Sahane.</p>
+                <div class="small">
+                    <a href="https://github.com/sanketsahane56/MessHub-Project" target="_blank" class="text-warning text-decoration-none">
+                        <i class="fa fa-github me-1"></i> GitHub Repository
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Widget -->
+    <a href="https://wa.me/918263905159?text=Hello%20MessHub,%20मला%20मेस%20बुकिंगबद्दल%20माहिती%20हवी%20आहे." target="_blank" class="floating-whatsapp" title="WhatsApp वर थेट चॅट करा (8263905159)">
+        <i class="fa fa-whatsapp"></i>
+    </a>
+
+    <!-- Booking Modal -->
+    <div class="modal fade" id="bookingModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content rounded-4 border-0 shadow">
+                <div class="modal-header bg-warning text-dark py-3">
+                    <h5 class="modal-title fw-bold">
+                        <i class="fa fa-cutlery me-2"></i> ऑनलाइन मेस बुकिंग (Online Booking Form)
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-target="#bookingModal" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="onlineBookingForm" onsubmit="handleFormSubmit(event)">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="fw-bold small mb-1">शाखा निवडा (Select Branch) *</label>
+                                <select id="m-branch" class="form-select" required>
+                                    <option value="Gangapur Gaon, Nashik">१. गंगापूर गाव, नाशिक (Nashik)</option>
+                                    <option value="Pimpalgaon Nipani, Akole">२. पिंपळगाव निपाणी, अकोले (Akole)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="fw-bold small mb-1">प्लॅन निवडा (Select Plan) *</label>
+                                <select id="m-plan" class="form-select" onchange="updateModalPrice()" required>
+                                    <option value="Regular One Month (2 Time Tiffin)" data-price="3500">Regular 1 Month (2 Time Tiffin) - ₹3,500</option>
+                                    <option value="Regular One Month (1 Time Tiffin)" data-price="2000">Regular 1 Month (1 Time Tiffin) - ₹2,000</option>
+                                    <option value="Special Deluxe Thali" data-price="140">Special Deluxe Thali - ₹140</option>
+                                    <option value="Weekly Trial Pack (7 Days - 2 Times)" data-price="950">Weekly Trial Pack (7 Days) - ₹950</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="fw-bold small mb-1">आहाराचा प्रकार (Meal Type) *</label>
+                                <select id="m-meal" class="form-select" required>
+                                    <option value="Pure Veg">१००% शाकाहारी (Pure Veg)</option>
+                                    <option value="Non-Veg Special">स्पेशल नॉन-व्हेज (Non-Veg)</option>
+                                    <option value="Jain">जैन आहार (No Onion Garlic)</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="fw-bold small mb-1">सुरू होण्याची तारीख (Start Date) *</label>
+                                <input type="date" id="m-date" class="form-control" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="fw-bold small mb-1">तुमचे पूर्ण नाव (Full Name) *</label>
+                                <input type="text" id="m-name" class="form-control" placeholder="उदा. संकेत सहाणे" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="fw-bold small mb-1">मोबाईल नंबर (WhatsApp No) *</label>
+                                <input type="tel" id="m-phone" class="form-control" placeholder="उदा. 8263905159" required>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="fw-bold small mb-1">डिलिव्हरी पत्ता / रूम नंबर / लँडमार्क *</label>
+                                <textarea id="m-address" class="form-control" rows="2" placeholder="उदा. रूम नं. १०२, गंगापूर गाव, नाशिक..." required></textarea>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="fw-bold small mb-1">पेमेंट पर्याय (Payment Mode) *</label>
+                                <select id="m-payment" class="form-select" required>
+                                    <option value="Cash on Delivery">डिलिव्हरी वेळी रोख (Cash on Delivery)</option>
+                                    <option value="UPI QR on Delivery">डिलिव्हरी वेळी Google Pay / PhonePe QR कोड</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="fw-bold small mb-1">एकूण देय रक्कम (Total Price in ₹):</label>
+                                <input type="text" id="m-price-display" class="form-control fw-bold text-danger fs-5" value="₹3,500" readonly>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-warning w-100 fw-bold py-3 rounded-pill shadow-sm fs-5 text-dark">
+                                <i class="fa fa-check-circle me-1 text-success"></i> बुकिंग कन्फर्म करा (Confirm Booking)
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Confirmation Success Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0 shadow text-center p-4">
+                <div class="mb-3">
+                    <div style="width: 70px; height: 70px; background: #e8f5e9; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;">
+                        <i class="fa fa-check text-success fs-1"></i>
+                    </div>
+                </div>
+                <h4 class="fw-bold text-dark">अभिनंदन! तुमचे बुकिंग यशस्वी झाले!</h4>
+                <p class="text-muted small">खालीलप्रमाणे तुमची ऑर्डर नोंदवली गेली आहे:</p>
+                <div class="alert alert-light border text-start p-3 small mb-3">
+                    <p class="mb-1"><strong>बुकिंग ID:</strong> <span id="s-id" class="text-primary fw-bold">#MH-5481</span></p>
+                    <p class="mb-1"><strong>ग्राहक:</strong> <span id="s-name"></span> (<span id="s-phone"></span>)</p>
+                    <p class="mb-1"><strong>शाखा:</strong> <span id="s-branch"></span></p>
+                    <p class="mb-1"><strong>प्लॅन:</strong> <span id="s-plan"></span></p>
+                    <p class="mb-1"><strong>किंमत:</strong> <span id="s-price" class="text-danger fw-bold"></span></p>
+                    <p class="mb-0"><strong>पत्ता:</strong> <span id="s-address"></span></p>
+                </div>
+                <div class="d-grid gap-2">
+                    <a id="s-whatsapp-btn" href="#" target="_blank" class="btn btn-success fw-bold py-2 rounded-pill">
+                        <i class="fa fa-whatsapp me-1"></i> WhatsApp वर ऑर्डर पाठवा (8263905159)
+                    </a>
+                    <button type="button" class="btn btn-outline-secondary rounded-pill py-2" data-bs-dismiss="modal">बंद करा</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('m-date').value = today;
+            document.getElementById('m-date').min = today;
+        });
+
+        const mapsData = {
+            nashik: {
+                title: "गंगापूर गाव, नाशिक शाखा",
+                branch: "MessHub - गंगापूर गाव (नाशिक)",
+                mapUrl: "https://maps.google.com/maps?q=Gangapur+Gaon,+Nashik,+Maharashtra&t=&z=15&ie=UTF8&iwloc=&output=embed",
+                extUrl: "https://maps.google.com/maps?q=Gangapur+Gaon,+Nashik,+Maharashtra",
+                address: "गंगापूर गाव, सोमेश्वर वॉटरफॉल रोडजवळ, गंगापूर रोड, नाशिक - ४२२०१३."
+            },
+            akole: {
+                title: "पिंपळगाव निपाणी, अकोले शाखा",
+                branch: "MessHub - पिंपळगाव निपाणी (अकोले)",
+                mapUrl: "https://maps.google.com/maps?q=Pimpalgaon+Nipani,+Akole,+Maharashtra&t=&z=15&ie=UTF8&iwloc=&output=embed",
+                extUrl: "https://maps.google.com/maps?q=Pimpalgaon+Nipani,+Akole,+Maharashtra",
+                address: "मेन रोड, पिंपळगाव निपाणी, तालुका अकोले, जिल्हा अहिल्यानगर - ४२२६०१."
+            }
+        };
+
+        function selectMap(city) {
+            const data = mapsData[city];
+            if (!data) return;
+
+            document.getElementById('map-iframe').src = data.mapUrl;
+            document.getElementById('map-header-title').innerHTML = '<i class="fa fa-map-pin text-warning me-2"></i> ' + data.title;
+            document.getElementById('map-external-link').href = data.extUrl;
+            document.getElementById('info-branch').innerText = data.branch;
+            document.getElementById('info-address').innerText = data.address;
+
+            if (city === 'nashik') {
+                document.getElementById('btn-nashik').className = 'btn btn-primary btn-lg branch-pill shadow';
+                document.getElementById('btn-akole').className = 'btn btn-outline-primary btn-lg branch-pill shadow-sm';
+            } else {
+                document.getElementById('btn-akole').className = 'btn btn-primary btn-lg branch-pill shadow';
+                document.getElementById('btn-nashik').className = 'btn btn-outline-primary btn-lg branch-pill shadow-sm';
+            }
+        }
+
+        function openBooking(planName, price) {
+            const select = document.getElementById('m-plan');
+            for(let i=0; i<select.options.length; i++) {
+                if(select.options[i].value === planName) {
+                    select.selectedIndex = i;
+                    break;
+                }
+            }
+            updateModalPrice();
+            const modal = new bootstrap.Modal(document.getElementById('bookingModal'));
+            modal.show();
+        }
+
+        function updateModalPrice() {
+            const select = document.getElementById('m-plan');
+            const price = select.options[select.selectedIndex].getAttribute('data-price') || 3500;
+            document.getElementById('m-price-display').value = '₹' + Number(price).toLocaleString('en-IN');
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const bookingId = '#MH-' + Math.floor(1000 + Math.random() * 9000);
+            const name = document.getElementById('m-name').value;
+            const phone = document.getElementById('m-phone').value;
+            const branch = document.getElementById('m-branch').value;
+            const plan = document.getElementById('m-plan').value;
+            const price = document.getElementById('m-price-display').value;
+            const address = document.getElementById('m-address').value;
+
+            document.getElementById('s-id').innerText = bookingId;
+            document.getElementById('s-name').innerText = name;
+            document.getElementById('s-phone').innerText = phone;
+            document.getElementById('s-branch').innerText = branch;
+            document.getElementById('s-plan').innerText = plan;
+            document.getElementById('s-price').innerText = price;
+            document.getElementById('s-address').innerText = address;
+
+            const msg = `नमस्कार MessHub, मी नवीन मेस बुक केली आहे:%0A- Booking ID: ${bookingId}%0A- नाव: ${name}%0A- फोन: ${phone}%0A- शाखा: ${branch}%0A- प्लॅन: ${plan}%0A- रक्कम: ${price}%0A- पत्ता: ${address}`;
+            document.getElementById('s-whatsapp-btn').href = `https://wa.me/918263905159?text=${msg}`;
+
+            // Hide booking modal and open success modal
+            bootstrap.Modal.getInstance(document.getElementById('bookingModal')).hide();
+            const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+            successModal.show();
+        }
+    </script>
+</body>
+</html>

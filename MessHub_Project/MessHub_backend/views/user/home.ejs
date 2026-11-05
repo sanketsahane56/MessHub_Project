@@ -1,0 +1,471 @@
+<%- include("navbar.ejs") %>
+<div class="container-fluid pb-5">
+    <div class="row p-0">
+        <div class="col-md-6" style="background-color:#FFC965">
+            <div class="centers">
+                <div style="text-align:justify">
+                    <p class="animate__animated animate__fadeInDown" style="font-size:25px;margin-top:140px;color:#D58133">Swad Bhara Khana Rozana</p>
+                    <h1 class="animate__animated animate__fadeInUp mt-2" style="color:#0A4A28;font-weight:bold;font-size:70px">Eat healthy<br>live better</h1>
+                    <p class="text-white animate__animated animate__fadeInDown mt-4 mb-2" style="color:black;font-family:sans-serif;font-size:20px;">You can get the best homemade food<br> from Green Souls Kitchens.The food <br>will be full of soul,health,& taste.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 p-0" style="background-color:#FFC965">
+            <div style="margin-top:100px">
+                <img src="/uploads/homepng1.png" class="d-md-block d-none" style="height:500px;width:550px" loading="eager">
+                <img src="/uploads/homepng1.png" class="d-md-none d-block" style="height:440px;width:100%" loading="eager">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row pt-5 pb-5">
+        <% for (var i=0; i<about1.length;i++){ %> 
+        <div class="col-md-6">
+            <div class="private_images">
+                <img src="/uploads/aboutus/<%=about1[i].about1_image%>" class="image_scale" style="height:500px;width:100%">
+            </div>
+        </div>
+        <% }%>
+        <div class="col-md-6">
+            <div class="row">
+                <% for (var i=0; i<about1.length;i++){ %> 
+                <div>
+                    <h1 class="text-black animate__animated animate__fadeInDown" style="font-weight:bold"><%=about1[i].about1_heading%></h1>
+                    <div>
+                        <div style="height:2px;width:230px;background:red"></div>
+                    </div>
+                    <p style="color:#31674B;margin-top:30px"><%=about1[i].about1_description%></p>
+                    <!-- <p style="color:#0F4E2C;margin-top:20px">We provide online tiffin service in different areas such as tiffin service in BalikaAashram rod, tiffin service in All Peth Areas Etc.</p>
+                    <p style="color:#0F4E2C;margin-top:10px">Our ace Chef with a robust experience & best Culinary Qualification in providing meals to match the taste buds healthily without burning a hole in the pocket.</p>
+                    <p style="color:#0F4E2C;margin-top:10px">We Cater not only Homes & Offices but also variety of Occasions with our Multi-cuisines options to choose from which help us serve you better.</p> -->
+                </div>
+                <% }%>   
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="centers img-fluid" style="height:720px;width:100%;background-image:url('https://media-cdn.grubhub.com/grubhub-marketing/image/upload/f_auto,fl_lossy/v1692270106/grubhubHomePage/sushi_homepage1.png');background-repeat:no-repeat;background-size:cover;padding: 20px;">
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <div class="row mt-5">
+                    <% for (var i=0; i<about2.length;i++){ %>
+                    <div class="col-md-6 col-sm-12 col-12 animate__animated animate__fadeInDown">
+                        <div style="background-color:white" class="p-md-5">
+                            <img class="img-fluid" src="/uploads/aboutus/<%=about2[i].about2_image%>" style="margin-top:10px;padding:20px">
+                            <h2><%=about2[i].about2_heading%></h2>
+                            <p style="margin-top:20px"><%=about2[i].about2_description%></p>
+                        </div>
+                    </div>
+                    <% }%> 
+                    <% for (var i=0; i<about3.length;i++){ %>
+                    <div class="col-md-6 col-sm-12 col-12 animate__animated animate__fadeInUp">
+                        <div style="background-color:white" class="p-md-5">
+                            <img class="img-fluid" src="/uploads/aboutus/<%=about3[i].about3_image%>" style="margin-top:10px;padding:20px">
+                            <h2><%=about3[i].about3_heading%></h2>
+                            <p style="margin-top:20px"><%=about3[i].about3_description%></p>
+                        </div>
+                    </div>
+                    <% }%> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Mess Info -->
+ <!-- Pagination -->
+ <!-- <div class="container-fluid ">
+    <div class="row pb-5">
+        <% for(var i=0;i<mess_service_data.length;i++) { %>
+
+        <div class='col-md-4 p-4 mt-2 '>
+            <div class="card rounded"  style=" border:none; ">
+                <img src="/uploads/<%=mess_service_data[i].service_mess_image%>" class="card-img-top" alt="" />
+                <div class="" style="background-color: rgb(245, 134, 78);font-family: sans-serif;">
+                    <h4 class='text-center mt-3 mb-3 text-white'><%=mess_service_data[i].user_name%> Mess </h4>
+                </div>
+                <h6 class='text-center mt-4'><%=mess_service_data[i].service_mess_title%></h6>
+                <div class="card-title ">
+                    <p class="card-description mb-4 text-center">
+                        <%=mess_service_data[i].service_mess_description%>
+                    </p>
+                </div>
+                <div class="card-footer text-center"style=" border: none" >
+                    <button class="btn btn-success text-center">Enquire Now </button>
+                </div>        
+            </div>
+        </div>
+        <% } %> 
+    
+    </div>
+</div>  -->
+ <!-- Pagination end -->
+
+
+<!-- Menu By Mess -->
+<div class="centers img-fluid mb-3 mt-3 pb-3" style="height:680px;width:100%;background-color: #FFC965;background-repeat:no-repeat;background-size:cover">
+    <div class="container-fluid mt-3 mb-3 pb-2">
+        <div class="row mt-3 mb-3">
+            <h1 class="text-center fw-bold mt-5 shadow p-2">Our Menu</h1>
+            <div class="col-md-6 col-sm-12 col-12 float-start">
+            <!-- END -->
+            
+            <div class="col-md-12 col-12">
+                <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                    
+                    <div class="carousel-inner">
+                        
+                        <% for(var i=0;i<menu_meal_lunch.length;i++) { %>
+                        <div class="carousel-item p-3 <%= i === 1 ? " carousel-item active":"carousel-item" %>">
+                            <h2 class="mt-3 mb-3 text-center fw-bold img-fluid"><%=menu_meal_lunch[i].user_admin_mess_name%></h2>
+                            <div class="col-md-6 mt-5 float-start text-center d-none d-md-block">
+                                <img src="/uploads/<%=menu_meal_lunch[i].mess_images%>" class="d-none d-md-block"
+                            style="box-shadow: 0px 0px 20px rgb(69, 45, 45);border-radius: 10px;" height="250px"
+                            width="250px">
+                            <h5 class="text-center fw-bold mt-5">Time: 11am - 11pm</h5>
+                            <a href="/menu" class="text-decoration-none"><button class="btn btn btn-outline-warning bg-warning-subtle fw-bold text-center p-2 mt-3">Know More</button></a>
+                            </div>
+                        <div class="col-md-6 mt-5 float-start">
+                            <table class="table table-bordered table-hover centers back_shadow_css"
+                                style="border: 1px solid rgb(151, 85, 85);">
+                                <tr>
+                                    <th class="borders_css">Days</th>
+                                    <th class="borders_css">Items</th>
+                                    
+                                </tr>
+                                <tr class="table_hover_css">
+                                    <td class="borders_css1 bg-color_css">Sunday</td>
+                                    <td class="borders_css1"><%=menu_meal_lunch[i].mess_sunday_meal_name%></td>
+                                    
+                                </tr>
+                                <tr class="table_hover_css">
+                                    <td class="borders_css1 bg-color_css">Monday</td>
+                                    <td class="borders_css1"><%=menu_meal_lunch[i].mess_monday_meal_name%></td>
+                                    
+                                </tr>
+                                <tr class="table_hover_css">
+                                    <td class="borders_css1 bg-color_css">Tuesday</td>
+                                    <td class="borders_css1"><%=menu_meal_lunch[i].mess_tuesday_meal_name%></td>
+                                    
+                                </tr>
+                                <tr class="table_hover_css">
+                                    <td class="borders_css1 bg-color_css">Wednesday</td>
+                                    <td class="borders_css1"><%=menu_meal_lunch[i].mess_wednesday_meal_name%></td>
+                                    
+                                </tr>
+                                <tr class="table_hover_css">
+                                    <td class="borders_css1 bg-color_css">Thursday</td>
+                                    <td class="borders_css1"><%=menu_meal_lunch[i].mess_thursday_meal_name%></td>
+                                    
+                                </tr>
+                                <tr class="table_hover_css">
+                                    <td class="borders_css1 bg-color_css">Friday</td>
+                                    <td class="borders_css1"><%=menu_meal_lunch[i].mess_friday_meal_name%></td>
+                                    
+                                </tr>
+                                <tr class="table_hover_css">
+                                    <td class="borders_css1 bg-color_css">Saturday</td>
+                                    <td class="borders_css1"><%=menu_meal_lunch[i].mess_saturday_meal_name%></td>
+                                    
+                                </tr>
+                            </table>
+                        </div>
+                        </div>
+                        <% } %>
+                        
+                    </div>
+                    <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a class="carousel-control-next" href="#myCarousel" data-slide="next">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5 col-sm-12 col-12 float-start d-none d-md-block">
+            <div class="col-md-12 col-sm-12 col-12 mt-5">
+                <img src="https://www.deccanspice.com/wp-content/uploads/2023/12/deccan-spice-mahraja-mea-webl-1.png" class="img-fluid mt-5" style="height:380px;width:100%;">
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+<!-- Menu By Mess End -->
+ <!-- Meal Plans -->
+
+ <div class="container-fluid">
+    <div class="row">
+        <div class="col-12" style="background-color:#ECFAE9">
+            <h1 style="text-align:center;margin-top:30px;font-weight:bold">OUR MEAL PLANS</h1>
+        </div>
+    </div>
+</div>
+
+<div class="session" style="background-color:#ECFAE9">
+    <div class="container mb-5 p-5">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-12">
+                <div class="row">
+                    
+                    <% for (var i=0; i<home1_list.length;i++){ %> 
+                    <div class="col-md-3">
+                        <img src="/uploads/home/<%=home1_list[i].home1_image%>" style="height:250px;width:110%">
+                        <p class="fw-bold text-center" style="margin-top:10px"><%=home1_list[i].home1_title%></p>
+                    </div>
+                    <% } %>
+                    <!-- <div class="col-md-3">
+                        <img src="https://greensoulkitchens.in/wp-content/uploads/2023/01/WhatsApp-Image-2023-01-31-at-6.32.28-PM.jpeg" style="height:250px;width:110%">
+                        <p class="fw-bold text-center" style="margin-top:10px">Happy Medium Meal</p>
+                    </div>
+                    <div class="col-md-3">
+                        <img src="https://greensoulkitchens.in/wp-content/uploads/2023/01/WhatsApp-Image-2023-01-31-at-6.30.42-PM.jpeg" style="height:250px;width:110%">
+                        <p class="fw-bold text-center" style="margin-top:10px">Happy Mini Meal</p>
+                    </div>
+                    <div class="col-md-3">
+                        <img src="https://greensoulkitchens.in/wp-content/uploads/2023/01/WhatsApp-Image-2023-01-31-at-6.36.07-PM.jpeg" style="height:250px;width:110%">
+                        <p class="fw-bold text-center" style="margin-top:10px">Nano meal</p>
+                    </div> -->
+                </div>
+            </div>
+            <!-- <div class="col-md-5">
+                <div class="row">
+                    <div class="col-md-6">
+                        <img src="https://greensoulkitchens.in/wp-content/uploads/2023/01/WhatsApp-Image-2023-01-31-at-6.36.07-PM.jpeg" style="height:250px;width:110%">
+                        <p class="fw-bold text-center" style="margin-top:10px">Nano meal</p>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="https://greensoulkitchens.in/wp-content/uploads/2023/01/WhatsApp-Image-2023-01-31-at-6.34.18-PM.jpeg" style="height:250px;width:110%">
+                        <p class="fw-bold text-center" style="margin-top:10px">Micro meal</p>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+</div>
+<!-- Meal Plans End -->
+
+<!-- Online Mess Booking & Offers Section -->
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <span class="badge badge-warning px-3 py-2 text-dark font-weight-bold rounded-pill mb-2" style="font-size: 14px;">
+            🍱 ONLINE MESS BOOKING OFFERS
+        </span>
+        <h1 class="font-weight-bold text-dark mt-2">ऑनलाइन मेस बुकिंग आणि विशेष ऑफर्स</h1>
+        <p class="text-muted lead" style="font-size: 18px;">
+            नाशिक (गंगापूर गाव) आणि अकोले (पिंपळगाव निपाणी) - घरगुती, चवदार व दर्जेदार जेवण आता थेट तुमच्या रूमवर!
+        </p>
+    </div>
+
+    <div class="row">
+        <!-- Plan 1 -->
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card h-100 p-4 border-0 shadow rounded-lg bg-white d-flex flex-column" style="border-top: 5px solid #ff9800 !important;">
+                <span class="badge badge-warning text-dark font-weight-bold mb-2 p-1" style="width: fit-content;">सर्वात लोकप्रिय (Most Popular)</span>
+                <h4 class="font-weight-bold text-dark mb-1">Regular 1 Month</h4>
+                <div class="text-muted small mb-2">२ वेळ टिफिन (Lunch + Dinner)</div>
+                <div class="mb-3">
+                    <span style="font-size: 32px; font-weight: 800; color: #e65100;">₹3,500</span>
+                    <span class="text-muted">/ महिना</span>
+                    <br>
+                    <small class="text-muted text-decoration-line-through">₹4,200</small>
+                    <span class="badge badge-success ml-1">₹700 बचत</span>
+                </div>
+                <hr>
+                <div class="mb-4 flex-grow-1 small text-dark">
+                    <div class="mb-2"><i class="fa fa-check text-success mr-2"></i><strong>४ चपात्या / पोळ्या</strong></div>
+                    <div class="mb-2"><i class="fa fa-check text-success mr-2"></i><strong>२ भाज्या (१ सुकी + १ रस्सा)</strong></div>
+                    <div class="mb-2"><i class="fa fa-check text-success mr-2"></i><strong>डाळ / वरण व भात</strong></div>
+                    <div class="mb-2"><i class="fa fa-check text-success mr-2"></i><strong>सॅलड, पापड किंवा लोणचे</strong></div>
+                    <div class="mb-2"><i class="fa fa-check text-success mr-2"></i><strong>रविवार स्पेशल मेनू</strong></div>
+                    <div class="mb-2"><i class="fa fa-check text-success mr-2"></i><strong>मोफत होम डिलिव्हरी</strong></div>
+                </div>
+                <a href="/book-mess" class="btn btn-warning btn-block font-weight-bold py-2 rounded-pill text-dark shadow-sm">
+                    <i class="fa fa-shopping-basket mr-1"></i> बुक करा (₹3,500)
+                </a>
+            </div>
+        </div>
+
+        <!-- Plan 2 -->
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card h-100 p-4 border-0 shadow rounded-lg bg-white d-flex flex-column" style="border-top: 5px solid #2196f3 !important;">
+                <span class="badge badge-primary font-weight-bold mb-2 p-1 text-white" style="width: fit-content;">बजेट फ्रेंडली (Best Value)</span>
+                <h4 class="font-weight-bold text-dark mb-1">Regular 1 Month</h4>
+                <div class="text-muted small mb-2">१ वेळ टिफिन (Lunch किंवा Dinner)</div>
+                <div class="mb-3">
+                    <span style="font-size: 32px; font-weight: 800; color: #1565c0;">₹2,000</span>
+                    <span class="text-muted">/ महिना</span>
+                    <br>
+                    <small class="text-muted text-decoration-line-through">₹2,400</small>
+                    <span class="badge badge-success ml-1">₹400 बचत</span>
+                </div>
+                <hr>
+                <div class="mb-4 flex-grow-1 small text-dark">
+                    <div class="mb-2"><i class="fa fa-check text-success mr-2"></i><strong>४ चपात्या / पोळ्या</strong></div>
+                    <div class="mb-2"><i class="fa fa-check text-success mr-2"></i><strong>२ भाज्या (१ सुकी + १ रस्सा)</strong></div>
+                    <div class="mb-2"><i class="fa fa-check text-success mr-2"></i><strong>डाळ / वरण व भात</strong></div>
+                    <div class="mb-2"><i class="fa fa-check text-success mr-2"></i><strong>सॅलड व लोणचे</strong></div>
+                    <div class="mb-2"><i class="fa fa-check text-success mr-2"></i><strong>दुपार किंवा रात्री डबा</strong></div>
+                    <div class="mb-2"><i class="fa fa-check text-success mr-2"></i><strong>रोज वेळेवर डिलिव्हरी</strong></div>
+                </div>
+                <a href="/book-mess" class="btn btn-outline-primary btn-block font-weight-bold py-2 rounded-pill shadow-sm">
+                    <i class="fa fa-shopping-basket mr-1"></i> बुक करा (₹2,000)
+                </a>
+            </div>
+        </div>
+
+        <!-- Plan 3 -->
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card h-100 p-4 border-0 shadow rounded-lg d-flex flex-column" style="background: #fffdf5; border-top: 5px solid #d32f2f !important;">
+                <span class="badge badge-danger font-weight-bold mb-2 p-1 text-white" style="width: fit-content;">शाही स्पेशल (Special Deal)</span>
+                <h4 class="font-weight-bold text-dark mb-1">Special Thali</h4>
+                <div class="text-muted small mb-2">शाही स्पेशल मेजवानी थाळी</div>
+                <div class="mb-3">
+                    <span style="font-size: 32px; font-weight: 800; color: #c62828;">₹140</span>
+                    <span class="text-muted">/ थाळी</span>
+                    <br>
+                    <small class="text-muted text-decoration-line-through">₹180</small>
+                    <span class="badge badge-danger ml-1">Special Deal</span>
+                </div>
+                <hr>
+                <div class="mb-4 flex-grow-1 small text-dark">
+                    <div class="mb-2"><i class="fa fa-check text-danger mr-2"></i><strong>स्पेशल पनीर भाजी + १ सुकी भाजी</strong></div>
+                    <div class="mb-2"><i class="fa fa-check text-danger mr-2"></i><strong>४ बटर चपाती किंवा ५ पुऱ्या</strong></div>
+                    <div class="mb-2"><i class="fa fa-check text-danger mr-2"></i><strong>गुलाबजाम किंवा गोड शिरा</strong></div>
+                    <div class="mb-2"><i class="fa fa-check text-danger mr-2"></i><strong>दाल तडका, जीरा राईस</strong></div>
+                    <div class="mb-2"><i class="fa fa-check text-danger mr-2"></i><strong>दही/रायता, सॅलड, पापड</strong></div>
+                </div>
+                <a href="/book-mess" class="btn btn-danger btn-block font-weight-bold py-2 rounded-pill shadow-sm">
+                    <i class="fa fa-cutlery mr-1"></i> थाळी ऑर्डर करा (₹140)
+                </a>
+            </div>
+        </div>
+
+        <!-- Plan 4 -->
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card h-100 p-4 border-0 shadow rounded-lg bg-white d-flex flex-column" style="border-top: 5px solid #388e3c !important;">
+                <span class="badge badge-success font-weight-bold mb-2 p-1 text-white" style="width: fit-content;">७ दिवस चाचणी (Trial Pack)</span>
+                <h4 class="font-weight-bold text-dark mb-1">Weekly Trial</h4>
+                <div class="text-muted small mb-2">७ दिवस दोन्ही वेळ टिफिन</div>
+                <div class="mb-3">
+                    <span style="font-size: 32px; font-weight: 800; color: #2e7d32;">₹950</span>
+                    <span class="text-muted">/ आठवडा</span>
+                    <br>
+                    <small class="text-muted text-decoration-line-through">₹1,150</small>
+                    <span class="badge badge-success ml-1">₹200 बचत</span>
+                </div>
+                <hr>
+                <div class="mb-4 flex-grow-1 small text-dark">
+                    <div class="mb-2"><i class="fa fa-check text-success mr-2"></i><strong>७ दिवस रोज दोन्ही वेळ</strong></div>
+                    <div class="mb-2"><i class="fa fa-check text-success mr-2"></i><strong>संपूर्ण मेनू चाखण्याची संधी</strong></div>
+                    <div class="mb-2"><i class="fa fa-check text-success mr-2"></i><strong>कुठलेही लाँग-टर्म बंधन नाही</strong></div>
+                    <div class="mb-2"><i class="fa fa-check text-success mr-2"></i><strong>वेळेवर गरम डबा डिलिव्हरी</strong></div>
+                </div>
+                <a href="/book-mess" class="btn btn-outline-success btn-block font-weight-bold py-2 rounded-pill shadow-sm">
+                    <i class="fa fa-shopping-basket mr-1"></i> ट्रायल बुक करा (₹950)
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Branch Locations Info Banner on Home -->
+    <div class="card mt-4 p-4 border-0 shadow-sm rounded-lg" style="background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h4 class="font-weight-bold text-dark mb-1"><i class="fa fa-map-marker text-danger mr-2"></i>आमची मेस केंद्रे (Our Branches):</h4>
+                <p class="text-dark mb-0">
+                    <strong>१. गंगापूर गाव (नाशिक):</strong> सोमेश्वर वॉटरफॉल रोडजवळ, गंगापूर रोड <br>
+                    <strong>२. पिंपळगाव निपाणी (अकोले):</strong> मेन रोड, ता. अकोले, जि. अहिल्यानगर <br>
+                    <strong>📞 कॉल / 💬 WhatsApp:</strong> <a href="tel:8263905159" class="text-dark font-weight-bold">8263905159</a> 
+                    <a href="https://wa.me/918263905159" target="_blank" class="badge badge-success px-2 py-1 ml-2 text-white"><i class="fa fa-whatsapp"></i> Chat on WhatsApp</a>
+                </p>
+            </div>
+            <div class="col-md-4 text-md-right mt-3 mt-md-0">
+                <a href="/contact" class="btn btn-dark font-weight-bold px-4 py-2 rounded-pill mr-2">
+                    <i class="fa fa-map mr-1"></i> नकाशा पहा
+                </a>
+                <a href="/book-mess" class="btn btn-danger font-weight-bold px-4 py-2 rounded-pill">
+                    <i class="fa fa-check mr-1"></i> आत्ताच बुक करा
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="centers img-fluid mb-3 mt-3" style="height:680px;width:100%;background-image:url('/uploads/home/<%=home2_bg.home2_image%>');background-repeat:no-repeat;background-size:cover">
+    <div class="container">
+        <div class="row">
+            <!-- END -->
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <h1 style="text-align:center;font-weight:bold"><%=home2_bg.home2_heading%></h1>
+                <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                    
+                    <div class="carousel-inner">
+                        
+                        <% for (var i=0; i<reviews_list.length;i++){ %>
+                        <div class="carousel-item bg-white p-5 <%= i === 1 ? " carousel-item active":"carousel-item" %>">
+                            <div class="img-box centers mt-4 mb-2">
+                                <img src="/uploads/home/<%=reviews_list[i].reviewer_img%>" alt="" style="width:100px">
+                            </div>
+                            <div class="text-center">
+                                <p class="testimonial"><%=reviews_list[i].review_desc%></p>
+                                <p class="overview"><b><%=reviews_list[i].reviewer_name%></b></p>
+                            </div>
+                        </div>
+                        <% } %>
+                        
+                    </div>
+                    <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a class="carousel-control-next" href="#myCarousel" data-slide="next">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+</div>
+
+
+<!-- <script>
+    const paginationBox = document.querySelector('.pagination_box');
+
+    async function fetchData() {
+  try {
+    const response = await fetch('http://localhost:1000/admin/mess_service_data_API');
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const allservicedata = await response.json();
+    console.log(allservicedata);
+    console.log(allservicedata.length);
+    //
+        const length1 = Number(allservicedata.length/5);
+        if(length1.toString().indexOf(".") != -1 ){
+            length1 = length1 + 1;
+        }
+        for (var i=0;i<length1;i++){
+            paginationBox.innerHTML += `<button class= "btn">${i+1}</button>`;
+        }
+     //
+  } catch (error) {
+    console.error('There has been a problem with your fetch operation:', error);
+  }
+}
+
+fetchData();
+// console.log(allservicedata)
+
+</script> -->
+
+
+<%- include("footer.ejs") %>

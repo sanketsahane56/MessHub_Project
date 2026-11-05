@@ -1,0 +1,100 @@
+<%- include("Navbar.ejs") %>
+
+<div class="py-4 bg-light border-bottom">
+    <div class="container text-center">
+        <h2 class="font-weight-bold text-dark mb-1">माझ्या मेस ऑर्डर्स व बुकिंग्स (My Bookings)</h2>
+        <p class="text-muted mb-0">तुमच्या सर्व चालू व मागील मेस सबस्क्रिप्शनची सद्यस्थिती तपासा</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <!-- Search Bar if not logged in or want to search by mobile -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-8">
+            <div class="card p-3 shadow-sm border-0 rounded-pill bg-white">
+                <form action="/my-bookings" method="get" class="d-flex align-items-center">
+                    <div class="input-group">
+                        <span class="input-group-addon bg-transparent border-0 px-3">
+                            <i class="fa fa-phone text-muted" style="font-size: 20px;"></i>
+                        </span>
+                        <input type="tel" name="mobile" class="form-control border-0" placeholder="तुमचा नोंदणीकृत मोबाईल नंबर टाका (उदा. 9876543210)..." value="<%= searched_mobile || '' %>" required style="box-shadow: none;">
+                        <button type="submit" class="btn btn-warning px-4 font-weight-bold rounded-pill text-dark">
+                            <i class="fa fa-search mr-1"></i> ऑर्डर्स शोधा
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <% if (bookings && bookings.length > 0) { %>
+        <div class="row">
+            <% bookings.forEach(function(b) { %>
+                <div class="col-lg-6 mb-4">
+                    <div class="card shadow-sm border-0 rounded-lg p-4 bg-white h-100 position-relative">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <span class="badge badge-secondary mb-1">#MH-<%= b.booking_id.toString().padStart(5, '0') %></span>
+                                <h4 class="font-weight-bold text-dark mb-0"><%= b.plan_name %></h4>
+                                <small class="text-muted"><i class="fa fa-map-marker text-danger mr-1"></i><%= b.branch_location %></small>
+                            </div>
+                            <div class="text-right">
+                                <span class="badge <%= b.booking_status === 'Confirmed' ? 'badge-success' : (b.booking_status === 'Cancelled' ? 'badge-danger' : 'badge-warning') %> px-3 py-1 font-weight-bold">
+                                    <%= b.booking_status %>
+                                </span>
+                                <h4 class="font-weight-bold text-danger mt-2 mb-0">₹<%= Number(b.price).toLocaleString('en-IN') %></h4>
+                            </div>
+                        </div>
+                        <hr class="my-2">
+                        <div class="row small text-dark mb-3">
+                            <div class="col-6 mb-2">
+                                <strong>ग्राहक:</strong> <%= b.customer_name %>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <strong>मोबाईल:</strong> <%= b.customer_mobile %>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <strong>आहार:</strong> <%= b.meal_type %>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <strong>वेळ:</strong> <%= b.tiffin_time %>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <strong>सुरू तारीख:</strong> <%= new Date(b.start_date).toLocaleDateString('en-IN') %>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <strong>पेमेंट:</strong> <%= b.payment_mode %>
+                            </div>
+                            <div class="col-12 mt-1">
+                                <strong>डिलिव्हरी पत्ता:</strong> <%= b.delivery_address %>
+                            </div>
+                        </div>
+
+                        <div class="mt-auto d-flex justify-content-between align-items-center pt-2 border-top">
+                            <small class="text-muted">
+                                <i class="fa fa-clock-o mr-1"></i> <%= new Date(b.created_at).toLocaleString('en-IN') %>
+                            </small>
+                            <a href="/booking-success?id=<%= b.booking_id %>" class="btn btn-sm btn-outline-primary rounded-pill font-weight-bold px-3">
+                                <i class="fa fa-file-text-o mr-1"></i> पावती पहा
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    <% } else { %>
+        <div class="text-center py-5">
+            <div style="font-size: 60px; color: #ffb74d;" class="mb-3">
+                <i class="fa fa-shopping-basket"></i>
+            </div>
+            <h4 class="font-weight-bold text-dark">सध्या कोणतेही सक्रिय बुकिंग आढळले नाही</h4>
+            <p class="text-muted">तुम्ही अजून कोणतीही मेस किंवा टिफिन ऑर्डर केला नसेल, तर खालील बटणावर क्लिक करून आजच बुक करा!</p>
+            <a href="/book-mess" class="btn btn-warning btn-lg font-weight-bold px-5 py-2 rounded-pill text-dark shadow-sm">
+                <i class="fa fa-cutlery mr-2 text-danger"></i> नवीन मेस बुक करा
+            </a>
+        </div>
+    <% } %>
+</div>
+
+<%- include("Footer.ejs") %>
+

@@ -1,0 +1,164 @@
+<%-include('navbar.ejs')%>
+
+<div class="container-fluid bg-white p-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+        <div>
+            <h3 class="font-weight-bold text-dark mb-0">
+                <i class="fa fa-shopping-basket text-warning mr-2"></i> Online Mess Bookings Management
+            </h3>
+            <small class="text-muted">नाशिक (गंगापूर गाव) आणि अकोले (पिंपळगाव निपाणी) ग्राहकांच्या सर्व ऑनलाइन मेस ऑर्डर्स</small>
+        </div>
+        <a href="/book-mess" target="_blank" class="btn btn-warning font-weight-bold text-dark shadow-sm">
+            <i class="fa fa-plus-circle mr-1"></i> नवीन बुकिंग फॉर्म उघडा
+        </a>
+    </div>
+
+    <!-- Quick Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-2">
+            <div class="card p-3 shadow-sm border-0 text-white" style="background: linear-gradient(135deg, #1e88e5, #1565c0); border-radius: 10px;">
+                <h6 class="text-uppercase mb-1" style="font-size: 12px; opacity: 0.9;">Total Bookings</h6>
+                <h2 class="font-weight-bold mb-0"><%= totalCount %></h2>
+            </div>
+        </div>
+        <div class="col-md-3 mb-2">
+            <div class="card p-3 shadow-sm border-0 text-white" style="background: linear-gradient(135deg, #fb8c00, #ef6c00); border-radius: 10px;">
+                <h6 class="text-uppercase mb-1" style="font-size: 12px; opacity: 0.9;">Pending Approvals</h6>
+                <h2 class="font-weight-bold mb-0"><%= pendingCount %></h2>
+            </div>
+        </div>
+        <div class="col-md-3 mb-2">
+            <div class="card p-3 shadow-sm border-0 text-white" style="background: linear-gradient(135deg, #43a047, #2e7d32); border-radius: 10px;">
+                <h6 class="text-uppercase mb-1" style="font-size: 12px; opacity: 0.9;">Confirmed Orders</h6>
+                <h2 class="font-weight-bold mb-0"><%= confirmedCount %></h2>
+            </div>
+        </div>
+        <div class="col-md-3 mb-2">
+            <div class="card p-3 shadow-sm border-0 text-white" style="background: linear-gradient(135deg, #8e24aa, #6a1b9a); border-radius: 10px;">
+                <h6 class="text-uppercase mb-1" style="font-size: 12px; opacity: 0.9;">Total Revenue</h6>
+                <h2 class="font-weight-bold mb-0">₹<%= Number(totalRevenue).toLocaleString('en-IN') %></h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="card mb-4 bg-light border-0 shadow-sm p-3">
+        <form action="/admin/bookings" method="get" class="row align-items-center">
+            <div class="col-md-4 mb-2 mb-md-0">
+                <label class="font-weight-bold small text-dark mb-1">शाखेनुसार फिल्टर (Filter by Branch):</label>
+                <select name="branch" class="form-control" onchange="this.form.submit()">
+                    <option value="">सर्व शाखा (All Branches)</option>
+                    <option value="Nashik" <%= selectedBranch === 'Nashik' ? 'selected' : '' %>>गंगापूर गाव, नाशिक (Nashik)</option>
+                    <option value="Akole" <%= selectedBranch === 'Akole' ? 'selected' : '' %>>पिंपळगाव निपाणी, अकोले (Akole)</option>
+                </select>
+            </div>
+            <div class="col-md-4 mb-2 mb-md-0">
+                <label class="font-weight-bold small text-dark mb-1">स्टेटसनुसार फिल्टर (Filter by Status):</label>
+                <select name="status" class="form-control" onchange="this.form.submit()">
+                    <option value="">सर्व स्टेटस (All Status)</option>
+                    <option value="Pending" <%= selectedStatus === 'Pending' ? 'selected' : '' %>>Pending</option>
+                    <option value="Confirmed" <%= selectedStatus === 'Confirmed' ? 'selected' : '' %>>Confirmed</option>
+                    <option value="Completed" <%= selectedStatus === 'Completed' ? 'selected' : '' %>>Completed</option>
+                    <option value="Cancelled" <%= selectedStatus === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
+                </select>
+            </div>
+            <div class="col-md-4 text-md-right mt-3 mt-md-0">
+                <a href="/admin/bookings" class="btn btn-outline-secondary font-weight-bold">
+                    <i class="fa fa-refresh mr-1"></i> रिफ्रेश (Reset)
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Bookings Table -->
+    <div class="table-responsive shadow-sm rounded">
+        <table class="table table-bordered table-hover mb-0" style="font-size: 13px;">
+            <thead class="bg-dark text-white">
+                <tr>
+                    <th>ID</th>
+                    <th>ग्राहक नाव & फोन</th>
+                    <th>शाखा (Branch)</th>
+                    <th>प्लॅन नाव & किंमत</th>
+                    <th>आहार व वेळ</th>
+                    <th>सुरू तारीख</th>
+                    <th>पत्ता & पेमेंट</th>
+                    <th>स्टेटस (Status)</th>
+                    <th>कृती (Action)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (bookings && bookings.length > 0) { %>
+                    <% bookings.forEach(function(b) { %>
+                        <tr>
+                            <td class="font-weight-bold">
+                                #MH-<%= b.booking_id.toString().padStart(4, '0') %><br>
+                                <small class="text-muted"><%= new Date(b.created_at).toLocaleDateString('en-IN') %></small>
+                            </td>
+                            <td>
+                                <strong><%= b.customer_name %></strong><br>
+                                <a href="tel:<%= b.customer_mobile %>" class="text-success font-weight-bold">
+                                    <i class="fa fa-phone mr-1"></i><%= b.customer_mobile %>
+                                </a>
+                                <% if(b.customer_email) { %>
+                                    <br><small class="text-muted"><%= b.customer_email %></small>
+                                <% } %>
+                            </td>
+                            <td>
+                                <span class="badge <%= b.branch_location.includes('Nashik') ? 'badge-primary' : 'badge-success' %> p-1">
+                                    <i class="fa fa-map-marker mr-1"></i><%= b.branch_location %>
+                                </span>
+                            </td>
+                            <td>
+                                <strong><%= b.plan_name %></strong><br>
+                                <span class="text-danger font-weight-bold" style="font-size: 15px;">₹<%= Number(b.price).toLocaleString('en-IN') %></span>
+                            </td>
+                            <td>
+                                <span class="badge badge-secondary"><%= b.meal_type %></span><br>
+                                <small class="text-dark"><%= b.tiffin_time %></small>
+                            </td>
+                            <td>
+                                <strong class="text-primary"><%= new Date(b.start_date).toLocaleDateString('en-IN') %></strong><br>
+                                <small class="text-muted"><%= b.delivery_type %></small>
+                            </td>
+                            <td style="max-width: 220px;">
+                                <div class="text-truncate" title="<%= b.delivery_address %>">
+                                    <%= b.delivery_address %>
+                                </div>
+                                <small class="text-muted font-weight-bold"><%= b.payment_mode %></small>
+                                <% if(b.special_note) { %>
+                                    <br><small class="text-info"><em>"<%= b.special_note %>"</em></small>
+                                <% } %>
+                            </td>
+                            <td>
+                                <form action="/admin/update_booking_status" method="post" class="d-inline">
+                                    <input type="hidden" name="booking_id" value="<%= b.booking_id %>">
+                                    <select name="status" class="form-control form-control-sm font-weight-bold <%= b.booking_status === 'Confirmed' ? 'text-success' : (b.booking_status === 'Cancelled' ? 'text-danger' : 'text-warning') %>" onchange="this.form.submit()">
+                                        <option value="Pending" <%= b.booking_status === 'Pending' ? 'selected' : '' %>>Pending</option>
+                                        <option value="Confirmed" <%= b.booking_status === 'Confirmed' ? 'selected' : '' %>>Confirmed</option>
+                                        <option value="Completed" <%= b.booking_status === 'Completed' ? 'selected' : '' %>>Completed</option>
+                                        <option value="Cancelled" <%= b.booking_status === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
+                                    </select>
+                                </form>
+                            </td>
+                            <td>
+                                <a href="/admin/delete_booking/<%= b.booking_id %>" onclick="return confirm('तुम्हाला ही बुकिंग हटवायची आहे का?')" class="btn btn-sm btn-outline-danger" title="Delete">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    <% }); %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="9" class="text-center py-4 text-muted">
+                            <i class="fa fa-inbox fa-3x mb-2 text-warning"></i><br>
+                            कोणतीही बुकिंग आढळली नाही.
+                        </td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<%-include('footer.ejs')%>
+

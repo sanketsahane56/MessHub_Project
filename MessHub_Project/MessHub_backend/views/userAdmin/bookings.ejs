@@ -1,0 +1,81 @@
+<%- include("Navbar.ejs") %>
+
+<div class="container bg-white pl-5 pr-5 pt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="heading mb-4">
+                <i class="ti-shopping-cart mr-2"></i> Online Mess Bookings (ग्राहक ऑर्डर्स)
+            </h3>
+        </div>
+    </div>
+</div>
+
+<div class="container bg-white pl-5 pr-5 pt-2 pb-5">
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <p class="text-muted">नाशिक (गंगापूर गाव) आणि अकोले (पिंपळगाव निपाणी) शाखेसाठी ग्राहकांनी ऑनलाइन नोंदवलेली सर्व मेस सबस्क्रिप्शन्स:</p>
+        </div>
+    </div>
+
+    <div class="table-responsive shadow-sm">
+        <table class="table table-bordered table-striped">
+            <thead class="text-white" style="background-color: #574476;">
+                <tr>
+                    <th>ID</th>
+                    <th>ग्राहक नाव & फोन</th>
+                    <th>शाखा (Branch)</th>
+                    <th>प्लॅन & किंमत</th>
+                    <th>आहार व वेळ</th>
+                    <th>सुरू तारीख</th>
+                    <th>पत्ता</th>
+                    <th>स्टेटस (Status)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if(bookings && bookings.length > 0) { %>
+                    <% bookings.forEach(function(b) { %>
+                        <tr>
+                            <td><strong>#MH-<%= b.booking_id.toString().padStart(4, '0') %></strong></td>
+                            <td>
+                                <strong><%= b.customer_name %></strong><br>
+                                <a href="tel:<%= b.customer_mobile %>" class="text-success font-weight-bold">
+                                    <i class="fa fa-phone mr-1"></i><%= b.customer_mobile %>
+                                </a>
+                            </td>
+                            <td>
+                                <span class="badge badge-primary p-1"><%= b.branch_location %></span>
+                            </td>
+                            <td>
+                                <strong><%= b.plan_name %></strong><br>
+                                <span class="text-danger font-weight-bold">₹<%= Number(b.price).toLocaleString('en-IN') %></span>
+                            </td>
+                            <td>
+                                <%= b.meal_type %><br>
+                                <small class="text-muted"><%= b.tiffin_time %></small>
+                            </td>
+                            <td>
+                                <strong class="text-primary"><%= new Date(b.start_date).toLocaleDateString('en-IN') %></strong>
+                            </td>
+                            <td style="max-width: 250px;">
+                                <%= b.delivery_address %><br>
+                                <small class="text-muted"><strong>पेमेंट:</strong> <%= b.payment_mode %></small>
+                            </td>
+                            <td>
+                                <span class="badge <%= b.booking_status === 'Confirmed' ? 'badge-success' : (b.booking_status === 'Cancelled' ? 'badge-danger' : 'badge-warning') %> p-2">
+                                    <%= b.booking_status %>
+                                </span>
+                            </td>
+                        </tr>
+                    <% }); %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="8" class="text-center py-4 text-muted">कोणतीही बुकिंग आढळली नाही.</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<%- include("Footer.ejs") %>
+

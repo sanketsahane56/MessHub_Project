@@ -1,0 +1,112 @@
+<%- include("Navbar.ejs") %>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0 rounded-lg overflow-hidden bg-white">
+                <!-- Header with success banner -->
+                <div class="bg-success text-white text-center py-5 px-3">
+                    <div style="width: 80px; height: 80px; background: white; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                        <i class="fa fa-check text-success" style="font-size: 45px;"></i>
+                    </div>
+                    <h2 class="font-weight-bold mt-3 mb-1">अभिनंदन! तुमचे बुकिंग यशस्वी झाले आहे!</h2>
+                    <p class="lead mb-0 text-white-50">Congratulations! Your Mess Booking Has Been Placed Successfully.</p>
+                </div>
+
+                <!-- Receipt Body -->
+                <div class="card-body p-4 p-md-5">
+                    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+                        <div>
+                            <span class="text-muted small">बुकिंग संदर्भ क्रमांक (Booking ID):</span>
+                            <h4 class="font-weight-bold text-dark mb-0">#MH-<%= booking.booking_id.toString().padStart(5, '0') %></h4>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-muted small">तारीख:</span>
+                            <p class="font-weight-bold text-dark mb-0"><%= new Date(booking.created_at).toLocaleDateString('en-IN') %></p>
+                            <span class="badge badge-warning font-weight-bold">Status: <%= booking.booking_status %></span>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive mb-4">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th class="bg-light" style="width: 35%;">ग्राहक नाव (Customer Name)</th>
+                                    <td class="font-weight-bold text-dark"><%= booking.customer_name %></td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">मोबाईल नंबर (Contact Mobile)</th>
+                                    <td class="font-weight-bold text-dark"><%= booking.customer_mobile %></td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">मेस शाखा (Mess Branch)</th>
+                                    <td class="font-weight-bold text-primary">
+                                        <i class="fa fa-map-marker mr-1"></i> <%= booking.branch_location %>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">निवडलेला प्लॅन (Plan Selected)</th>
+                                    <td class="font-weight-bold text-dark"><%= booking.plan_name %></td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">आहार व वेळ (Meal & Time)</th>
+                                    <td class="text-dark"><%= booking.meal_type %> • <%= booking.tiffin_time %></td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">सुरू होण्याची तारीख (Start Date)</th>
+                                    <td class="font-weight-bold text-success">
+                                        <i class="fa fa-calendar mr-1"></i> <%= new Date(booking.start_date).toLocaleDateString('en-IN') %>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">डिलिव्हरी प्रकार (Delivery Type)</th>
+                                    <td class="text-dark"><%= booking.delivery_type %></td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">डिलिव्हरी पत्ता (Delivery Address)</th>
+                                    <td class="text-dark"><%= booking.delivery_address %></td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">पेमेंट पद्धत (Payment Mode)</th>
+                                    <td class="font-weight-bold text-dark"><%= booking.payment_mode %></td>
+                                </tr>
+                                <% if (booking.special_note) { %>
+                                <tr>
+                                    <th class="bg-light">विशेष सूचना (Special Note)</th>
+                                    <td class="text-muted"><%= booking.special_note %></td>
+                                </tr>
+                                <% } %>
+                                <tr class="table-warning">
+                                    <th class="fs-5 text-dark font-weight-bold">एकूण देय रक्कम (Total Price in ₹)</th>
+                                    <td class="fs-4 font-weight-bold text-danger">₹<%= Number(booking.price).toLocaleString('en-IN') %></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="alert alert-info border-0 rounded p-3 mb-4">
+                        <h6 class="font-weight-bold mb-1"><i class="fa fa-info-circle mr-1"></i> पुढे काय होईल?</h6>
+                        <small class="d-block text-dark">
+                            आमच्या MessHub मॅनेजरकडून पुढील 15-30 मिनिटांत तुम्हाला फोन / WhatsApp येईल आणि पहिल्या डब्याची अचूक वेळ कन्फर्म केली जाईल.
+                        </small>
+                    </div>
+
+                    <div class="d-flex flex-wrap justify-content-between gap-2" style="gap: 10px;">
+                        <button type="button" onclick="window.print()" class="btn btn-outline-dark font-weight-bold px-4 py-2 rounded-pill">
+                            <i class="fa fa-print mr-1"></i> पावती प्रिंट करा (Print)
+                        </button>
+                        <a href="/my-bookings" class="btn btn-primary font-weight-bold px-4 py-2 rounded-pill">
+                            <i class="fa fa-list mr-1"></i> माझ्या सर्व ऑर्डर्स पहा
+                        </a>
+                        <a href="/" class="btn btn-warning font-weight-bold px-4 py-2 rounded-pill text-dark">
+                            <i class="fa fa-home mr-1"></i> मुख्य पृष्ठावर जा
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include("Footer.ejs") %>
+

@@ -1,0 +1,264 @@
+<%- include("Navbar.ejs") %>
+
+<section>
+    <div class='Banner overflow-hidden col-md-12 col-sm-12 col-xs-12' style="background-image: url('https://greensoulkitchens.in/wp-content/uploads/2022/12/Mask-group-2.jpg'); background-repeat: no-repeat; background-size: cover; padding: 60px 0;">
+        <div class='container'>
+            <div class='row d-flex justify-content-center'>
+                <div class='banner_heading text-center'>
+                    <h1 class="fs-1 fw-bold text-white mb-2">Contact Us & Our Locations</h1>
+                    <p class='text-white fs-5 fw-bold mb-3'>आमच्या नाशिक (गंगापूर गाव) आणि अकोले (पिंपळगाव निपाणी) शाखांना भेट द्या किंवा संपर्क करा</p>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-center bg-transparent p-0 m-0">
+                            <li class="breadcrumb-item fs-6"><a class="text-white text-decoration-none fw-bold" href="/">Home</a></li>
+                            <li class="breadcrumb-item fs-6 active text-warning fw-bold" aria-current="page">Contact & Locations</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <span class="badge badge-warning text-dark px-3 py-2 rounded-pill font-weight-bold mb-2">📍 OUR ACTIVE BRANCHES</span>
+        <h2 class="fw-bold text-dark display-6">आमची मेस केंद्रे आणि नकाशा (Google Map)</h2>
+        <p class="text-muted">खालील बटणावर क्लिक करून नाशिक किंवा अकोले शाखेचा अचूक नकाशा व संपर्क माहिती पहा:</p>
+        
+        <!-- Branch Switcher Tabs -->
+        <div class="d-flex justify-content-center flex-wrap gap-2 mt-4" style="gap: 15px;">
+            <button type="button" id="btn-nashik" onclick="switchLocation('nashik')" class="btn btn-lg btn-primary px-4 py-2 font-weight-bold shadow rounded-pill">
+                <i class="fa fa-map-marker mr-2"></i> १. गंगापूर गाव, नाशिक (Nashik)
+            </button>
+            <button type="button" id="btn-akole" onclick="switchLocation('akole')" class="btn btn-lg btn-outline-primary px-4 py-2 font-weight-bold shadow rounded-pill">
+                <i class="fa fa-map-marker mr-2"></i> २. पिंपळगाव निपाणी, अकोले (Akole)
+            </button>
+        </div>
+    </div>
+
+    <div class="row align-items-stretch">
+        <!-- Map Column -->
+        <div class="col-lg-7 mb-4">
+            <div class="card h-100 shadow border-0 rounded-lg overflow-hidden">
+                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center py-3">
+                    <span id="map-title" class="font-weight-bold fs-5">
+                        <i class="fa fa-map-pin text-warning mr-2"></i> गंगापूर गाव, नाशिक शाखा
+                    </span>
+                    <a id="map-external-link" href="https://maps.google.com/maps?q=Gangapur+Gaon,+Nashik,+Maharashtra" target="_blank" class="btn btn-sm btn-outline-warning text-white font-weight-bold">
+                        <i class="fa fa-external-link mr-1"></i> Google Maps मध्ये उघडा
+                    </a>
+                </div>
+                <div class="card-body p-0 position-relative" style="min-height: 480px;">
+                    <iframe id="main-map-iframe" 
+                        src="https://maps.google.com/maps?q=Gangapur+Gaon,+Nashik,+Maharashtra&t=&z=15&ie=UTF8&iwloc=&output=embed" 
+                        width="100%" 
+                        height="480" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+                <div class="card-footer bg-light p-3">
+                    <small class="text-muted">
+                        <i class="fa fa-info-circle text-primary mr-1"></i>
+                        <span id="map-footer-desc">गंगापूर गाव, गंगापूर रोड परिसरातील सर्व विद्यार्थी, कॉलेजियन्स आणि नोकरदारांसाठी मेस व टिफिन सेवा उपलब्ध.</span>
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Branch Info & Quick Contact Card -->
+        <div class="col-lg-5 mb-4">
+            <div class="card h-100 shadow border-0 rounded-lg p-4 bg-white">
+                <div class="d-flex align-items-center mb-3">
+                    <div style="width: 50px; height: 50px; background: #fff3cd; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px;">
+                        <i class="fa fa-cutlery text-warning" style="font-size: 24px;"></i>
+                    </div>
+                    <div>
+                        <h4 id="info-branch-name" class="font-weight-bold mb-0 text-dark">MessHub - गंगापूर गाव (नाशिक)</h4>
+                        <span class="badge badge-success">ऑर्डर व डिलिव्हरी सुरू आहे</span>
+                    </div>
+                </div>
+                <hr>
+
+                <div class="mb-3">
+                    <h6 class="text-muted font-weight-bold text-uppercase mb-1" style="font-size: 13px;">
+                        <i class="fa fa-map-marker text-danger mr-1"></i> पत्ता (Address):
+                    </h6>
+                    <p id="info-address" class="font-weight-bold text-dark mb-0">
+                        गंगापूर गाव, सोमेश्वर वॉटरफॉल रोडजवळ, गंगापूर रोड, नाशिक, महाराष्ट्र - ४२२०१३.
+                    </p>
+                </div>
+
+                <div class="mb-3">
+                    <h6 class="text-muted font-weight-bold text-uppercase mb-1" style="font-size: 13px;">
+                        <i class="fa fa-phone text-success mr-1"></i> कॉल / व्हॉट्सॲप (Call & WhatsApp):
+                    </h6>
+                    <p id="info-phone" class="font-weight-bold text-dark mb-0">
+                        <a href="tel:8263905159" class="text-dark text-decoration-none">
+                            <i class="fa fa-phone text-primary mr-1"></i> +91 8263905159
+                        </a> 
+                        <a href="https://wa.me/918263905159?text=Hello%20MessHub,%20मला%20मेस%20बुकिंगबद्दल%20माहिती%20हवी%20आहे." target="_blank" class="badge badge-success px-2 py-1 ml-2 text-white">
+                            <i class="fa fa-whatsapp"></i> WhatsApp
+                        </a>
+                    </p>
+                </div>
+
+                <div class="mb-3">
+                    <h6 class="text-muted font-weight-bold text-uppercase mb-1" style="font-size: 13px;">
+                        <i class="fa fa-envelope text-primary mr-1"></i> ईमेल (Email):
+                    </h6>
+                    <p id="info-email" class="font-weight-bold text-dark mb-0">
+                        messhub.contact@gmail.com
+                    </p>
+                </div>
+
+                <div class="mb-4">
+                    <h6 class="text-muted font-weight-bold text-uppercase mb-1" style="font-size: 13px;">
+                        <i class="fa fa-clock-o text-warning mr-1"></i> जेवणाची वेळ (Meal Timings):
+                    </h6>
+                    <p class="font-weight-bold text-dark mb-0">
+                        दुपारी: <strong>11:00 AM ते 03:30 PM</strong> | रात्री: <strong>07:00 PM ते 10:30 PM</strong>
+                    </p>
+                </div>
+
+                <div class="mt-auto">
+                    <a href="/book-mess" class="btn btn-warning btn-block font-weight-bold py-2 shadow-sm rounded-pill mb-2" style="font-size: 16px;">
+                        <i class="fa fa-shopping-basket mr-1"></i> ऑनलाइन मेस / डबा बुक करा
+                    </a>
+                    <div class="row">
+                        <div class="col-6 pr-1">
+                            <a id="btn-call-direct" href="tel:8263905159" class="btn btn-outline-primary btn-block font-weight-bold py-2 rounded-pill">
+                                <i class="fa fa-phone mr-1"></i> कॉल करा
+                            </a>
+                        </div>
+                        <div class="col-6 pl-1">
+                            <a href="https://wa.me/918263905159?text=Hello%20MessHub,%20मला%20मेस%20बुकिंगबद्दल%20माहिती%20हवी%20आहे." target="_blank" class="btn btn-success btn-block font-weight-bold py-2 rounded-pill">
+                                <i class="fa fa-whatsapp mr-1"></i> WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Form Section -->
+    <div class="row mt-5">
+        <div class="col-lg-12">
+            <div class="card shadow border-0 rounded-lg p-4 p-md-5" style="background: linear-gradient(135deg, #fff9e6 0%, #ffffff 100%);">
+                <div class="row align-items-center">
+                    <div class="col-md-5 mb-4 mb-md-0">
+                        <span class="badge badge-danger px-3 py-1 rounded-pill mb-2">QUICK ENQUIRY</span>
+                        <h3 class="font-weight-bold text-dark">काही प्रश्न आहेत का? आम्हाला संदेश पाठवा!</h3>
+                        <p class="text-muted">मेस मेनू, स्पेशल डाएट, मासिक पासेस किंवा रूम डिलिव्हरीबद्दल अधिक माहितीसाठी खालील फॉर्म भरा. आम्ही लवकरच संपर्क करू.</p>
+                        
+                        <div class="mt-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fa fa-check-circle text-success mr-2" style="font-size: 20px;"></i>
+                                <span class="font-weight-bold text-dark">गरमागरम व वेळेवर डिलिव्हरी</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fa fa-check-circle text-success mr-2" style="font-size: 20px;"></i>
+                                <span class="font-weight-bold text-dark">100% शुद्ध व घरगुती चव</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="fa fa-check-circle text-success mr-2" style="font-size: 20px;"></i>
+                                <span class="font-weight-bold text-dark">परवडणारे मासिक दर (Rupees)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-7">
+                        <form action="/save_contact_info" method="post" class="bg-white p-4 rounded shadow-sm">
+                            <div class="row">
+                                <div class="col-md-6 form-group mb-3">
+                                    <label class="font-weight-bold text-dark small">पहिले नाव (First Name) *</label>
+                                    <input type="text" class="form-control" name="contact_fname" placeholder="उदा. राहुल" required>
+                                </div>
+                                <div class="col-md-6 form-group mb-3">
+                                    <label class="font-weight-bold text-dark small">आडनाव (Last Name)</label>
+                                    <input type="text" class="form-control" name="contact_lname" placeholder="उदा. पाटील">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 form-group mb-3">
+                                    <label class="font-weight-bold text-dark small">मोबाईल नंबर (Mobile Number) *</label>
+                                    <input type="tel" class="form-control" name="contact_mobile" placeholder="उदा. 9876543210" required>
+                                </div>
+                                <div class="col-md-6 form-group mb-3">
+                                    <label class="font-weight-bold text-dark small">ईमेल (Email Address)</label>
+                                    <input type="email" class="form-control" name="conatct_email" placeholder="name@gmail.com">
+                                </div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="font-weight-bold text-dark small">तुमचा संदेश / विचारणा (Message) *</label>
+                                <textarea class="form-control" name="contact_message" rows="4" placeholder="मेस बुकिंग किंवा टिफिन सेवेबद्दल तुमचा संदेश येथे लिहा..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-warning btn-block font-weight-bold py-2 shadow-sm rounded-pill text-dark">
+                                <i class="fa fa-paper-plane mr-1"></i> संदेश पाठवा (Send Message)
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const branchData = {
+    nashik: {
+        title: "गंगापूर गाव, नाशिक शाखा",
+        branchName: "MessHub - गंगापूर गाव (नाशिक)",
+        mapUrl: "https://maps.google.com/maps?q=Gangapur+Gaon,+Nashik,+Maharashtra&t=&z=15&ie=UTF8&iwloc=&output=embed",
+        externalUrl: "https://maps.google.com/maps?q=Gangapur+Gaon,+Nashik,+Maharashtra",
+        address: "गंगापूर गाव, सोमेश्वर वॉटरफॉल रोडजवळ, गंगापूर रोड, नाशिक, महाराष्ट्र - ४२२०१३.",
+        phone: "+91 8263905159",
+        callPhone: "8263905159",
+        email: "messhub.contact@gmail.com",
+        desc: "गंगापूर गाव, गंगापूर रोड परिसरातील सर्व विद्यार्थी, कॉलेजियन्स आणि नोकरदारांसाठी मेस व टिफिन सेवा उपलब्ध."
+    },
+    akole: {
+        title: "पिंपळगाव निपाणी, अकोले शाखा",
+        branchName: "MessHub - पिंपळगाव निपाणी (अकोले)",
+        mapUrl: "https://maps.google.com/maps?q=Pimpalgaon+Nipani,+Akole,+Maharashtra&t=&z=15&ie=UTF8&iwloc=&output=embed",
+        externalUrl: "https://maps.google.com/maps?q=Pimpalgaon+Nipani,+Akole,+Maharashtra",
+        address: "मेन रोड, पिंपळगाव निपाणी, तालुका अकोले, जिल्हा अहिल्यानगर (अहमदनगर), महाराष्ट्र - ४२२६०१.",
+        phone: "+91 8263905159",
+        callPhone: "8263905159",
+        email: "messhub.contact@gmail.com",
+        desc: "पिंपळगाव निपाणी व अकोले परिसरातील विद्यार्थी, शिक्षक आणि नोकरदारांसाठी शुद्ध व रुचकर घरगुती जेवण."
+    }
+};
+
+function switchLocation(city) {
+    const data = branchData[city];
+    if (!data) return;
+
+    // Update Map
+    document.getElementById('main-map-iframe').src = data.mapUrl;
+    document.getElementById('map-title').innerHTML = '<i class="fa fa-map-pin text-warning mr-2"></i> ' + data.title;
+    document.getElementById('map-external-link').href = data.externalUrl;
+    document.getElementById('map-footer-desc').innerText = data.desc;
+
+    // Update Info Box
+    document.getElementById('info-branch-name').innerText = data.branchName;
+    document.getElementById('info-address').innerText = data.address;
+    document.getElementById('info-phone').innerText = data.phone;
+    document.getElementById('info-email').innerText = data.email;
+    document.getElementById('btn-call-direct').href = "tel:" + data.callPhone;
+
+    // Toggle button active states
+    if (city === 'nashik') {
+        document.getElementById('btn-nashik').className = 'btn btn-lg btn-primary px-4 py-2 font-weight-bold shadow rounded-pill';
+        document.getElementById('btn-akole').className = 'btn btn-lg btn-outline-primary px-4 py-2 font-weight-bold shadow rounded-pill';
+    } else {
+        document.getElementById('btn-akole').className = 'btn btn-lg btn-primary px-4 py-2 font-weight-bold shadow rounded-pill';
+        document.getElementById('btn-nashik').className = 'btn btn-lg btn-outline-primary px-4 py-2 font-weight-bold shadow rounded-pill';
+    }
+}
+</script>
+
+<%- include("Footer.ejs") %>

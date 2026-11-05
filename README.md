@@ -123,8 +123,8 @@ Open your browser at: **`http://localhost:1000`**
 
 | Portal | URL | Username / Mobile | Password |
 |---|---|---|---|
-| **Admin Panel** | `http://localhost:1000/admin/login` | `admin@gmail.com` | `1234` |
-| **User / Vendor** | `http://localhost:1000/login` | `9657847967` | `123456` |
+| **Admin Panel** | `http://localhost:1000/admin/login` | `sanketsahane56@gmail.com` | `sanket9021` |
+| **User / Vendor** | `http://localhost:1000/login` | `8263905159` / `sanketsahane56@gmail.com` | `sanket9021` |
 
 ---
 

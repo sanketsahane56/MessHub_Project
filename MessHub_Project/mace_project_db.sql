@@ -328,6 +328,117 @@ INSERT INTO `contact_start_page` VALUES (1,'1720242053228.png','Conctact Us');
 UNLOCK TABLES;
 
 --
+-- Table structure for table `dabba_daily_logs`
+--
+
+DROP TABLE IF EXISTS `dabba_daily_logs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `dabba_daily_logs` (
+  `log_id` int(11) NOT NULL AUTO_INCREMENT,
+  `subscription_id` int(11) NOT NULL,
+  `customer_name` varchar(200) NOT NULL,
+  `customer_mobile` varchar(50) NOT NULL,
+  `customer_email` varchar(200) DEFAULT NULL,
+  `log_date` date NOT NULL,
+  `meal_slot` varchar(50) NOT NULL DEFAULT 'Both',
+  `dabbas_count` int(11) NOT NULL DEFAULT 1,
+  `action_type` varchar(50) NOT NULL DEFAULT 'Dabba Taken',
+  `remaining_after` int(11) NOT NULL,
+  `notification_sent` tinyint(4) DEFAULT 1,
+  `admin_notes` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`log_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `dabba_daily_logs`
+--
+
+LOCK TABLES `dabba_daily_logs` WRITE;
+/*!40000 ALTER TABLE `dabba_daily_logs` DISABLE KEYS */;
+INSERT INTO `dabba_daily_logs` VALUES (1,1,'Onkar','8263905159','onkar@gmail.com','2026-11-05','Both',2,'Dabba Taken',58,1,'5 ??????? 2 ??? (Lunch + Dinner) ?????? ???????????? ???? ????.','2026-11-05 15:54:06'),(2,1,'Onkar','8263905159','onkar@gmail.com','2026-11-06','Lunch',1,'Dabba Taken',57,1,'दुपारचा डबा यशस्वीरीत्या दिला.','2026-11-05 16:06:15'),(3,1,'Onkar','8263905159','onkar@gmail.com','2026-11-05','Custom',1,'Admin Decreased',58,1,'ग्राहक हजर नसल्याने 1 डबा कमी केला.','2026-11-05 16:06:44');
+/*!40000 ALTER TABLE `dabba_daily_logs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `dabba_notifications`
+--
+
+DROP TABLE IF EXISTS `dabba_notifications`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `dabba_notifications` (
+  `notification_id` int(11) NOT NULL AUTO_INCREMENT,
+  `subscription_id` int(11) DEFAULT NULL,
+  `customer_name` varchar(200) NOT NULL,
+  `customer_mobile` varchar(50) NOT NULL,
+  `customer_email` varchar(200) DEFAULT NULL,
+  `title` varchar(255) NOT NULL,
+  `message` text NOT NULL,
+  `notification_type` varchar(50) DEFAULT 'DABBA_UPDATE',
+  `email_status` varchar(50) DEFAULT 'Sent',
+  `whatsapp_url` text DEFAULT NULL,
+  `is_read` tinyint(4) DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`notification_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `dabba_notifications`
+--
+
+LOCK TABLES `dabba_notifications` WRITE;
+/*!40000 ALTER TABLE `dabba_notifications` DISABLE KEYS */;
+INSERT INTO `dabba_notifications` VALUES (1,1,'Onkar','8263905159','onkar@gmail.com','?? ???? ??? ??????? - 05 Nov 2026','??????? Onkar! 05-11-2026 ???? ?????? 2 ??? (Lunch + Dinner) ????? ????. ????? ?????? ???: 58 ?????? ????.','DABBA_TAKEN','Sent','https://api.whatsapp.com/send?phone=918263905159&text=MessHub%20Notification%3A%20Onkar%20took%202%20dabbas%20on%2005-11-2026.%20Remaining%3A%2058',0,'2026-11-05 15:54:06'),(2,1,'Onkar','8263905159','onkar@gmail.com','डबा अपडेट: 2026-11-06 रोजी 1 डबे नोंदवले गेले','नमस्कार Onkar! 2026-11-06 रोजी तुमचे 1 डबे (Lunch) नोंदवले गेले आहेत. तुमचे आता एकूण शिल्लक डबे: 57 (एकूण कोटा: 60) आहेत. (टीप: दुपारचा डबा यशस्वीरीत्या दिला.)','Dabba Taken','Pending','https://api.whatsapp.com/send?phone=918263905159&text=%F0%9F%8D%B1%20*MessHub%20%E0%A4%A1%E0%A4%AC%E0%A4%BE%20%E0%A4%85%E0%A4%AA%E0%A4%A1%E0%A5%87%E0%A4%9F*%0A%0A%F0%9F%91%A4%20%E0%A4%97%E0%A5%8D%E0%A4%B0%E0%A4%BE%E0%A4%B9%E0%A4%95%20%E0%A4%A8%E0%A4%BE%E0%A4%B5%3A%20Onkar%0A%F0%9F%93%85%20%E0%A4%A4%E0%A4%BE%E0%A4%B0%E0%A5%80%E0%A4%96%3A%202026-11-06%0A%F0%9F%93%A6%20%E0%A4%98%E0%A5%87%E0%A4%A4%E0%A4%B2%E0%A5%87%E0%A4%B2%E0%A5%87%20%E0%A4%A1%E0%A4%AC%E0%A5%87%3A%201%20(Lunch)%0A%E2%9C%A8%20%E0%A4%B6%E0%A4%BF%E0%A4%B2%E0%A5%8D%E0%A4%B2%E0%A4%95%20%E0%A4%A1%E0%A4%AC%E0%A5%87%3A%2057%20%2F%2060%0A%F0%9F%93%8D%20%E0%A4%B6%E0%A4%BE%E0%A4%96%E0%A4%BE%3A%20Gangapur%20Gaon%2C%20Nashik%0A%F0%9F%93%9E%20%E0%A4%B8%E0%A4%82%E0%A4%AA%E0%A4%B0%E0%A5%8D%E0%A4%95%3A%208263905159%0A%0A%F0%9F%93%9D%20%E0%A4%9F%E0%A5%80%E0%A4%AA%3A%20%E0%A4%A6%E0%A5%81%E0%A4%AA%E0%A4%BE%E0%A4%B0%E0%A4%9A%E0%A4%BE%20%E0%A4%A1%E0%A4%AC%E0%A4%BE%20%E0%A4%AF%E0%A4%B6%E0%A4%B8%E0%A5%8D%E0%A4%B5%E0%A5%80%E0%A4%B0%E0%A5%80%E0%A4%A4%E0%A5%8D%E0%A4%AF%E0%A4%BE%20%E0%A4%A6%E0%A4%BF%E0%A4%B2%E0%A4%BE.%0A%0A%E0%A4%A4%E0%A5%81%E0%A4%AE%E0%A4%9A%E0%A4%BE%20%E0%A4%B8%E0%A4%82%E0%A4%AA%E0%A5%82%E0%A4%B0%E0%A5%8D%E0%A4%A3%20%E0%A4%A1%E0%A4%AC%E0%A4%BE%20%E0%A4%B0%E0%A5%87%E0%A4%95%E0%A5%89%E0%A4%B0%E0%A5%8D%E0%A4%A1%20%E0%A4%AA%E0%A4%BE%E0%A4%B9%E0%A4%A3%E0%A5%8D%E0%A4%AF%E0%A4%BE%E0%A4%B8%E0%A4%BE%E0%A4%A0%E0%A5%80%20%E0%A4%96%E0%A4%BE%E0%A4%B2%E0%A5%80%E0%A4%B2%20%E0%A4%B2%E0%A4%BF%E0%A4%82%E0%A4%95%20%E0%A4%89%E0%A4%98%E0%A4%A1%E0%A4%BE%3A%0Ahttp%3A%2F%2Flocalhost%3A1000%2Fmy-dabbas%3Fmobile%3D8263905159',0,'2026-11-05 16:06:15'),(3,1,'Onkar','8263905159','onkar@gmail.com','डबा ॲडजस्टमेंट: डब्यांमध्ये बदल करण्यात आला','नमस्कार Onkar! 2026-11-05 च्या नोंदीत बदल करून डबे कमी/ॲडजस्ट करण्यात आले आहेत (1 डबा बदल). तुमचे अद्ययावत शिल्लक डबे: 58 आहेत. (टीप: ग्राहक हजर नसल्याने 1 डबा कमी केला.)','Admin Decreased','Pending','https://api.whatsapp.com/send?phone=918263905159&text=%F0%9F%8D%B1%20*MessHub%20%E0%A4%A1%E0%A4%AC%E0%A4%BE%20%E0%A4%85%E0%A4%AA%E0%A4%A1%E0%A5%87%E0%A4%9F*%0A%0A%F0%9F%91%A4%20%E0%A4%97%E0%A5%8D%E0%A4%B0%E0%A4%BE%E0%A4%B9%E0%A4%95%20%E0%A4%A8%E0%A4%BE%E0%A4%B5%3A%20Onkar%0A%F0%9F%93%85%20%E0%A4%A4%E0%A4%BE%E0%A4%B0%E0%A5%80%E0%A4%96%3A%202026-11-05%0A%F0%9F%93%A6%20%E0%A4%98%E0%A5%87%E0%A4%A4%E0%A4%B2%E0%A5%87%E0%A4%B2%E0%A5%87%20%E0%A4%A1%E0%A4%AC%E0%A5%87%3A%201%20(Adjustment)%0A%E2%9C%A8%20%E0%A4%B6%E0%A4%BF%E0%A4%B2%E0%A5%8D%E0%A4%B2%E0%A4%95%20%E0%A4%A1%E0%A4%AC%E0%A5%87%3A%2058%20%2F%2060%0A%F0%9F%93%8D%20%E0%A4%B6%E0%A4%BE%E0%A4%96%E0%A4%BE%3A%20Gangapur%20Gaon%2C%20Nashik%0A%F0%9F%93%9E%20%E0%A4%B8%E0%A4%82%E0%A4%AA%E0%A4%B0%E0%A5%8D%E0%A4%95%3A%208263905159%0A%0A%F0%9F%93%9D%20%E0%A4%9F%E0%A5%80%E0%A4%AA%3A%20%E0%A4%97%E0%A5%8D%E0%A4%B0%E0%A4%BE%E0%A4%B9%E0%A4%95%20%E0%A4%B9%E0%A4%9C%E0%A4%B0%20%E0%A4%A8%E0%A4%B8%E0%A4%B2%E0%A5%8D%E0%A4%AF%E0%A4%BE%E0%A4%A8%E0%A5%87%201%20%E0%A4%A1%E0%A4%AC%E0%A4%BE%20%E0%A4%95%E0%A4%AE%E0%A5%80%20%E0%A4%95%E0%A5%87%E0%A4%B2%E0%A4%BE.%0A%0A%E0%A4%A4%E0%A5%81%E0%A4%AE%E0%A4%9A%E0%A4%BE%20%E0%A4%B8%E0%A4%82%E0%A4%AA%E0%A5%82%E0%A4%B0%E0%A5%8D%E0%A4%A3%20%E0%A4%A1%E0%A4%AC%E0%A4%BE%20%E0%A4%B0%E0%A5%87%E0%A4%95%E0%A5%89%E0%A4%B0%E0%A5%8D%E0%A4%A1%20%E0%A4%AA%E0%A4%BE%E0%A4%B9%E0%A4%A3%E0%A5%8D%E0%A4%AF%E0%A4%BE%E0%A4%B8%E0%A4%BE%E0%A4%A0%E0%A5%80%20%E0%A4%96%E0%A4%BE%E0%A4%B2%E0%A5%80%E0%A4%B2%20%E0%A4%B2%E0%A4%BF%E0%A4%82%E0%A4%95%20%E0%A4%89%E0%A4%98%E0%A4%A1%E0%A4%BE%3A%0Ahttp%3A%2F%2Flocalhost%3A1000%2Fmy-dabbas%3Fmobile%3D8263905159',0,'2026-11-05 16:06:44');
+/*!40000 ALTER TABLE `dabba_notifications` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `dabba_subscriptions`
+--
+
+DROP TABLE IF EXISTS `dabba_subscriptions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `dabba_subscriptions` (
+  `subscription_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `booking_id` int(11) DEFAULT NULL,
+  `customer_name` varchar(200) NOT NULL,
+  `customer_mobile` varchar(50) NOT NULL,
+  `customer_email` varchar(200) DEFAULT NULL,
+  `branch_location` varchar(200) NOT NULL,
+  `plan_name` varchar(255) NOT NULL,
+  `total_dabbas` int(11) NOT NULL DEFAULT 60,
+  `consumed_dabbas` int(11) NOT NULL DEFAULT 0,
+  `remaining_dabbas` int(11) NOT NULL DEFAULT 60,
+  `daily_quota` int(11) NOT NULL DEFAULT 2,
+  `price` int(11) NOT NULL DEFAULT 3500,
+  `start_date` date NOT NULL,
+  `end_date` date DEFAULT NULL,
+  `delivery_type` varchar(100) DEFAULT 'Doorstep Tiffin',
+  `delivery_address` text DEFAULT NULL,
+  `status` varchar(50) DEFAULT 'Active',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`subscription_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `dabba_subscriptions`
+--
+
+LOCK TABLES `dabba_subscriptions` WRITE;
+/*!40000 ALTER TABLE `dabba_subscriptions` DISABLE KEYS */;
+INSERT INTO `dabba_subscriptions` VALUES (1,NULL,NULL,'Onkar','8263905159','onkar@gmail.com','Gangapur Gaon, Nashik','Regular One Month (2 Time Tiffin)',60,2,58,2,3500,'2026-11-01',NULL,'Doorstep Tiffin','Near Someshwar Temple, Gangapur Gaon, Nashik','Active','2026-11-05 15:54:06','2026-11-05 16:06:44');
+/*!40000 ALTER TABLE `dabba_subscriptions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `home1`
 --
 
@@ -854,4 +965,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-11-05 20:01:44
+-- Dump completed on 2026-11-05 21:37:25

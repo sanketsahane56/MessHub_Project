@@ -326,4 +326,40 @@ router.get("/my-bookings", async function(req, res) {
     res.render("user/my_bookings.ejs", obj);
 });
 
+router.get("/my-dabbas", async function(req, res) {
+    var user_id = req.session.user_id;
+    var mobile = (req.query.mobile || '').trim();
+    var subscriptions = [];
+
+    if (!mobile && user_id) {
+        var uRes = await exe(`SELECT mobile_number FROM user_tbl WHERE user_id = '${user_id}'`);
+        if (uRes.length > 0 && uRes[0].mobile_number) {
+            mobile = uRes[0].mobile_number;
+        }
+    }
+
+    if (mobile) {
+        var cleanMob = mobile.replace(/[^0-9]/g, '');
+        var subRes = await exe(`SELECT *, DATE_FORMAT(start_date, '%d-%m-%Y') as start_date FROM dabba_subscriptions 
+            WHERE customer_mobile LIKE '%${cleanMob.slice(-10)}%' OR customer_mobile = '${mobile}' 
+            ORDER BY subscription_id DESC`);
+        
+        for (var i = 0; i < subRes.length; i++) {
+            var s = subRes[i];
+            var logs = await exe(`SELECT *, DATE_FORMAT(log_date, '%d-%m-%Y') as log_date FROM dabba_daily_logs WHERE subscription_id = '${s.subscription_id}' ORDER BY log_date DESC, log_id DESC`);
+            var notifs = await exe(`SELECT *, DATE_FORMAT(created_at, '%d-%m-%Y %H:%i') as created_at FROM dabba_notifications WHERE subscription_id = '${s.subscription_id}' ORDER BY notification_id DESC LIMIT 15`);
+            s.logs = logs;
+            s.notifications = notifs;
+            subscriptions.push(s);
+        }
+    }
+
+    var obj = {
+        "is_login": ((req.session.user_id) ? true : false),
+        "subscriptions": subscriptions,
+        "searched_mobile": mobile
+    };
+    res.render("user/my_dabbas.ejs", obj);
+});
+
 module.exports = router;

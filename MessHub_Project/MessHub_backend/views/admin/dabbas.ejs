@@ -1,0 +1,422 @@
+<%-include('navbar.ejs')%>
+
+<style>
+    .stat-card {
+        border-radius: 10px;
+        padding: 20px;
+        color: white;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        transition: transform 0.2s;
+    }
+    .stat-card:hover {
+        transform: translateY(-3px);
+    }
+    .badge-remaining {
+        font-size: 15px;
+        font-weight: 700;
+        padding: 6px 14px;
+        border-radius: 20px;
+    }
+    .table th {
+        background-color: #2f353a;
+        color: white;
+        font-weight: 600;
+        vertical-align: middle;
+    }
+    .table td {
+        vertical-align: middle;
+    }
+    .btn-quick {
+        padding: 4px 10px;
+        font-size: 12px;
+        font-weight: 600;
+        border-radius: 4px;
+        margin: 2px;
+    }
+</style>
+
+<div class="container-fluid bg-white py-3 px-4 mb-3 border-bottom">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div>
+            <h3 class="mb-1 text-dark font-weight-bold">
+                🍱 डबा हजेरी व ग्राहक रेकॉर्ड (Dabba Tracking & Attendance)
+            </h3>
+            <p class="text-muted mb-0">
+                प्रत्येक ग्राहकाचे दैनंदिन डबे नोंदवा, डबे कमी/जास्त करा, आणि आपोआप Email व Notification पाठवा.
+            </p>
+        </div>
+        <div class="d-flex gap-2">
+            <button class="btn btn-primary" data-coreui-toggle="modal" data-coreui-target="#addCustomerModal">
+                <i class="fa fa-user-plus me-1"></i> + नवीन डबा ग्राहक जोडा
+            </button>
+            <a href="/admin/bookings" class="btn btn-outline-secondary">
+                <i class="fa fa-calendar-check me-1"></i> बुकिंग व्यवस्थापन
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Stats Row -->
+<div class="container-fluid px-4 mb-4">
+    <div class="row g-3">
+        <div class="col-md-3">
+            <div class="stat-card" style="background: linear-gradient(135deg, #43a047 0%, #2e7d32 100%);">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="text-white-50 text-uppercase font-weight-bold" style="font-size: 12px;">सक्रिय ग्राहक (Active Customers)</div>
+                        <h2 class="mb-0 font-weight-bold text-white"><%= activeCount %></h2>
+                    </div>
+                    <i class="fa fa-users fa-2x text-white-50"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card" style="background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="text-white-50 text-uppercase font-weight-bold" style="font-size: 12px;">आज वितरित डबे (Today's Dabbas)</div>
+                        <h2 class="mb-0 font-weight-bold text-white"><%= todayDabbasCount %></h2>
+                    </div>
+                    <i class="fa fa-utensils fa-2x text-white-50"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card" style="background: linear-gradient(135deg, #1976d2 0%, #0d47a1 100%);">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="text-white-50 text-uppercase font-weight-bold" style="font-size: 12px;">एकूण कोटा डबे (Total Quota)</div>
+                        <h2 class="mb-0 font-weight-bold text-white"><%= totalQuotaSum %></h2>
+                    </div>
+                    <i class="fa fa-box fa-2x text-white-50"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card" style="background: linear-gradient(135deg, #7b1fa2 0%, #4a148c 100%);">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="text-white-50 text-uppercase font-weight-bold" style="font-size: 12px;">शिल्लक डबे बॅलन्स (Total Remaining)</div>
+                        <h2 class="mb-0 font-weight-bold text-white"><%= totalRemainingSum %></h2>
+                    </div>
+                    <i class="fa fa-calculator fa-2x text-white-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Filters & Search -->
+<div class="container-fluid px-4 mb-3">
+    <div class="card shadow-sm border-0">
+        <div class="card-body py-2">
+            <form method="GET" action="/admin/dabbas" class="row g-2 align-items-center">
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white"><i class="fa fa-search text-muted"></i></span>
+                        <input type="text" name="search" class="form-control" placeholder="ग्राहकाचे नाव किंवा मोबाईल नंबर शोधा..." value="<%= search %>">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <select name="branch" class="form-select">
+                        <option value="">सर्व शाखा (All Branches)</option>
+                        <option value="Gangapur Gaon, Nashik" <%= branch === 'Gangapur Gaon, Nashik' ? 'selected' : '' %>>गंगापूर गाव, नाशिक (Gangapur Gaon)</option>
+                        <option value="Pimpalgaon Nipani, Akole" <%= branch === 'Pimpalgaon Nipani, Akole' ? 'selected' : '' %>>पिंपळगाव निपाणी, अकोले (Pimpalgaon Nipani)</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select name="status" class="form-select">
+                        <option value="">सर्व स्थिती (All Status)</option>
+                        <option value="Active" <%= status === 'Active' ? 'selected' : '' %>>Active (सक्रिय)</option>
+                        <option value="Paused" <%= status === 'Paused' ? 'selected' : '' %>>Paused (स्थगित)</option>
+                        <option value="Completed" <%= status === 'Completed' ? 'selected' : '' %>>Completed (पूर्ण)</option>
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex gap-1">
+                    <button type="submit" class="btn btn-secondary w-100">
+                        <i class="fa fa-filter me-1"></i> फिल्टर
+                    </button>
+                    <a href="/admin/dabbas" class="btn btn-outline-secondary">Reset</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Main Subscribers Table -->
+<div class="container-fluid px-4 mb-5">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+            <h5 class="mb-0 text-dark font-weight-bold">
+                <i class="fa fa-list text-primary me-2"></i>सर्व डबा ग्राहक व दैनंदिन हजेरी सूची
+            </h5>
+            <span class="badge bg-light text-dark border">
+                आजची तारीख: <strong><%= todayDate %></strong>
+            </span>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover table-striped align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th style="width: 50px;">#ID</th>
+                        <th>ग्राहक तपशील (Customer)</th>
+                        <th>शाखा (Branch)</th>
+                        <th>प्लॅन (Plan)</th>
+                        <th class="text-center">एकूण डबे</th>
+                        <th class="text-center">घेतलेले डबे</th>
+                        <th class="text-center">शिल्लक डबे (Balance)</th>
+                        <th class="text-center" style="min-width: 200px;">आजची हजेरी (1-Click Mark)</th>
+                        <th class="text-center">डबे ॲडजस्ट (+ / -)</th>
+                        <th class="text-center" style="width: 140px;">कृती (Action)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (subscribers.length === 0) { %>
+                        <tr>
+                            <td colspan="10" class="text-center py-5 text-muted">
+                                <i class="fa fa-folder-open fa-3x mb-3 text-secondary d-block"></i>
+                                कोणतीही ग्राहक नोंद आढळली नाही. नवीन ग्राहक जोडण्यासाठी वर दिलेल्या बटणावर क्लिक करा.
+                            </td>
+                        </tr>
+                    <% } %>
+
+                    <% for (var i = 0; i < subscribers.length; i++) { 
+                        var sub = subscribers[i];
+                        var balanceClass = 'bg-success';
+                        if (sub.remaining_dabbas <= 0) balanceClass = 'bg-danger';
+                        else if (sub.remaining_dabbas <= 10) balanceClass = 'bg-warning text-dark';
+                    %>
+                        <tr>
+                            <td class="text-center font-weight-bold">#<%= sub.subscription_id %></td>
+                            <td>
+                                <div class="font-weight-bold text-primary" style="font-size: 15px;">
+                                    <i class="fa fa-user-circle me-1"></i><%= sub.customer_name %>
+                                </div>
+                                <div class="text-muted small">
+                                    <i class="fa fa-phone me-1"></i><%= sub.customer_mobile %>
+                                    <% if (sub.customer_email) { %>
+                                        <br><i class="fa fa-envelope me-1"></i><%= sub.customer_email %>
+                                    <% } %>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge bg-light text-dark border">
+                                    <i class="fa fa-map-marker-alt text-danger me-1"></i><%= sub.branch_location %>
+                                </span>
+                            </td>
+                            <td>
+                                <div class="font-weight-bold"><%= sub.plan_name %></div>
+                                <div class="text-muted small">सुरू: <%= sub.start_date %></div>
+                            </td>
+                            <td class="text-center font-weight-bold"><%= sub.total_dabbas %></td>
+                            <td class="text-center font-weight-bold text-danger"><%= sub.consumed_dabbas %></td>
+                            <td class="text-center">
+                                <span class="badge <%= balanceClass %> badge-remaining">
+                                    <%= sub.remaining_dabbas %> शिल्लक
+                                </span>
+                            </td>
+                            
+                            <!-- 1-Click Today's Mark -->
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center flex-wrap gap-1">
+                                    <form method="POST" action="/admin/quick_mark_dabba" style="display:inline;">
+                                        <input type="hidden" name="subscription_id" value="<%= sub.subscription_id %>">
+                                        <input type="hidden" name="meal_slot" value="Lunch">
+                                        <input type="hidden" name="count" value="1">
+                                        <button type="submit" class="btn btn-sm btn-outline-primary btn-quick" title="1 Lunch Dabba Mark">
+                                            +1 दुपार (Lunch)
+                                        </button>
+                                    </form>
+                                    <form method="POST" action="/admin/quick_mark_dabba" style="display:inline;">
+                                        <input type="hidden" name="subscription_id" value="<%= sub.subscription_id %>">
+                                        <input type="hidden" name="meal_slot" value="Dinner">
+                                        <input type="hidden" name="count" value="1">
+                                        <button type="submit" class="btn btn-sm btn-outline-info btn-quick" title="1 Dinner Dabba Mark">
+                                            +1 रात्र (Dinner)
+                                        </button>
+                                    </form>
+                                    <form method="POST" action="/admin/quick_mark_dabba" style="display:inline;">
+                                        <input type="hidden" name="subscription_id" value="<%= sub.subscription_id %>">
+                                        <input type="hidden" name="meal_slot" value="Both">
+                                        <input type="hidden" name="count" value="2">
+                                        <button type="submit" class="btn btn-sm btn-success btn-quick text-white" title="2 Dabbas (Lunch + Dinner) Mark">
+                                            +2 दोन्ही (2 डबे)
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+
+                            <!-- Adjust Button -->
+                            <td class="text-center">
+                                <button class="btn btn-sm btn-warning text-dark font-weight-bold" 
+                                    onclick="openAdjustModal('<%= sub.subscription_id %>', '<%= sub.customer_name %>', '<%= sub.remaining_dabbas %>', '<%= sub.total_dabbas %>')">
+                                    <i class="fa fa-sliders-h me-1"></i> कमी/जास्त
+                                </button>
+                            </td>
+
+                            <!-- View Customer Profile & Full Ledger -->
+                            <td class="text-center">
+                                <a href="/admin/dabba_customer/<%= sub.subscription_id %>" class="btn btn-sm btn-primary">
+                                    <i class="fa fa-table me-1"></i> टेबल पहा
+                                </a>
+                            </td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Quick Adjust Dabbas -->
+<div class="modal fade" id="adjustModal" tabindex="-1">
+    <div class="modal-dialog">
+        <form method="POST" action="/admin/adjust_dabba_quota">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title font-weight-bold">
+                        <i class="fa fa-sliders-h me-1"></i> डबे कमी किंवा जास्त करा (Adjust Dabbas)
+                    </h5>
+                    <button type="button" class="btn-close" data-coreui-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="modal_sub_id" name="subscription_id">
+                    
+                    <div class="alert alert-info py-2">
+                        ग्राहक: <strong id="modal_customer_name">-</strong><br>
+                        सध्याचे शिल्लक डबे: <strong id="modal_current_remaining">-</strong>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label font-weight-bold">बदलाचा प्रकार (Adjustment Type):</label>
+                        <select name="adjust_type" class="form-select" required>
+                            <option value="decrease_consumed">डबे कमी करा (रजा/कॅन्सल - शिल्लक डबा परत वाढेल)</option>
+                            <option value="increase_consumed">डबे वाढवा (अतिरिक्त डबा घेतला - शिल्लक डबा कमी होईल)</option>
+                            <option value="add_total_quota">बोनस/ज्यादा कोटा जोडा (एकूण कोट्यात भर घाला)</option>
+                            <option value="set_balance">शिल्लक डबे थेट सेट करा (Direct Set Balance)</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label font-weight-bold">डब्यांची संख्या (Count):</label>
+                        <input type="number" name="amount" class="form-control" min="1" value="1" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label font-weight-bold">बदलाचे कारण / शेरा (Reason / Note):</label>
+                        <input type="text" name="reason" class="form-control" placeholder="उदा. ग्राहक आज गावाला गेल्याने डबा कॅन्सल, किंवा ज्यादा डबा..." required>
+                    </div>
+
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" name="send_alert" id="sendAlertCheck" value="1" checked>
+                        <label class="form-check-label font-weight-bold" for="sendAlertCheck">
+                            ग्राहकाला Email व Notification द्वारे तात्काळ कळवा
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-coreui-dismiss="modal">रद्द करा</button>
+                    <button type="submit" class="btn btn-warning font-weight-bold">
+                        ✓ बदल जतन करा व सूचना पाठवा
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal: Add New Customer -->
+<div class="modal fade" id="addCustomerModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <form method="POST" action="/admin/add_dabba_customer">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title font-weight-bold">
+                        <i class="fa fa-user-plus me-1"></i> नवीन डबा ग्राहक नोंदणी (Add Customer Subscription)
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-coreui-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label font-weight-bold">ग्राहकाचे नाव (Full Name) *</label>
+                            <input type="text" name="customer_name" class="form-control" placeholder="उदा. Onkar / ओंकार" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label font-weight-bold">मोबाईल नंबर (WhatsApp No) *</label>
+                            <input type="text" name="customer_mobile" class="form-control" placeholder="उदा. 8263905159" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label font-weight-bold">ई-मेल (Email for Notification)</label>
+                            <input type="email" name="customer_email" class="form-control" placeholder="उदा. onkar@gmail.com">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label font-weight-bold">शाखा (Branch Location) *</label>
+                            <select name="branch_location" class="form-select" required>
+                                <option value="Gangapur Gaon, Nashik">गंगापूर गाव, नाशिक (Gangapur Gaon)</option>
+                                <option value="Pimpalgaon Nipani, Akole">पिंपळगाव निपाणी, अकोले (Pimpalgaon Nipani)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label font-weight-bold">प्लॅन (Plan Name) *</label>
+                            <select name="plan_name" class="form-select" id="planSelect" onchange="autoFillPlanQuota()">
+                                <option value="Regular One Month (2 Time Tiffin)" data-quota="60" data-price="3500">Regular 1 Month (2 Time Tiffin) - ₹3,500</option>
+                                <option value="Regular One Month (1 Time Tiffin)" data-quota="30" data-price="2000">Regular 1 Month (1 Time Tiffin) - ₹2,000</option>
+                                <option value="Weekly Trial Pack (7 Days - 2 Times)" data-quota="14" data-price="950">Weekly Trial Pack (7 Days) - ₹950</option>
+                                <option value="Custom Plan" data-quota="60" data-price="3500">कस्टम प्लॅन (Custom)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label font-weight-bold">एकूण डबे कोटा (Total Dabbas) *</label>
+                            <input type="number" name="total_dabbas" id="planTotalQuota" class="form-control" value="60" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label font-weight-bold">किंमत (Price in ₹) *</label>
+                            <input type="number" name="price" id="planPrice" class="form-control" value="3500" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label font-weight-bold">सुरू तारीख (Start Date) *</label>
+                            <input type="date" name="start_date" class="form-control" value="<%= todayDate %>" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label font-weight-bold">डिलिव्हरी प्रकार (Delivery Type)</label>
+                            <select name="delivery_type" class="form-select">
+                                <option value="Doorstep Tiffin">घरपोच / रूमवर डबा (Doorstep Tiffin)</option>
+                                <option value="Mess Dine-in">मेसवर येऊन जेवणे (Mess Dine-in)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label font-weight-bold">डिलिव्हरी पत्ता (Address)</label>
+                            <textarea name="delivery_address" class="form-control" rows="2" placeholder="उदा. रूम नं ४, सोमेश्वर हाईट्स, गंगापूर गाव, नाशिक"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-coreui-dismiss="modal">रद्द करा</button>
+                    <button type="submit" class="btn btn-primary font-weight-bold">
+                        ✓ ग्राहक जतन करा व सेवा सुरू करा
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openAdjustModal(subId, name, remaining, total) {
+        document.getElementById('modal_sub_id').value = subId;
+        document.getElementById('modal_customer_name').innerText = name;
+        document.getElementById('modal_current_remaining').innerText = remaining + ' / ' + total + ' डबे';
+        var myModal = new coreui.Modal(document.getElementById('adjustModal'));
+        myModal.show();
+    }
+
+    function autoFillPlanQuota() {
+        var sel = document.getElementById('planSelect');
+        var opt = sel.options[sel.selectedIndex];
+        document.getElementById('planTotalQuota').value = opt.getAttribute('data-quota') || 60;
+        document.getElementById('planPrice').value = opt.getAttribute('data-price') || 3500;
+    }
+</script>
+
+<%-include('footer.ejs')%>

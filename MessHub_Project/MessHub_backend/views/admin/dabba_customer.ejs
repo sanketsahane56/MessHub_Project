@@ -1,0 +1,366 @@
+<%-include('navbar.ejs')%>
+
+<style>
+    .customer-header {
+        background: linear-gradient(135deg, #1b3d2f 0%, #2e7d32 100%);
+        color: white;
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .metric-box {
+        background: white;
+        border-radius: 10px;
+        padding: 18px;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        border: 1px solid #e9ecef;
+    }
+    .metric-value {
+        font-size: 28px;
+        font-weight: 800;
+        margin-bottom: 0;
+    }
+    .progress-custom {
+        height: 12px;
+        border-radius: 6px;
+        background-color: #e9ecef;
+    }
+</style>
+
+<div class="container-fluid px-4 py-3">
+
+    <!-- Back button & Navigation -->
+    <div class="mb-3 d-flex justify-content-between align-items-center">
+        <a href="/admin/dabbas" class="btn btn-outline-secondary">
+            <i class="fa fa-arrow-left me-1"></i> सर्व ग्राहक सूचीकडे परत (Back to All Customers)
+        </a>
+        <div class="d-flex gap-2">
+            <a href="https://api.whatsapp.com/send?phone=91<%= sub.customer_mobile.replace(/[^0-9]/g, '') %>&text=नमस्कार%20<%= encodeURIComponent(sub.customer_name) %>,%20MessHub%20कडूून%20तुमचे%20सध्याचे%20शिल्लक%20डबे%20<%= sub.remaining_dabbas %>%20आहेत.%20संपर्क:%208263905159" 
+               target="_blank" class="btn btn-success text-white font-weight-bold">
+                <i class="fab fa-whatsapp me-1"></i> <%= sub.customer_name %> ला WhatsApp करा
+            </a>
+            <a href="/my-dabbas?mobile=<%= sub.customer_mobile.replace(/[^0-9]/g, '') %>" target="_blank" class="btn btn-outline-primary">
+                <i class="fa fa-external-link-alt me-1"></i> ग्राहक व्ह्यू पहा (Customer View)
+            </a>
+        </div>
+    </div>
+
+    <!-- Customer Profile Header Card -->
+    <div class="customer-header">
+        <div class="row align-items-center">
+            <div class="col-md-7">
+                <div class="d-flex align-items-center mb-2">
+                    <span class="badge bg-warning text-dark px-3 py-1 me-2 font-weight-bold">
+                        डबा ग्राहक #<%= sub.subscription_id %>
+                    </span>
+                    <span class="badge bg-light text-success font-weight-bold">
+                        <%= sub.status %>
+                    </span>
+                </div>
+                <h2 class="font-weight-bold mb-1"><%= sub.customer_name %> चा डबा रेकॉर्ड व हजेरी टेबल</h2>
+                <div class="d-flex flex-wrap gap-3 mt-2 text-white-50" style="font-size: 14px;">
+                    <div><i class="fa fa-phone text-warning me-1"></i><strong><%= sub.customer_mobile %></strong></div>
+                    <div><i class="fa fa-envelope text-warning me-1"></i><%= sub.customer_email || 'ई-मेल नोंद नाही' %></div>
+                    <div><i class="fa fa-map-marker-alt text-warning me-1"></i><%= sub.branch_location %></div>
+                </div>
+                <div class="mt-2 text-white-50 small">
+                    <i class="fa fa-box me-1"></i> प्लॅन: <strong><%= sub.plan_name %></strong> (किंमत: ₹<%= sub.price %>) | 
+                    सुरू तारीख: <strong><%= sub.start_date %></strong> | 
+                    पत्ता: <%= sub.delivery_address || 'शाखेतून थेट' %>
+                </div>
+            </div>
+
+            <div class="col-md-5 mt-3 mt-md-0">
+                <div class="bg-white text-dark p-3 rounded shadow-sm text-center">
+                    <div class="text-uppercase text-muted font-weight-bold small">शिल्लक डबे बॅलन्स (Remaining Dabbas)</div>
+                    <div class="metric-value text-success">
+                        <%= sub.remaining_dabbas %> <span style="font-size: 18px; color: #6c757d;">/ <%= sub.total_dabbas %> डबे</span>
+                    </div>
+                    <% 
+                        var pct = Math.round((sub.consumed_dabbas / sub.total_dabbas) * 100);
+                        if (pct > 100) pct = 100;
+                    %>
+                    <div class="progress progress-custom my-2">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: <%= pct %>%;"></div>
+                    </div>
+                    <div class="d-flex justify-content-between text-muted small">
+                        <span>घेतलेले: <strong><%= sub.consumed_dabbas %></strong></span>
+                        <span>वापर: <strong><%= pct %>%</strong></span>
+                        <span>एकूण: <strong><%= sub.total_dabbas %></strong></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert / Message Banner if any -->
+    <% if (msg) { %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fa fa-check-circle me-1"></i> <%= msg %>
+            <button type="button" class="btn-close" data-coreui-dismiss="alert"></button>
+        </div>
+    <% } %>
+
+    <div class="row g-4 mb-4">
+        
+        <!-- Left Column: Forms for Marking & Adjusting -->
+        <div class="col-lg-4">
+
+            <!-- Card 1: Mark Dabba Attendance (हजेरी नोंदवा) -->
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-success text-white py-3">
+                    <h5 class="mb-0 font-weight-bold">
+                        <i class="fa fa-calendar-check me-2"></i>डबा हजेरी नोंदवा (Mark Dabba)
+                    </h5>
+                    <small class="text-white-50">उदा. 5 तारखेला 2 डबे किंवा आजचे जेवण</small>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="/admin/save_dabba_log">
+                        <input type="hidden" name="subscription_id" value="<%= sub.subscription_id %>">
+                        
+                        <div class="mb-3">
+                            <label class="form-label font-weight-bold">तारीख निवडा (Date):</label>
+                            <input type="date" name="log_date" class="form-control" value="<%= todayDate %>" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label font-weight-bold">जेवण स्लॉट (Meal Slot):</label>
+                            <select name="meal_slot" class="form-select" id="logMealSlot" onchange="autoSetSlotCount()">
+                                <option value="Both" data-count="2">दोन्ही (Lunch + Dinner - 2 डबे)</option>
+                                <option value="Lunch" data-count="1">दुपारचे जेवण (Lunch - 1 डबा)</option>
+                                <option value="Dinner" data-count="1">रात्रीचे जेवण (Dinner - 1 डबा)</option>
+                                <option value="Custom" data-count="1">कस्टम डबे संख्या (Custom)</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label font-weight-bold">डब्यांची संख्या (Count):</label>
+                            <input type="number" name="dabbas_count" id="logDabbasCount" class="form-control" min="1" value="2" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label font-weight-bold">शेरा / टीप (Optional Note):</label>
+                            <input type="text" name="admin_notes" class="form-control" placeholder="उदा. 2 डबे वेळेवर पोहोचवले...">
+                        </div>
+
+                        <div class="form-check mb-3 p-2 bg-light rounded border">
+                            <input class="form-check-input ms-1" type="checkbox" name="send_notification" id="sendNotifCheck" value="1" checked>
+                            <label class="form-check-label ms-2 font-weight-bold small text-dark" for="sendNotifCheck">
+                                <i class="fa fa-bell text-warning me-1"></i> ग्राहकाला Email, Notification व WhatsApp Alert पाठवा
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100 py-2 font-weight-bold">
+                            <i class="fa fa-check-circle me-1"></i> ✓ डबा नोंदवा व Alert पाठवा
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Card 2: Increase / Decrease Quota (डबे कमी किंवा जास्त करा) -->
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-warning text-dark py-3">
+                    <h5 class="mb-0 font-weight-bold">
+                        <i class="fa fa-sliders-h me-2"></i>डबे कमी / जास्त करा (Admin Adjust)
+                    </h5>
+                    <small class="text-muted">ग्राहकाचे डबे कमी करा, वाढवा किंवा बॅलन्स बदला</small>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="/admin/adjust_dabba_quota">
+                        <input type="hidden" name="subscription_id" value="<%= sub.subscription_id %>">
+                        <input type="hidden" name="redirect_to" value="customer">
+
+                        <div class="mb-3">
+                            <label class="form-label font-weight-bold">बदलाचा प्रकार (Adjustment Type):</label>
+                            <select name="adjust_type" class="form-select" required>
+                                <option value="decrease_consumed">
+                                    🔻 डबे कमी करा (रजा/कॅन्सल - शिल्लक डबा वाढेल)
+                                </option>
+                                <option value="increase_consumed">
+                                    🔺 डबे वाढवा (अतिरिक्त डबा घेतला - शिल्लक डबा कमी होईल)
+                                </option>
+                                <option value="add_total_quota">
+                                    🎁 बोनस / ज्यादा कोटा जोडा (एकूण कोट्यात भर)
+                                </option>
+                                <option value="set_balance">
+                                    ⚙️ शिल्लक डबे थेट सेट करा (Direct Set Balance)
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label font-weight-bold">डब्यांची संख्या (Count):</label>
+                            <input type="number" name="amount" class="form-control" min="1" value="1" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label font-weight-bold">बदलाचे कारण / शेरा (Reason):</label>
+                            <input type="text" name="reason" class="form-control" placeholder="उदा. ग्राहक आज हजर नव्हता किंवा 1 डबा कमी केला..." required>
+                        </div>
+
+                        <div class="form-check mb-3 p-2 bg-light rounded border">
+                            <input class="form-check-input ms-1" type="checkbox" name="send_alert" id="adjustAlertCheck" value="1" checked>
+                            <label class="form-check-label ms-2 font-weight-bold small text-dark" for="adjustAlertCheck">
+                                <i class="fa fa-bell text-warning me-1"></i> ग्राहकाला Email व Notification द्वारे कळवा
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-warning text-dark w-100 py-2 font-weight-bold">
+                            <i class="fa fa-sync-alt me-1"></i> ⚡ बदल लागू करा व सूचना पाठवा
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Right Column: Date-wise Passbook / Ledger Table (तारीखवार नोंद) -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-0 font-weight-bold text-dark">
+                            <i class="fa fa-table text-primary me-2"></i><%= sub.customer_name %> चा तारीखवार डबा हजेरी रेकॉर्ड
+                        </h5>
+                        <small class="text-muted">तारीखनिहाय डब्यांची नोंद, शिल्लक बॅलन्स आणि बदल इतिहास</small>
+                    </div>
+                    <span class="badge bg-primary px-3 py-2 font-weight-bold">
+                        एकूण नोंदी: <%= logs.length %>
+                    </span>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped align-middle mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>#ID</th>
+                                <th>तारीख (Date)</th>
+                                <th>जेवण वेळ</th>
+                                <th class="text-center">डबे संख्या</th>
+                                <th>कृती प्रकार</th>
+                                <th class="text-center">शिल्लक डबे</th>
+                                <th>शेरा / टीप</th>
+                                <th class="text-center">कृती (Undo)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (logs.length === 0) { %>
+                                <tr>
+                                    <td colspan="8" class="text-center py-5 text-muted">
+                                        <i class="fa fa-calendar-times fa-3x mb-3 text-secondary d-block"></i>
+                                        अद्याप कोणताही डबा नोंदवलेला नाही. डावीकडील फॉर्म वापरून आजचे डबे नोंदवा.
+                                    </td>
+                                </tr>
+                            <% } %>
+
+                            <% for (var j = 0; j < logs.length; j++) { 
+                                var log = logs[j];
+                                var actionBadge = 'bg-success';
+                                if (log.action_type.includes('Decreased')) actionBadge = 'bg-info text-dark';
+                                else if (log.action_type.includes('Adjustment')) actionBadge = 'bg-warning text-dark';
+                            %>
+                                <tr>
+                                    <td class="font-weight-bold">#<%= log.log_id %></td>
+                                    <td>
+                                        <span class="font-weight-bold text-dark">
+                                            <i class="fa fa-calendar-alt text-primary me-1"></i><%= log.log_date %>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-light text-dark border">
+                                            <%= log.meal_slot %>
+                                        </span>
+                                    </td>
+                                    <td class="text-center font-weight-bold" style="font-size: 16px;">
+                                        <%= log.dabbas_count %> डबे
+                                    </td>
+                                    <td>
+                                        <span class="badge <%= actionBadge %>">
+                                            <%= log.action_type %>
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge bg-secondary font-weight-bold" style="font-size: 13px;">
+                                            <%= log.remaining_after %> शिल्लक
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <small class="text-muted"><%= log.admin_notes || '-' %></small>
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="/admin/delete_dabba_log/<%= log.log_id %>?subscription_id=<%= sub.subscription_id %>" 
+                                           class="btn btn-sm btn-outline-danger" 
+                                           onclick="return confirm('तुम्हाला ही नोंद रद्द / डिलीट करायची आहे का? शिल्लक डबे पूर्ववत केले जातील.')"
+                                           title="नोंद रद्द करा व बॅलन्स पूर्ववत करा">
+                                            <i class="fa fa-trash"></i> रद्द
+                                        </a>
+                                    </td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Notifications & Email History for this Customer -->
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0 font-weight-bold text-dark">
+                        <i class="fa fa-bell text-warning me-2"></i>ग्राहकाला पाठवलेल्या सूचना व ई-मेल इतिहास (Notification Alerts)
+                    </h6>
+                    <span class="badge bg-light text-dark border"><%= notifications.length %> सूचना</span>
+                </div>
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush">
+                        <% if (notifications.length === 0) { %>
+                            <div class="p-4 text-center text-muted">अद्याप कोणतीही सूचना पाठवलेली नाही.</div>
+                        <% } %>
+
+                        <% for (var k = 0; k < notifications.length; k++) { 
+                            var notif = notifications[k];
+                        %>
+                            <div class="list-group-item p-3">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="font-weight-bold text-dark">
+                                            <i class="fa fa-envelope-open text-primary me-1"></i><%= notif.title %>
+                                        </div>
+                                        <p class="mb-1 text-secondary" style="font-size: 14px;"><%= notif.message %></p>
+                                        <div class="d-flex gap-2 align-items-center small text-muted">
+                                            <span><i class="fa fa-clock me-1"></i><%= notif.created_at %></span>
+                                            <span>• Email: <strong class="text-success"><%= notif.email_status %></strong></span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <% if (notif.whatsapp_url) { %>
+                                            <a href="<%= notif.whatsapp_url %>" target="_blank" class="btn btn-sm btn-success text-white">
+                                                <i class="fab fa-whatsapp me-1"></i> WhatsApp
+                                            </a>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    function autoSetSlotCount() {
+        var sel = document.getElementById('logMealSlot');
+        var opt = sel.options[sel.selectedIndex];
+        var cnt = opt.getAttribute('data-count');
+        if (cnt) {
+            document.getElementById('logDabbasCount').value = cnt;
+        }
+    }
+</script>
+
+<%-include('footer.ejs')%>

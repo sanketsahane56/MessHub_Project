@@ -1,0 +1,309 @@
+<%-include('Navbar.ejs')%>
+
+<style>
+    .hero-banner {
+        background: linear-gradient(135deg, #1b3d2f 0%, #2e7d32 100%);
+        color: white;
+        padding: 50px 0 40px 0;
+        position: relative;
+    }
+    .passbook-card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        overflow: hidden;
+        margin-bottom: 30px;
+    }
+    .metric-pill {
+        border-radius: 8px;
+        padding: 15px;
+        text-align: center;
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+    }
+    .metric-number {
+        font-size: 26px;
+        font-weight: 800;
+        line-height: 1.2;
+    }
+    .progress-custom {
+        height: 14px;
+        border-radius: 7px;
+        background-color: #e9ecef;
+    }
+    .ledger-table th {
+        background-color: #1b3d2f;
+        color: white;
+        font-weight: 600;
+        font-size: 14px;
+    }
+    .ledger-table td {
+        vertical-align: middle;
+        font-size: 14px;
+    }
+</style>
+
+<!-- Hero Section -->
+<div class="hero-banner text-center">
+    <div class="container">
+        <span class="badge badge-warning px-3 py-2 text-dark font-weight-bold mb-2" style="font-size: 13px;">
+            🍱 पारदर्शक व अचूक डबा ट्रॅकिंग
+        </span>
+        <h1 class="font-weight-bold mb-2">माझा डबा रेकॉर्ड व हजेरी पासबुक</h1>
+        <p class="lead mb-3" style="max-width: 650px; margin: 0 auto; font-size: 16px; opacity: 0.95;">
+            तुमचे दररोज घेतलेले डबे, शिल्लक कोटा आणि मेसकडून आलेले सर्व ई-मेल व नोटीफिकेशन एकाच ठिकाणी तपासा.
+        </p>
+
+        <!-- Search Bar -->
+        <div class="row justify-content-center mt-3">
+            <div class="col-md-7 col-lg-5">
+                <form method="GET" action="/my-dabbas" class="card p-2 shadow-lg border-0" style="border-radius: 30px;">
+                    <div class="input-group">
+                        <input type="text" name="mobile" class="form-control border-0 pl-3" 
+                               placeholder="तुमचा 10 अंकी मोबाईल नंबर टाका..." 
+                               value="<%= searched_mobile %>" 
+                               style="font-size: 15px; outline: none; box-shadow: none;" required>
+                        <div class="input-group-append">
+                            <button class="btn btn-success px-4 font-weight-bold" type="submit" style="border-radius: 25px;">
+                                <i class="fa fa-search mr-1"></i> पासबुक पहा
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <div class="mt-2 text-white small">
+                    डेमो तपासण्यासाठी: 
+                    <a href="/my-dabbas?mobile=8263905159" class="text-warning font-weight-bold ml-1 text-decoration-underline">
+                        8263905159 (Onkar चा रेकॉर्ड पहा)
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+
+    <% if (!searched_mobile && subscriptions.length === 0) { %>
+        <div class="row justify-content-center py-4">
+            <div class="col-md-8 text-center">
+                <div class="card p-5 shadow-sm border-0" style="border-radius: 15px;">
+                    <i class="fa fa-cutlery fa-4x text-success mb-3"></i>
+                    <h4 class="font-weight-bold">तुमचा डबा रेकॉर्ड तपासण्यासाठी नंबर टाका</h4>
+                    <p class="text-muted">
+                        मेस सुरू करताना दिलेला मोबाईल नंबर वर टाका. तुम्हाला आज घेतलेले डबे, शिल्लक डबे व सर्व इतिहास दिसेल.
+                    </p>
+                    <div class="mt-2">
+                        <a href="/my-dabbas?mobile=8263905159" class="btn btn-outline-success font-weight-bold px-4 py-2">
+                            <i class="fa fa-user mr-1"></i> Onkar चा डबा रेकॉर्ड पहा (8263905159)
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <% } else if (subscriptions.length === 0) { %>
+        <div class="row justify-content-center py-4">
+            <div class="col-md-8 text-center">
+                <div class="card p-5 shadow-sm border-0" style="border-radius: 15px;">
+                    <i class="fa fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+                    <h4 class="font-weight-bold">कोणताही सक्रिय डबा सापडला नाही</h4>
+                    <p class="text-muted">
+                        मोबाईल नंबर <strong><%= searched_mobile %></strong> साठी कोणतीही डबा नोंदणी आढळली नाही. कृपया मोबाईल नंबर तपासून पहा किंवा नवीन मेस बुक करा.
+                    </p>
+                    <div class="mt-2">
+                        <a href="/book-mess" class="btn btn-success font-weight-bold px-4 mr-2">
+                            <i class="fa fa-cutlery mr-1"></i> नवीन मेस बुक करा
+                        </a>
+                        <a href="https://wa.me/918263905159?text=Hello%20MessHub,%20माझा%20डबा%20रेकॉर्ड%20दिसत%20नाही%20आहे." target="_blank" class="btn btn-outline-success">
+                            <i class="fa fa-whatsapp mr-1"></i> मदत हवी? संपर्क 8263905159
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <% } else { %>
+
+        <!-- Found Subscriptions -->
+        <% for (var s = 0; s < subscriptions.length; s++) { 
+            var sub = subscriptions[s];
+            var pct = Math.round((sub.consumed_dabbas / sub.total_dabbas) * 100);
+            if (pct > 100) pct = 100;
+        %>
+            <div class="card passbook-card shadow">
+                <!-- Card Header -->
+                <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <div>
+                        <span class="badge badge-success px-3 py-1 font-weight-bold" style="font-size: 13px;">
+                            <%= sub.status %> सेवा
+                        </span>
+                        <h4 class="font-weight-bold mb-0 mt-1 text-dark">
+                            <i class="fa fa-user-circle text-success mr-2"></i><%= sub.customer_name %>
+                        </h4>
+                        <small class="text-muted">
+                            <i class="fa fa-phone mr-1"></i><%= sub.customer_mobile %> | 
+                            <i class="fa fa-map-marker text-danger mr-1"></i><%= sub.branch_location %>
+                        </small>
+                    </div>
+
+                    <div class="text-right">
+                        <a href="https://wa.me/918263905159?text=Hello%20MessHub,%20माझे%20नाव%20<%= encodeURIComponent(sub.customer_name) %>%20आहे,%20डब्याबद्दल%20चौकशी%20करायची%20आहे." 
+                           target="_blank" class="btn btn-sm btn-success text-white font-weight-bold">
+                            <i class="fa fa-whatsapp mr-1"></i> मेसला WhatsApp करा (8263905159)
+                        </a>
+                    </div>
+                </div>
+
+                <div class="card-body p-4">
+                    <!-- Balance Metric Row -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-3 col-6 mb-2">
+                            <div class="metric-pill">
+                                <div class="text-muted small font-weight-bold text-uppercase">एकूण कोटा (Total)</div>
+                                <div class="metric-number text-dark"><%= sub.total_dabbas %> <span style="font-size: 15px;">डबे</span></div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6 mb-2">
+                            <div class="metric-pill">
+                                <div class="text-muted small font-weight-bold text-uppercase">घेतलेले डबे (Taken)</div>
+                                <div class="metric-number text-danger"><%= sub.consumed_dabbas %> <span style="font-size: 15px;">डबे</span></div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6 mb-2">
+                            <div class="metric-pill" style="background-color: #e8f5e9; border-color: #c8e6c9;">
+                                <div class="text-success small font-weight-bold text-uppercase">शिल्लक डबे (Remaining)</div>
+                                <div class="metric-number text-success"><%= sub.remaining_dabbas %> <span style="font-size: 15px;">डबे</span></div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6 mb-2">
+                            <div class="metric-pill">
+                                <div class="text-muted small font-weight-bold text-uppercase">प्लॅन (Plan)</div>
+                                <div class="font-weight-bold text-primary mt-1 text-truncate" title="<%= sub.plan_name %>"><%= sub.plan_name %></div>
+                                <small class="text-muted">₹<%= sub.price %></small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between text-muted small font-weight-bold mb-1">
+                            <span>डबा वापर प्रगती (Usage Progress)</span>
+                            <span><%= sub.consumed_dabbas %> / <%= sub.total_dabbas %> डबे वापरले (<%= pct %>%)</span>
+                        </div>
+                        <div class="progress progress-custom">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: <%= pct %>%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Date-wise Daily Attendance Ledger -->
+                    <h5 class="font-weight-bold text-dark mb-3">
+                        <i class="fa fa-calendar-check-o text-success mr-2"></i>तारीखवार डबा हजेरी (Date-wise Dabba Attendance)
+                    </h5>
+                    
+                    <div class="table-responsive mb-4">
+                        <table class="table table-hover table-striped ledger-table border mb-0">
+                            <thead>
+                                <tr>
+                                    <th>तारीख (Date)</th>
+                                    <th>जेवण वेळ (Slot)</th>
+                                    <th class="text-center">घेतलेले डबे (Count)</th>
+                                    <th>स्थिती (Action)</th>
+                                    <th class="text-center">नोंदीनंतर शिल्लक</th>
+                                    <th>मेस शेरा (Notes)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if (sub.logs && sub.logs.length > 0) { %>
+                                    <% for (var l = 0; l < sub.logs.length; l++) { 
+                                        var log = sub.logs[l];
+                                    %>
+                                        <tr>
+                                            <td class="font-weight-bold text-dark">
+                                                <i class="fa fa-calendar mr-1 text-primary"></i><%= log.log_date %>
+                                            </td>
+                                            <td>
+                                                <span class="badge badge-light border px-2 py-1">
+                                                    <%= log.meal_slot %>
+                                                </span>
+                                            </td>
+                                            <td class="text-center font-weight-bold" style="font-size: 16px;">
+                                                <%= log.dabbas_count %> डबे
+                                            </td>
+                                            <td>
+                                                <span class="badge <%= log.action_type.includes('Decreased') ? 'badge-info' : 'badge-success' %> px-2 py-1">
+                                                    <%= log.action_type %>
+                                                </span>
+                                            </td>
+                                            <td class="text-center font-weight-bold text-success">
+                                                <%= log.remaining_after %> शिल्लक
+                                            </td>
+                                            <td>
+                                                <small class="text-muted"><%= log.admin_notes || '-' %></small>
+                                            </td>
+                                        </tr>
+                                    <% } %>
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="6" class="text-center py-4 text-muted">
+                                            अद्याप डब्यांची नोंद झालेली नाही.
+                                        </td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Notifications / Alert Box for this Customer -->
+                    <h5 class="font-weight-bold text-dark mb-3">
+                        <i class="fa fa-bell text-warning mr-2"></i>मेस सूचना व ई-मेल इतिहास (Notifications)
+                    </h5>
+
+                    <div class="list-group mb-3">
+                        <% if (sub.notifications && sub.notifications.length > 0) { %>
+                            <% for (var n = 0; n < sub.notifications.length; n++) { 
+                                var notif = sub.notifications[n];
+                            %>
+                                <div class="list-group-item list-group-item-action">
+                                    <div class="d-flex w-100 justify-content-between align-items-center">
+                                        <h6 class="mb-1 font-weight-bold text-dark">
+                                            <i class="fa fa-check-circle text-success mr-1"></i><%= notif.title %>
+                                        </h6>
+                                        <small class="text-muted"><%= notif.created_at %></small>
+                                    </div>
+                                    <p class="mb-1 text-secondary" style="font-size: 14px;"><%= notif.message %></p>
+                                    <small class="text-success font-weight-bold">
+                                        <i class="fa fa-envelope mr-1"></i>ई-मेल अलर्ट: <%= notif.email_status %>
+                                    </small>
+                                </div>
+                            <% } %>
+                        <% } else { %>
+                            <div class="alert alert-light border text-center text-muted py-3">
+                                अद्याप कोणतीही सूचना पाठवलेली नाही.
+                            </div>
+                        <% } %>
+                    </div>
+
+                    <!-- Direct Help Box -->
+                    <div class="alert alert-warning border-0 d-flex justify-content-between align-items-center flex-wrap gap-2 mb-0" style="border-radius: 10px;">
+                        <div>
+                            <i class="fa fa-info-circle mr-1"></i> 
+                            <strong>रजेसाठी किंवा डबा थांबवण्यासाठी:</strong> 
+                            कृपया किमान २ तास आधी कळवा. डबे तुमच्या खात्यात सुरक्षित राहतील.
+                        </div>
+                        <div class="d-flex gap-2">
+                            <a href="tel:8263905159" class="btn btn-sm btn-dark font-weight-bold">
+                                <i class="fa fa-phone mr-1"></i> Call 8263905159
+                            </a>
+                            <a href="https://wa.me/918263905159?text=Hello%20MessHub,%20मला%20डब्यामध्ये%20बदल%20करायचा%20आहे." target="_blank" class="btn btn-sm btn-success font-weight-bold">
+                                <i class="fa fa-whatsapp mr-1"></i> WhatsApp
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        <% } %>
+
+    <% } %>
+
+</div>
+
+<%-include('Footer.ejs')%>

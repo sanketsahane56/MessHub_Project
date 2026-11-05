@@ -120,6 +120,7 @@
                 <ul class="navbar-nav align-items-center">
                     <li class="nav-item"><a class="nav-link fw-semibold px-3" href="#home">Home</a></li>
                     <li class="nav-item"><a class="nav-link fw-semibold px-3" href="#plans">Offers & Plans</a></li>
+                    <li class="nav-item"><a class="nav-link fw-semibold px-3 text-success fw-bold" href="#dabba-tracker">🍱 Dabba Tracker</a></li>
                     <li class="nav-item"><a class="nav-link fw-semibold px-3" href="#locations">Branch Maps</a></li>
                     <li class="nav-item"><a class="nav-link fw-semibold px-3" href="#menu">Menu</a></li>
                     <li class="nav-item ms-lg-3 my-2 my-lg-0">
@@ -275,6 +276,167 @@
                         <button type="button" onclick="openBooking('Weekly Trial Pack (7 Days - 2 Times)', 950)" class="btn btn-outline-success w-100 fw-bold py-2 rounded-pill">
                             <i class="fa fa-shopping-basket me-1"></i> ट्रायल बुक करा (₹950)
                         </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Dabba Tracker & Attendance Section -->
+    <section id="dabba-tracker" class="py-5 bg-white border-top border-bottom">
+        <div class="container py-4">
+            <div class="text-center mb-5">
+                <span class="badge bg-success text-white px-3 py-2 rounded-pill fw-bold mb-2">LIVE ATTENDANCE & PASSBOOK</span>
+                <h2 class="fw-bold display-6 text-dark">🍱 डबा हजेरी, शिल्लक कोटा व सूचना पासबुक</h2>
+                <p class="text-muted" style="max-width: 700px; margin: 0 auto;">
+                    मेस ॲडमिन पॅनेलमधून ग्राहक (उदा. Onkar) यांचे दररोज घेतलेले डबे अपडेट होतात. ॲडमिन आवश्यकतेनुसार डबे कमी/जास्त करू शकतात आणि ग्राहकाला आपोआप ईमेल, नोटिफिकेशन व WhatsApp मेसेज जातो.
+                </p>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                        
+                        <!-- Header with customer details -->
+                        <div class="card-header py-4 px-4 text-white" style="background: linear-gradient(135deg, #1b3d2f 0%, #2e7d32 100%);">
+                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                <div>
+                                    <span class="badge bg-warning text-dark fw-bold px-3 py-1 mb-2">सक्रिय ग्राहक पासबुक</span>
+                                    <h3 class="fw-bold mb-1"><i class="fa fa-user-circle me-2"></i>Onkar (ओंकार)</h3>
+                                    <div class="small text-white-50">
+                                        <i class="fa fa-phone me-1"></i> 8263905159 | 
+                                        <i class="fa fa-map-marker text-warning me-1"></i> गंगापूर गाव, नाशिक | 
+                                        <i class="fa fa-cutlery text-warning me-1"></i> Regular 1 Month (2 Time Tiffin)
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <a href="https://wa.me/918263905159?text=Hello%20MessHub,%20माझे%20नाव%20Onkar%20आहे,%20डब्याबद्दल%20चौकशी." target="_blank" class="btn btn-warning text-dark fw-bold btn-sm rounded-pill shadow-sm">
+                                        <i class="fa fa-whatsapp text-success me-1"></i> मेसला WhatsApp करा
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-body p-4 bg-light">
+                            <!-- Metrics Row -->
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-3 col-6">
+                                    <div class="card border-0 shadow-sm p-3 text-center bg-white rounded-3">
+                                        <div class="text-muted small fw-bold text-uppercase">एकूण कोटा (Total)</div>
+                                        <div class="display-6 fw-bold text-dark" id="live-total">60</div>
+                                        <small class="text-muted">डबे (1 महिना)</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card border-0 shadow-sm p-3 text-center bg-white rounded-3">
+                                        <div class="text-muted small fw-bold text-uppercase">घेतलेले डबे (Taken)</div>
+                                        <div class="display-6 fw-bold text-danger" id="live-taken">2</div>
+                                        <small class="text-muted">वापरलेले डबे</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card border-0 shadow-sm p-3 text-center rounded-3" style="background: #e8f5e9; border: 1px solid #c8e6c9;">
+                                        <div class="text-success small fw-bold text-uppercase">शिल्लक डबे (Remaining)</div>
+                                        <div class="display-6 fw-bold text-success" id="live-remaining">58</div>
+                                        <small class="text-success fw-bold">उपलब्ध शिल्लक</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card border-0 shadow-sm p-3 text-center bg-white rounded-3">
+                                        <div class="text-muted small fw-bold text-uppercase">दैनिक स्लॉट (Slot)</div>
+                                        <div class="fw-bold text-primary mt-2" style="font-size: 18px;">2 डबे / दिवस</div>
+                                        <small class="text-muted">दुपार + रात्र</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Progress Bar -->
+                            <div class="bg-white p-3 rounded-3 shadow-sm mb-4">
+                                <div class="d-flex justify-content-between small fw-bold text-muted mb-1">
+                                    <span>डबा कोटा वापर प्रगती (Progress)</span>
+                                    <span id="live-pct-text">2 / 60 डबे (3%)</span>
+                                </div>
+                                <div class="progress" style="height: 12px;">
+                                    <div class="progress-bar bg-success" id="live-progress" role="progressbar" style="width: 3%;"></div>
+                                </div>
+                            </div>
+
+                            <!-- Interactive Admin Simulation Controls -->
+                            <div class="card border-warning border-2 rounded-3 p-3 bg-white mb-4">
+                                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                    <div>
+                                        <span class="badge bg-warning text-dark fw-bold me-1">ॲडमिन कंट्रोल सिम्युलेटर</span>
+                                        <strong>Admin Panel Actions (कमी/जास्त करा व नोटीफिकेशन तपासा):</strong>
+                                    </div>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <button type="button" onclick="simDabba(1, 'Dabba Taken', 'आजचा 1 डबा नोंदवला')" class="btn btn-sm btn-outline-success fw-bold">
+                                            +1 डबा नोंदवा
+                                        </button>
+                                        <button type="button" onclick="simDabba(2, 'Dabba Taken', '5 तारखेला 2 डबे नोंदवले')" class="btn btn-sm btn-success fw-bold">
+                                            +2 डबे नोंदवा (Lunch + Dinner)
+                                        </button>
+                                        <button type="button" onclick="simAdjust(-1, 'Admin Decreased', 'ग्राहक हजर नसल्याने 1 डबा कमी केला')" class="btn btn-sm btn-warning text-dark fw-bold">
+                                            -1 डबा कमी करा (रजा/कॅन्सल)
+                                        </button>
+                                        <button type="button" onclick="simReset()" class="btn btn-sm btn-outline-secondary">
+                                            Reset Demo
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Table of Attendance -->
+                            <div class="card border-0 shadow-sm rounded-3 overflow-hidden mb-4">
+                                <div class="card-header bg-dark text-white py-2 px-3 fw-bold small">
+                                    <i class="fa fa-table me-1"></i> तारीखवार डबा नोंद वही (Date-wise Dabba Ledger)
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-striped align-middle mb-0 small">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>तारीख (Date)</th>
+                                                <th>जेवण वेळ (Slot)</th>
+                                                <th class="text-center">घेतलेले डबे</th>
+                                                <th>कृती (Action)</th>
+                                                <th class="text-center">नोंदीनंतर शिल्लक</th>
+                                                <th>शेरा / टीप (Notes)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="live-ledger-body">
+                                            <tr>
+                                                <td class="fw-bold"><i class="fa fa-calendar text-primary me-1"></i> 05-11-2026</td>
+                                                <td><span class="badge bg-light text-dark border">Lunch + Dinner</span></td>
+                                                <td class="text-center fw-bold text-danger">2 डबे</td>
+                                                <td><span class="badge bg-success">Dabba Taken</span></td>
+                                                <td class="text-center fw-bold text-success">58 शिल्लक</td>
+                                                <td>5 तारखेला 2 डबे (Lunch + Dinner) यशस्वीरीत्या दिले गेले.</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Live Notification Log Box -->
+                            <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+                                <div class="card-header bg-white py-2 px-3 border-bottom fw-bold text-dark small d-flex justify-content-between align-items-center">
+                                    <span><i class="fa fa-bell text-warning me-1"></i> ऑनलाईन सूचना व ई-मेल अलर्ट्स (Simulated Notifications)</span>
+                                    <span class="badge bg-success">ऑटोमॅटिक अलर्ट्स सक्रिय</span>
+                                </div>
+                                <div class="list-group list-group-flush small" id="live-notif-box">
+                                    <div class="list-group-item p-3">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <strong class="text-success"><i class="fa fa-check-circle me-1"></i> डबा अपडेट - 05 Nov 2026</strong>
+                                            <span class="text-muted">तारीख: 05-11-2026</span>
+                                        </div>
+                                        <p class="mb-1 text-secondary">
+                                            नमस्कार Onkar! 05-11-2026 रोजी तुम्ही 2 डबे (Lunch + Dinner) घेतले आहेत. तुमचे शिल्लक डबे: 58 आहेत.
+                                        </p>
+                                        <small class="text-muted"><i class="fa fa-envelope text-primary me-1"></i> Email: Sent to onkar@gmail.com | WhatsApp अलर्ट तयार</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -684,6 +846,108 @@
             bootstrap.Modal.getInstance(document.getElementById('bookingModal')).hide();
             const successModal = new bootstrap.Modal(document.getElementById('successModal'));
             successModal.show();
+        }
+
+        // Dabba Simulation functions
+        let simState = { total: 60, taken: 2, remaining: 58 };
+
+        function updateSimUI() {
+            document.getElementById('live-total').innerText = simState.total;
+            document.getElementById('live-taken').innerText = simState.taken;
+            document.getElementById('live-remaining').innerText = simState.remaining;
+            let pct = Math.round((simState.taken / simState.total) * 100);
+            if (pct > 100) pct = 100;
+            document.getElementById('live-progress').style.width = pct + '%';
+            document.getElementById('live-pct-text').innerText = `${simState.taken} / ${simState.total} डबे (${pct}%)`;
+        }
+
+        function simDabba(count, action, note) {
+            simState.taken += count;
+            simState.remaining = Math.max(0, simState.total - simState.taken);
+            updateSimUI();
+
+            const d = new Date().toISOString().split('T')[0];
+            const tbody = document.getElementById('live-ledger-body');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td class="fw-bold"><i class="fa fa-calendar text-primary me-1"></i> ${d}</td>
+                <td><span class="badge bg-light text-dark border">${count === 2 ? 'Lunch + Dinner' : 'Regular'}</span></td>
+                <td class="text-center fw-bold text-danger">+${count} डबे</td>
+                <td><span class="badge bg-success">${action}</span></td>
+                <td class="text-center fw-bold text-success">${simState.remaining} शिल्लक</td>
+                <td>${note}</td>
+            `;
+            tbody.insertBefore(row, tbody.firstChild);
+
+            addSimNotif(`डबा अपडेट: ${count} डबे नोंदवले`, `नमस्कार Onkar! आज तुमचे ${count} डबे नोंदवले गेले. आता तुमचे शिल्लक डबे: ${simState.remaining} आहेत. (${note})`);
+        }
+
+        function simAdjust(count, action, note) {
+            if (count < 0) {
+                simState.taken = Math.max(0, simState.taken + count);
+                simState.remaining = simState.total - simState.taken;
+            } else {
+                simState.taken += count;
+                simState.remaining = Math.max(0, simState.total - simState.taken);
+            }
+            updateSimUI();
+
+            const d = new Date().toISOString().split('T')[0];
+            const tbody = document.getElementById('live-ledger-body');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td class="fw-bold"><i class="fa fa-calendar text-primary me-1"></i> ${d}</td>
+                <td><span class="badge bg-light text-dark border">Adjustment</span></td>
+                <td class="text-center fw-bold text-warning">${count > 0 ? '+' + count : count} डबा</td>
+                <td><span class="badge bg-warning text-dark">${action}</span></td>
+                <td class="text-center fw-bold text-success">${simState.remaining} शिल्लक</td>
+                <td>${note}</td>
+            `;
+            tbody.insertBefore(row, tbody.firstChild);
+
+            addSimNotif(`डबा ॲडजस्टमेंट: डब्यांमध्ये बदल`, `नमस्कार Onkar! ॲडमिन द्वारे डब्यांमध्ये बदल करण्यात आला (${note}). अद्ययावत शिल्लक: ${simState.remaining} डबे.`);
+        }
+
+        function addSimNotif(title, msg) {
+            const box = document.getElementById('live-notif-box');
+            const div = document.createElement('div');
+            div.className = 'list-group-item p-3 border-top';
+            div.innerHTML = `
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <strong class="text-success"><i class="fa fa-bell text-warning me-1"></i> ${title}</strong>
+                    <span class="badge bg-success">Email & Notif Sent</span>
+                </div>
+                <p class="mb-1 text-secondary">${msg}</p>
+                <small class="text-muted"><i class="fa fa-check me-1 text-success"></i> Customer Notified • WhatsApp Alert Available</small>
+            `;
+            box.insertBefore(div, box.firstChild);
+        }
+
+        function simReset() {
+            simState = { total: 60, taken: 2, remaining: 58 };
+            updateSimUI();
+            document.getElementById('live-ledger-body').innerHTML = `
+                <tr>
+                    <td class="fw-bold"><i class="fa fa-calendar text-primary me-1"></i> 05-11-2026</td>
+                    <td><span class="badge bg-light text-dark border">Lunch + Dinner</span></td>
+                    <td class="text-center fw-bold text-danger">2 डबे</td>
+                    <td><span class="badge bg-success">Dabba Taken</span></td>
+                    <td class="text-center fw-bold text-success">58 शिल्लक</td>
+                    <td>5 तारखेला 2 डबे (Lunch + Dinner) यशस्वीरीत्या दिले गेले.</td>
+                </tr>
+            `;
+            document.getElementById('live-notif-box').innerHTML = `
+                <div class="list-group-item p-3">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <strong class="text-success"><i class="fa fa-check-circle me-1"></i> डबा अपडेट - 05 Nov 2026</strong>
+                        <span class="text-muted">तारीख: 05-11-2026</span>
+                    </div>
+                    <p class="mb-1 text-secondary">
+                        नमस्कार Onkar! 05-11-2026 रोजी तुम्ही 2 डबे (Lunch + Dinner) घेतले आहेत. तुमचे शिल्लक डबे: 58 आहेत.
+                    </p>
+                    <small class="text-muted"><i class="fa fa-envelope text-primary me-1"></i> Email: Sent to onkar@gmail.com | WhatsApp अलर्ट तयार</small>
+                </div>
+            `;
         }
     </script>
 </body>

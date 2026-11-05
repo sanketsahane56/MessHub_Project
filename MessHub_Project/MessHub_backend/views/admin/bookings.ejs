@@ -141,9 +141,17 @@
                                 </form>
                             </td>
                             <td>
-                                <a href="/admin/delete_booking/<%= b.booking_id %>" onclick="return confirm('तुम्हाला ही बुकिंग हटवायची आहे का?')" class="btn btn-sm btn-outline-danger" title="Delete">
-                                    <i class="fa fa-trash"></i>
-                                </a>
+                                <div class="d-flex gap-1">
+                                    <form method="POST" action="/admin/activate_booking_dabba" style="display:inline;">
+                                        <input type="hidden" name="booking_id" value="<%= b.booking_id %>">
+                                        <button type="submit" class="btn btn-sm btn-success text-white" title="डबा सबस्क्रिप्शन सुरू करा">
+                                            <i class="fa fa-utensils"></i> डबा सुरू
+                                        </button>
+                                    </form>
+                                    <a href="/admin/delete_booking/<%= b.booking_id %>" onclick="return confirm('तुम्हाला ही बुकिंग हटवायची आहे का?')" class="btn btn-sm btn-outline-danger" title="Delete">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                     <% }); %>

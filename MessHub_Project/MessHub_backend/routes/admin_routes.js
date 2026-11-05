@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var exe = require('./../conn');
 var url = require('url');
+var notificationService = require('./../services/notification_service');
 
 
 function checklogin(req, res, next) 
@@ -20,6 +21,29 @@ function checklogin(req, res, next)
 router.get('/login',function(req, res)
 {
     res.render("admin/login.ejs")
+});
+
+router.post('/do_login', async function(req, res) {
+    try {
+        var d = req.body;
+        var sql = `SELECT * FROM admin_tbl WHERE admin_email = '${d.admin_email}' AND admin_password = '${d.admin_password}'`;
+        var data = await exe(sql);
+        if (data.length > 0) {
+            req.session.admin_id = data[0].admin_id;
+            req.session.admin_name = data[0].admin_name;
+            res.redirect('/admin/');
+        } else {
+            res.send("<script>alert('ईमेल किंवा पासवर्ड चुकीचा आहे!'); location.href='/admin/login';</script>");
+        }
+    } catch (err) {
+        console.error("Admin login error:", err);
+        res.redirect('/admin/login');
+    }
+});
+
+router.get('/logout', function(req, res) {
+    req.session.destroy();
+    res.redirect('/admin/login');
 });
 
 router.get('/signup',function(req, res){
@@ -51,6 +75,8 @@ router.get('/' ,checklogin, async function(req, res){
   var menu_dinner_data = await exe(sql1);
 
   var bookings_data = await exe(`SELECT COUNT(*) as bookings_count FROM mess_bookings`);
+  var dabbas_active = await exe(`SELECT COUNT(*) as count FROM dabba_subscriptions WHERE status = 'Active'`);
+  var today_dabbas = await exe(`SELECT COALESCE(SUM(dabbas_count), 0) as count FROM dabba_daily_logs WHERE log_date = CURDATE()`);
 
   obj = {
     "user_admin_kyc_data":user_admin_kyc_data,
@@ -61,6 +87,8 @@ router.get('/' ,checklogin, async function(req, res){
     "menu_lunch_data":menu_lunch_data,
     "menu_dinner_data":menu_dinner_data,
     "bookings_data": bookings_data,
+    "dabbas_active": dabbas_active.length > 0 ? dabbas_active[0].count : 0,
+    "today_dabbas": today_dabbas.length > 0 ? today_dabbas[0].count : 0
   }
   res.render('admin/dashbord.ejs',obj);
 });
@@ -869,6 +897,378 @@ router.post('/update_booking_status', checklogin, async function(req, res) {
 router.get('/delete_booking/:id', checklogin, async function(req, res) {
   await exe(`DELETE FROM mess_bookings WHERE booking_id = '${req.params.id}'`);
   res.redirect('/admin/bookings');
+});
+
+// ==========================================
+// DABBA TRACKING & ATTENDANCE MANAGEMENT
+// ==========================================
+
+router.get('/dabbas', checklogin, async function(req, res) {
+  var branch = req.query.branch || '';
+  var status = req.query.status || '';
+  var search = req.query.search || '';
+
+  var whereClause = 'WHERE 1=1';
+  if (branch) {
+    whereClause += ` AND branch_location LIKE '%${branch}%'`;
+  }
+  if (status) {
+    whereClause += ` AND status = '${status}'`;
+  }
+  if (search) {
+    whereClause += ` AND (customer_name LIKE '%${search}%' OR customer_mobile LIKE '%${search}%' OR customer_email LIKE '%${search}%')`;
+  }
+
+  var subscribers = await exe(`SELECT *, DATE_FORMAT(start_date, '%Y-%m-%d') as start_date FROM dabba_subscriptions ${whereClause} ORDER BY subscription_id DESC`);
+  var activeCountRes = await exe(`SELECT COUNT(*) as count FROM dabba_subscriptions WHERE status = 'Active'`);
+  var todayDabbasRes = await exe(`SELECT COALESCE(SUM(dabbas_count), 0) as count FROM dabba_daily_logs WHERE log_date = CURDATE()`);
+  var totalQuotaRes = await exe(`SELECT COALESCE(SUM(total_dabbas), 0) as total FROM dabba_subscriptions WHERE status = 'Active'`);
+  var totalRemainingRes = await exe(`SELECT COALESCE(SUM(remaining_dabbas), 0) as total FROM dabba_subscriptions WHERE status = 'Active'`);
+
+  var todayDate = new Date().toISOString().split('T')[0];
+
+  var obj = {
+    "subscribers": subscribers,
+    "activeCount": activeCountRes[0].count,
+    "todayDabbasCount": todayDabbasRes[0].count,
+    "totalQuotaSum": totalQuotaRes[0].total,
+    "totalRemainingSum": totalRemainingRes[0].total,
+    "branch": branch,
+    "status": status,
+    "search": search,
+    "todayDate": todayDate
+  };
+  res.render('admin/dabbas.ejs', obj);
+});
+
+router.get('/dabba_customer/:id', checklogin, async function(req, res) {
+  var subId = req.params.id;
+  var subRes = await exe(`SELECT *, DATE_FORMAT(start_date, '%d %b %Y') as start_date FROM dabba_subscriptions WHERE subscription_id = '${subId}'`);
+  if (subRes.length === 0) return res.redirect('/admin/dabbas');
+
+  var sub = subRes[0];
+  var logs = await exe(`SELECT *, DATE_FORMAT(log_date, '%d-%m-%Y') as log_date FROM dabba_daily_logs WHERE subscription_id = '${subId}' ORDER BY log_id DESC`);
+  var notifications = await exe(`SELECT *, DATE_FORMAT(created_at, '%d-%m-%Y %H:%i') as created_at FROM dabba_notifications WHERE subscription_id = '${subId}' ORDER BY notification_id DESC LIMIT 25`);
+  var todayDate = new Date().toISOString().split('T')[0];
+
+  var obj = {
+    "sub": sub,
+    "logs": logs,
+    "notifications": notifications,
+    "todayDate": todayDate,
+    "msg": req.query.msg || ''
+  };
+  res.render('admin/dabba_customer.ejs', obj);
+});
+
+router.post('/save_dabba_log', checklogin, async function(req, res) {
+  try {
+    var d = req.body;
+    var subId = d.subscription_id;
+    var subRes = await exe(`SELECT * FROM dabba_subscriptions WHERE subscription_id = '${subId}'`);
+    if (subRes.length === 0) return res.redirect('/admin/dabbas');
+    var sub = subRes[0];
+
+    var count = Math.max(1, parseInt(d.dabbas_count) || 1);
+    var newConsumed = sub.consumed_dabbas + count;
+    var newRemaining = Math.max(0, sub.total_dabbas - newConsumed);
+    var logDate = d.log_date || new Date().toISOString().split('T')[0];
+    var mealSlot = d.meal_slot || 'Both';
+    var notes = (d.admin_notes || '').replace(/'/g, "''");
+
+    await exe(`UPDATE dabba_subscriptions SET consumed_dabbas = '${newConsumed}', remaining_dabbas = '${newRemaining}' WHERE subscription_id = '${subId}'`);
+
+    var logSql = `INSERT INTO dabba_daily_logs 
+      (subscription_id, customer_name, customer_mobile, customer_email, log_date, meal_slot, dabbas_count, action_type, remaining_after, notification_sent, admin_notes)
+      VALUES 
+      ('${subId}', '${sub.customer_name.replace(/'/g, "''")}', '${sub.customer_mobile}', '${sub.customer_email || ''}', '${logDate}', '${mealSlot}', '${count}', 'Dabba Taken', '${newRemaining}', '${d.send_notification ? 1 : 0}', '${notes}')`;
+    await exe(logSql);
+
+    if (d.send_notification) {
+      await notificationService.notifyDabbaUpdate({
+        subscription_id: sub.subscription_id,
+        customer_name: sub.customer_name,
+        customer_mobile: sub.customer_mobile,
+        customer_email: sub.customer_email,
+        log_date: logDate,
+        meal_slot: mealSlot,
+        dabbas_count: count,
+        action_type: 'Dabba Taken',
+        remaining_dabbas: newRemaining,
+        total_dabbas: sub.total_dabbas,
+        branch_location: sub.branch_location,
+        admin_notes: notes
+      });
+    }
+
+    var successMsg = encodeURIComponent(`${logDate} रोजी ${count} डबे (${mealSlot}) यशस्वीरीत्या नोंदवले व ग्राहकाला सूचित केले.`);
+    res.redirect(`/admin/dabba_customer/${subId}?msg=${successMsg}`);
+  } catch (err) {
+    console.error("save_dabba_log error:", err);
+    res.redirect('/admin/dabbas');
+  }
+});
+
+router.post('/quick_mark_dabba', checklogin, async function(req, res) {
+  try {
+    var d = req.body;
+    var subId = d.subscription_id;
+    var subRes = await exe(`SELECT * FROM dabba_subscriptions WHERE subscription_id = '${subId}'`);
+    if (subRes.length === 0) return res.redirect('/admin/dabbas');
+    var sub = subRes[0];
+
+    var count = Math.max(1, parseInt(d.count) || 1);
+    var mealSlot = d.meal_slot || 'Both';
+    var newConsumed = sub.consumed_dabbas + count;
+    var newRemaining = Math.max(0, sub.total_dabbas - newConsumed);
+    var todayDate = new Date().toISOString().split('T')[0];
+
+    await exe(`UPDATE dabba_subscriptions SET consumed_dabbas = '${newConsumed}', remaining_dabbas = '${newRemaining}' WHERE subscription_id = '${subId}'`);
+
+    var logSql = `INSERT INTO dabba_daily_logs 
+      (subscription_id, customer_name, customer_mobile, customer_email, log_date, meal_slot, dabbas_count, action_type, remaining_after, notification_sent, admin_notes)
+      VALUES 
+      ('${subId}', '${sub.customer_name.replace(/'/g, "''")}', '${sub.customer_mobile}', '${sub.customer_email || ''}', '${todayDate}', '${mealSlot}', '${count}', 'Dabba Taken', '${newRemaining}', 1, 'आजचा डबा (1-Click)')`;
+    await exe(logSql);
+
+    await notificationService.notifyDabbaUpdate({
+      subscription_id: sub.subscription_id,
+      customer_name: sub.customer_name,
+      customer_mobile: sub.customer_mobile,
+      customer_email: sub.customer_email,
+      log_date: todayDate,
+      meal_slot: mealSlot,
+      dabbas_count: count,
+      action_type: 'Dabba Taken',
+      remaining_dabbas: newRemaining,
+      total_dabbas: sub.total_dabbas,
+      branch_location: sub.branch_location,
+      admin_notes: 'आजचा डबा यशस्वीरीत्या नोंदवला.'
+    });
+
+    res.redirect('/admin/dabbas');
+  } catch (err) {
+    console.error("quick_mark_dabba error:", err);
+    res.redirect('/admin/dabbas');
+  }
+});
+
+router.post('/adjust_dabba_quota', checklogin, async function(req, res) {
+  try {
+    var d = req.body;
+    var subId = d.subscription_id;
+    var subRes = await exe(`SELECT * FROM dabba_subscriptions WHERE subscription_id = '${subId}'`);
+    if (subRes.length === 0) return res.redirect('/admin/dabbas');
+    var sub = subRes[0];
+
+    var amount = Math.max(1, parseInt(d.amount) || 1);
+    var reason = (d.reason || 'Admin Adjustment').replace(/'/g, "''");
+    var todayDate = new Date().toISOString().split('T')[0];
+
+    var newTotal = sub.total_dabbas;
+    var newConsumed = sub.consumed_dabbas;
+    var newRemaining = sub.remaining_dabbas;
+    var actionType = 'Admin Adjustment';
+
+    if (d.adjust_type === 'decrease_consumed') {
+      // Customer skipped/cancelled dabba -> reduce consumed, restore remaining
+      newConsumed = Math.max(0, sub.consumed_dabbas - amount);
+      newRemaining = sub.total_dabbas - newConsumed;
+      actionType = 'Admin Decreased';
+    } else if (d.adjust_type === 'increase_consumed') {
+      // Extra dabba taken -> increase consumed, reduce remaining
+      newConsumed = sub.consumed_dabbas + amount;
+      newRemaining = Math.max(0, sub.total_dabbas - newConsumed);
+      actionType = 'Admin Added';
+    } else if (d.adjust_type === 'add_total_quota') {
+      // Extra quota granted -> increase total quota
+      newTotal = sub.total_dabbas + amount;
+      newRemaining = newTotal - sub.consumed_dabbas;
+      actionType = 'Quota Extended';
+    } else if (d.adjust_type === 'set_balance') {
+      // Direct set remaining balance
+      newRemaining = parseInt(d.amount) || 0;
+      newConsumed = Math.max(0, sub.total_dabbas - newRemaining);
+      actionType = 'Balance Reset';
+    }
+
+    await exe(`UPDATE dabba_subscriptions SET total_dabbas = '${newTotal}', consumed_dabbas = '${newConsumed}', remaining_dabbas = '${newRemaining}' WHERE subscription_id = '${subId}'`);
+
+    var logSql = `INSERT INTO dabba_daily_logs 
+      (subscription_id, customer_name, customer_mobile, customer_email, log_date, meal_slot, dabbas_count, action_type, remaining_after, notification_sent, admin_notes)
+      VALUES 
+      ('${subId}', '${sub.customer_name.replace(/'/g, "''")}', '${sub.customer_mobile}', '${sub.customer_email || ''}', '${todayDate}', 'Custom', '${amount}', '${actionType}', '${newRemaining}', '${d.send_alert ? 1 : 0}', '${reason}')`;
+    await exe(logSql);
+
+    if (d.send_alert) {
+      await notificationService.notifyDabbaUpdate({
+        subscription_id: sub.subscription_id,
+        customer_name: sub.customer_name,
+        customer_mobile: sub.customer_mobile,
+        customer_email: sub.customer_email,
+        log_date: todayDate,
+        meal_slot: 'Adjustment',
+        dabbas_count: amount,
+        action_type: actionType,
+        remaining_dabbas: newRemaining,
+        total_dabbas: newTotal,
+        branch_location: sub.branch_location,
+        admin_notes: reason
+      });
+    }
+
+    var successMsg = encodeURIComponent(`डब्यांमध्ये बदल यशस्वीरीत्या करण्यात आला (शिल्लक: ${newRemaining} डबे). ग्राहकाला सूचना पाठवली.`);
+    if (d.redirect_to === 'customer') {
+      res.redirect(`/admin/dabba_customer/${subId}?msg=${successMsg}`);
+    } else {
+      res.redirect('/admin/dabbas');
+    }
+  } catch (err) {
+    console.error("adjust_dabba_quota error:", err);
+    res.redirect('/admin/dabbas');
+  }
+});
+
+router.get('/delete_dabba_log/:id', checklogin, async function(req, res) {
+  try {
+    var logId = req.params.id;
+    var subId = req.query.subscription_id;
+
+    var logRes = await exe(`SELECT * FROM dabba_daily_logs WHERE log_id = '${logId}'`);
+    if (logRes.length > 0) {
+      var log = logRes[0];
+      var subRes = await exe(`SELECT * FROM dabba_subscriptions WHERE subscription_id = '${log.subscription_id}'`);
+      if (subRes.length > 0) {
+        var sub = subRes[0];
+        // Reverse count if it was Dabba Taken or Admin Added
+        var newConsumed = sub.consumed_dabbas;
+        if (log.action_type === 'Dabba Taken' || log.action_type === 'Admin Added') {
+          newConsumed = Math.max(0, sub.consumed_dabbas - log.dabbas_count);
+        } else if (log.action_type === 'Admin Decreased') {
+          newConsumed = sub.consumed_dabbas + log.dabbas_count;
+        }
+        var newRemaining = Math.max(0, sub.total_dabbas - newConsumed);
+
+        await exe(`UPDATE dabba_subscriptions SET consumed_dabbas = '${newConsumed}', remaining_dabbas = '${newRemaining}' WHERE subscription_id = '${sub.subscription_id}'`);
+
+        await notificationService.notifyDabbaUpdate({
+          subscription_id: sub.subscription_id,
+          customer_name: sub.customer_name,
+          customer_mobile: sub.customer_mobile,
+          customer_email: sub.customer_email,
+          log_date: log.log_date,
+          meal_slot: log.meal_slot,
+          dabbas_count: log.dabbas_count,
+          action_type: 'Admin Decreased',
+          remaining_dabbas: newRemaining,
+          total_dabbas: sub.total_dabbas,
+          branch_location: sub.branch_location,
+          admin_notes: `तारीख ${log.log_date} ची नोंद रद्द करण्यात आली आहे, डबे शिल्लक बॅलन्समध्ये परत जमा केले.`
+        });
+      }
+      await exe(`DELETE FROM dabba_daily_logs WHERE log_id = '${logId}'`);
+    }
+
+    var successMsg = encodeURIComponent('नोंद यशस्वीरीत्या रद्द केली व शिल्लक डबे पूर्ववत केले.');
+    res.redirect(`/admin/dabba_customer/${subId || ''}?msg=${successMsg}`);
+  } catch (err) {
+    console.error("delete_dabba_log error:", err);
+    res.redirect('/admin/dabbas');
+  }
+});
+
+router.post('/add_dabba_customer', checklogin, async function(req, res) {
+  try {
+    var d = req.body;
+    var total = parseInt(d.total_dabbas) || 60;
+    var price = parseInt(d.price) || 3500;
+    var startDate = d.start_date || new Date().toISOString().split('T')[0];
+
+    var sql = `INSERT INTO dabba_subscriptions 
+      (customer_name, customer_mobile, customer_email, branch_location, plan_name, total_dabbas, consumed_dabbas, remaining_dabbas, daily_quota, price, start_date, delivery_type, delivery_address, status)
+      VALUES 
+      ('${(d.customer_name || '').replace(/'/g, "''")}', 
+       '${(d.customer_mobile || '').replace(/'/g, "''")}', 
+       '${(d.customer_email || '').replace(/'/g, "''")}', 
+       '${(d.branch_location || '').replace(/'/g, "''")}', 
+       '${(d.plan_name || '').replace(/'/g, "''")}', 
+       '${total}', 
+       0, 
+       '${total}', 
+       2, 
+       '${price}', 
+       '${startDate}', 
+       '${(d.delivery_type || 'Doorstep Tiffin').replace(/'/g, "''")}', 
+       '${(d.delivery_address || '').replace(/'/g, "''")}', 
+       'Active')`;
+
+    var result = await exe(sql);
+    var newId = result.insertId;
+
+    await notificationService.notifyDabbaUpdate({
+      subscription_id: newId,
+      customer_name: d.customer_name,
+      customer_mobile: d.customer_mobile,
+      customer_email: d.customer_email,
+      log_date: startDate,
+      meal_slot: 'All',
+      dabbas_count: 0,
+      action_type: 'Plan Started',
+      remaining_dabbas: total,
+      total_dabbas: total,
+      branch_location: d.branch_location,
+      admin_notes: `MessHub डबा सेवा सुरू झाली आहे. एकूण कोटा: ${total} डबे.`
+    });
+
+    var successMsg = encodeURIComponent(`नवीन ग्राहक ${d.customer_name} यशस्वीरीत्या सुरू केला!`);
+    res.redirect(`/admin/dabba_customer/${newId}?msg=${successMsg}`);
+  } catch (err) {
+    console.error("add_dabba_customer error:", err);
+    res.redirect('/admin/dabbas');
+  }
+});
+
+router.post('/activate_booking_dabba', checklogin, async function(req, res) {
+  try {
+    var bookingId = req.body.booking_id;
+    var bRes = await exe(`SELECT * FROM mess_bookings WHERE booking_id = '${bookingId}'`);
+    if (bRes.length === 0) return res.redirect('/admin/bookings');
+    var b = bRes[0];
+
+    var total = 60;
+    if (b.plan_name.includes('1 Time')) total = 30;
+    else if (b.plan_name.includes('Weekly') || b.plan_name.includes('Trial')) total = 14;
+    else if (b.plan_name.includes('Thali')) total = 1;
+
+    var sql = `INSERT INTO dabba_subscriptions 
+      (user_id, booking_id, customer_name, customer_mobile, customer_email, branch_location, plan_name, total_dabbas, consumed_dabbas, remaining_dabbas, daily_quota, price, start_date, delivery_type, delivery_address, status)
+      VALUES 
+      (${b.user_id ? `'${b.user_id}'` : 'NULL'}, 
+       '${b.booking_id}', 
+       '${b.customer_name.replace(/'/g, "''")}', 
+       '${b.customer_mobile.replace(/'/g, "''")}', 
+       '${(b.customer_email || '').replace(/'/g, "''")}', 
+       '${b.branch_location.replace(/'/g, "''")}', 
+       '${b.plan_name.replace(/'/g, "''")}', 
+       '${total}', 
+       0, 
+       '${total}', 
+       2, 
+       '${b.price}', 
+       '${b.start_date || new Date().toISOString().split('T')[0]}', 
+       '${(b.delivery_type || 'Doorstep Tiffin').replace(/'/g, "''")}', 
+       '${(b.delivery_address || '').replace(/'/g, "''")}', 
+       'Active')`;
+
+    var result = await exe(sql);
+    await exe(`UPDATE mess_bookings SET booking_status = 'Confirmed' WHERE booking_id = '${bookingId}'`);
+
+    var successMsg = encodeURIComponent(`बुकिंग वरून डबा सबस्क्रिप्शन सुरू केले!`);
+    res.redirect(`/admin/dabba_customer/${result.insertId}?msg=${successMsg}`);
+  } catch (err) {
+    console.error("activate_booking_dabba error:", err);
+    res.redirect('/admin/bookings');
+  }
 });
 
 module.exports = router;

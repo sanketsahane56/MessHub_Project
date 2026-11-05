@@ -22,19 +22,27 @@
    - Real-time customer tracking page (`/my-bookings`) by registered mobile number.
    - Flexible payment options: Cash on Delivery (COD) & UPI QR Code on Delivery.
 
-2. **Interactive Branch Locations & Google Maps:**
+2. **Dabba Tracking & Attendance System (डबा हजेरी व रेकॉर्ड व्यवस्थापन):**
+   - **Customer Ledger / Table View:** Detailed record for each customer (e.g. Onkar's table showing plan, start date, quota, and history).
+   - **Daily Attendance Marking:** 1-Click mark for Lunch (+1), Dinner (+1), or Both (+2) on any date (e.g. 5th date: 2 dabbas).
+   - **Admin Quota Adjustment (कमी / जास्त करा):** Admin can flexibly increase dabbas, decrease dabbas (refund/cancel on absence), or add bonus quota.
+   - **Automated Alerts (Email, In-App & WhatsApp):** Customers receive instant HTML email notifications via Nodemailer and in-app alerts whenever dabbas are taken or adjusted.
+   - **Customer Dabba Passbook (`/my-dabbas`):** Customers can check their live remaining quota, date-wise consumption ledger, and mess alerts online anytime.
+
+3. **Interactive Branch Locations & Google Maps:**
    - **📍 Gangapur Gaon Branch (Nashik):** Gangapur Gaon, Near Someshwar Waterfalls Road, Gangapur Road, Nashik - 422013.
    - **📍 Pimpalgaon Nipani Branch (Akole):** Main Road, Pimpalgaon Nipani, Taluka Akole, Dist. Ahilyanagar - 422601.
    - Interactive 1-click tab switcher allowing visitors to view the exact Google Map and contact info for each branch.
 
-3. **Direct WhatsApp & Phone Integration:**
+4. **Direct WhatsApp & Phone Integration:**
    - 1-Click WhatsApp chat widget connected directly to **8263905159**.
    - Direct call buttons on header, booking page, and contact sections.
 
-4. **Robust Admin & Vendor Dashboards:**
+5. **Robust Admin & Vendor Dashboards:**
    - **Admin Panel (`/admin`):**
      * Manage all online customer bookings (Approve, Confirm, Complete, or Cancel).
-     * Real-time metrics: Total Bookings, Pending Orders, Confirmed Subscriptions, and Revenue in Rupees (₹).
+     * Dabba Management & Attendance (`/admin/dabbas`) with real-time counters and individual customer ledger (`/admin/dabba_customer/:id`).
+     * Real-time metrics: Total Bookings, Active Dabba Subscriptions, Today's Served Dabbas, Revenue in Rupees (₹).
      * Filter orders by branch (Nashik / Akole) or booking status.
      * KYC verification for mess vendors.
    - **UserAdmin / Vendor Dashboard (`/userAdmin`):**

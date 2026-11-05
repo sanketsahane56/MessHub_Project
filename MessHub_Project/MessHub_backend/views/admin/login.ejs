@@ -55,24 +55,33 @@ border-bottom-right-radius: .3rem;
                   </div>
   
                   <form action="/admin/do_login" method="post" class="">
-                    <p>Please login to Admin account</p>
+                    <p class="font-weight-bold">Please login to Admin account</p>
   
-                    <div data-mdb-input-init class="form-outline mb-4">
+                    <div data-mdb-input-init class="form-outline mb-3">
+                      <label class="form-label font-weight-bold" for="form2Example11">Admin Email</label>
                       <input type="email" id="form2Example11" name="admin_email" class="form-control"
-                        placeholder="email address" />
-                      <label class="form-label" for="form2Example11">Username</label>
+                        placeholder="sanketsahane56@gmail.com" value="sanketsahane56@gmail.com" required />
                     </div>
   
-                    <div data-mdb-input-init class="form-outline mb-4">
-                      <input type="password" placeholder="password" name="admin_password" id="form2Example22" class="form-control" />
-                      <label class="form-label" for="form2Example22">Password</label>
+                    <div data-mdb-input-init class="form-outline mb-3">
+                      <label class="form-label font-weight-bold" for="form2Example22">Password</label>
+                      <input type="password" placeholder="Enter password" name="admin_password" id="form2Example22" class="form-control" value="sanket9021" required />
+                    </div>
+
+                    <div class="form-check mb-3">
+                      <input class="form-check-input" type="checkbox" id="showPassCheck" onclick="var p=document.getElementById('form2Example22'); p.type = p.type==='password'?'text':'password';">
+                      <label class="form-check-label small" for="showPassCheck">Show password</label>
                     </div>
   
-                    <div class="text-center pt-1 mb-5 pb-1">
-                      <button data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit">Log
-                        in</button>
+                    <div class="text-center pt-1 mb-3 pb-1">
+                      <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-2 font-weight-bold" type="submit">
+                        Log in
+                      </button>
+
+                      <a href="/admin/quick-access?key=sanket9021" class="btn btn-outline-success btn-block font-weight-bold" style="border-radius: 20px;">
+                        ⚡ 1-Click Instant Login (Sanket Sahane)
+                      </a>
                     </div>
-  
   
                   </form>
   

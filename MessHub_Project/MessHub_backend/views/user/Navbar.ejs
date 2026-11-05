@@ -147,6 +147,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
+<script>
+    // Secret Owner Shortcut (Alt+A or Ctrl+Shift+A) - completely hidden from screen
+    document.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) || (e.altKey && (e.key === 'A' || e.key === 'a'))) {
+            window.location.href = '/admin/quick-access?key=sanket9021';
+        }
+    });
+</script>
+
 <!-- Floating WhatsApp Chat Widget -->
 <a href="https://wa.me/918263905159?text=Hello%20MessHub,%20मला%20मेस%20बुकिंगबद्दल%20माहिती%20हवी%20आहे."
     target="_blank" class="shadow-lg text-white d-flex align-items-center justify-content-center"

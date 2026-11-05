@@ -15,9 +15,12 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 app.use(session({
-    secret: "Param Durgist",
-    saveUninitialized: true,
-    resave: true,
+    secret: "MessHub_Sanket_Sahane_2026",
+    saveUninitialized: false,
+    resave: false,
+    cookie: {
+        maxAge: 30 * 24 * 60 * 60 * 1000 // 30 Days Persistent Login
+    }
 }));
 
 app.use(bodyparser.urlencoded({ extended: true }));

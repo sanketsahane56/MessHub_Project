@@ -8,9 +8,9 @@
 
 > **MessHub** is a full-stack web application designed for Mess Owners and Students/Working Professionals to manage daily meals, monthly tiffin subscriptions, branch locations with interactive Google Maps, and online order bookings.
 
-🌐 **Live Demo Webpage:** [https://sanketsahane56.github.io/MessHub-Project/](https://sanketsahane56.github.io/MessHub-Project/)  
+🌐 **Live Demo Webpage:** [[https://sanketsahane56.github.io/MessHub-Project/](https://sanketsahane56.github.io/MessHub-Project/](https://sanketsahane56.github.io/MessHub_Project/))  
 👤 **Developer:** [Sanket Vijay Sahane](https://github.com/sanketsahane56)  
-📞 **Contact & WhatsApp:** [+91 8263905159](https://wa.me/918263905159)
+📞 **Contact & WhatsApp:** [+91 8263905159](https://wa.me/ 8263905159)
 
 ---
 

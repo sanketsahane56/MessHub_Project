@@ -4,13 +4,13 @@
 [![Express.js](https://img.shields.io/badge/Express.js-4.19-lightgrey.svg)](https://expressjs.com/)
 [![MySQL](https://img.shields.io/badge/MySQL-MariaDB-blue.svg)](https://www.mysql.com/)
 [![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-purple.svg)](https://getbootstrap.com/)
-[![GitHub Pages](https://img.shields.io/badge/Live_Demo-GitHub_Pages-orange.svg)](https://sanketsahane56.github.io/MessHub-Project/)
+[![GitHub Pages](https://img.shields.io/badge/Live_Demo-GitHub_Pages-orange.svg)](https://sanketsahane56.github.io/MessHub_Project/)
 
 > **MessHub** is a full-stack web application designed for Mess Owners and Students/Working Professionals to manage daily meals, monthly tiffin subscriptions, branch locations with interactive Google Maps, and online order bookings.
 
-🌐 **Live Demo Webpage:** [https://sanketsahane56.github.io/MessHub-Project/](https://sanketsahane56.github.io/MessHub-Project/)  
+🌐 **Live Demo Webpage:** [https://sanketsahane56.github.io/MessHub_Project/]  
 👤 **Developer:** [Sanket Vijay Sahane](https://github.com/sanketsahane56)  
-📞 **Contact & WhatsApp:** [+91 8263905159](https://wa.me/918263905159)
+📞 **Contact & WhatsApp:** [+91 8263905159](https://wa.me/ 8263905159)
 
 ---
 

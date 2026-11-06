@@ -26,3 +26,4 @@ echo Opening Admin Dashboard...
 start http://localhost:1000/admin/quick-access?key=sanket9021
 
 exit
+

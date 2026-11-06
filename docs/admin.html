@@ -1001,6 +1001,11 @@
                     <td class="text-center fw-bold text-danger">${sub.consumed_dabbas}</td>
                     <td class="text-center">
                         <span class="badge ${badgeClass} badge-remaining">${sub.remaining_dabbas} शिल्लक</span>
+                        <div class="mt-1">
+                            <button onclick="toggleCustomerStatus(${sub.id})" class="badge ${sub.status === 'Active' ? 'bg-success' : 'bg-secondary'} border-0" style="cursor: pointer; font-size: 11px;" title="ॲक्सेस ऑन / ऑफ करा">
+                                ${sub.status === 'Active' ? '✓ Active (ॲक्सेस मंजूर)' : '⏸ Paused (ॲक्सेस बंद)'}
+                            </button>
+                        </div>
                     </td>
                     
                     <!-- 1-Click Today's Mark -->
@@ -1032,6 +1037,16 @@
                 `;
                 tbody.appendChild(tr);
             });
+        }
+
+        // Toggle Customer Access & Status (Active / Paused)
+        function toggleCustomerStatus(subId) {
+            const sub = (appData.subscribers || []).find(s => s.id === subId);
+            if (!sub) return;
+            sub.status = (sub.status === 'Active') ? 'Paused' : 'Active';
+            saveData();
+            renderDabbasTable();
+            alert(`✓ ${sub.name} चा ॲक्सेस स्टेटस बदलला: ${sub.status === 'Active' ? 'Active (डबे सुरू व ॲक्सेस मंजूर ✅)' : 'Paused (डबे स्थगित व ॲक्सेस बंद ⛔)'}`);
         }
 
         // Quick Mark Today's Dabba

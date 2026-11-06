@@ -346,24 +346,85 @@
 
             <div class="row justify-content-center">
                 <div class="col-lg-10">
-                    <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                    
+                    <!-- State 1: Customer Login Prompt (Shown when not logged in) -->
+                    <div id="customerLoginCard" class="card shadow border-0 rounded-4 p-4 p-md-5 text-center bg-light">
+                        <div class="mx-auto mb-3" style="width: 70px; height: 70px; background: #e8f5e9; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa fa-id-card-o text-success fs-2"></i>
+                        </div>
+                        <h4 class="fw-bold text-dark mb-2">तुमचे वैयक्तिक डबा पासबुक तपासा</h4>
+                        <p class="text-muted small mx-auto mb-4" style="max-width: 550px;">
+                            तुमचा डबा रेकॉर्ड पूर्णपणे सुरक्षित व खाजगी आहे. तुमचे शिल्लक डबे व तारीखवार हजेरी पाहण्यासाठी तुमचा नोंदणीकृत मोबाईल नंबर टाका:
+                        </p>
+
+                        <div class="row justify-content-center mb-4">
+                            <div class="col-md-8 col-12">
+                                <form onsubmit="handleCustomerLogin(event)">
+                                    <div class="input-group input-group-lg shadow-sm">
+                                        <span class="input-group-text bg-white border-end-0 text-success">
+                                            <i class="fa fa-phone"></i>
+                                        </span>
+                                        <input type="tel" id="custLoginMobile" class="form-control border-start-0" placeholder="१० अंकी मोबाईल नंबर (उदा. 8263905159)" maxlength="10" required pattern="[0-9]{10}">
+                                        <button class="btn btn-success fw-bold px-4" type="submit">
+                                            <i class="fa fa-search me-1"></i> पासबुक उघडा
+                                        </button>
+                                    </div>
+                                    <div id="custLoginAlert" class="alert mt-3 py-2 small fw-bold text-start" style="display: none;"></div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Privacy Badges -->
+                        <div class="row g-3 text-start mt-2">
+                            <div class="col-md-4">
+                                <div class="p-3 bg-white rounded-3 border h-100 shadow-sm">
+                                    <div class="fw-bold text-success mb-1"><i class="fa fa-user-secret me-1"></i> वैयक्तिक गोपनीयता</div>
+                                    <small class="text-muted">ओंकारचा रेकॉर्ड फक्त ओंकारला दिसेल. दुसऱ्या कोणालाही तुमचा डबा रेकॉर्ड दिसणार नाही.</small>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="p-3 bg-white rounded-3 border h-100 shadow-sm">
+                                    <div class="fw-bold text-primary mb-1"><i class="fa fa-shield me-1"></i> ॲडमिन ॲप्रूव्हल</div>
+                                    <small class="text-muted">तुमचे डबे सुरू असल्यास आणि ॲडमिनने ॲक्सेस ॲक्टिव्हेट केला असल्यास तात्काळ डेटा उपलब्ध होतो.</small>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="p-3 bg-white rounded-3 border h-100 shadow-sm">
+                                    <div class="fw-bold text-warning mb-1"><i class="fa fa-bell me-1"></i> थेट WhatsApp अलर्ट्स</div>
+                                    <small class="text-muted">डबा नोंद होताच किंवा शिल्लक बदलताच थेट मेसेज आणि अचूक पासबुक अपडेट मिळते.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- State 2: Customer Personal Passbook (Shown when logged in) -->
+                    <div id="customerPassbookCard" class="card shadow-lg border-0 rounded-4 overflow-hidden" style="display: none;">
                         
                         <!-- Header with customer details -->
                         <div class="card-header py-4 px-4 text-white" style="background: linear-gradient(135deg, #1b3d2f 0%, #2e7d32 100%);">
                             <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
                                 <div>
-                                    <span class="badge bg-warning text-dark fw-bold px-3 py-1 mb-2">सक्रिय ग्राहक पासबुक</span>
-                                    <h3 class="fw-bold mb-1"><i class="fa fa-user-circle me-2"></i>Onkar (ओंकार)</h3>
+                                    <div class="d-flex align-items-center gap-2 mb-2">
+                                        <span class="badge bg-warning text-dark fw-bold px-3 py-1">वैयक्तिक ग्राहक पासबुक</span>
+                                        <span class="badge bg-light text-success fw-bold px-2 py-1"><i class="fa fa-check-circle me-1"></i>सक्रिय (Active)</span>
+                                    </div>
+                                    <h3 class="fw-bold mb-1">
+                                        <i class="fa fa-user-circle me-2"></i><span id="passCustName"></span>
+                                        <small class="text-white-50 fs-6 fw-normal ms-2">(फक्त तुमचा रेकॉर्ड)</small>
+                                    </h3>
                                     <div class="small text-white-50">
-                                        <i class="fa fa-phone me-1"></i> 8263905159 | 
-                                        <i class="fa fa-map-marker text-warning me-1"></i> गंगापूर गाव, नाशिक | 
-                                        <i class="fa fa-cutlery text-warning me-1"></i> Regular 1 Month (2 Time Tiffin)
+                                        <i class="fa fa-phone me-1"></i> <span id="passCustMobile"></span> | 
+                                        <i class="fa fa-map-marker text-warning me-1"></i> <span id="passCustBranch"></span> | 
+                                        <i class="fa fa-cutlery text-warning me-1"></i> <span id="passCustPlan"></span>
                                     </div>
                                 </div>
-                                <div class="text-end">
-                                    <a href="https://wa.me/918263905159?text=Hello%20MessHub,%20माझे%20नाव%20Onkar%20आहे,%20डब्याबद्दल%20चौकशी." target="_blank" class="btn btn-warning text-dark fw-bold btn-sm rounded-pill shadow-sm">
+                                <div class="d-flex gap-2">
+                                    <a id="passCustWaBtn" href="#" target="_blank" class="btn btn-warning text-dark fw-bold btn-sm rounded-pill shadow-sm">
                                         <i class="fa fa-whatsapp text-success me-1"></i> मेसला WhatsApp करा
                                     </a>
+                                    <button type="button" onclick="logoutCustomer()" class="btn btn-outline-light fw-bold btn-sm rounded-pill">
+                                        <i class="fa fa-sign-out me-1"></i> लॉगआउट (Logout)
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -374,28 +435,28 @@
                                 <div class="col-md-3 col-6">
                                     <div class="card border-0 shadow-sm p-3 text-center bg-white rounded-3">
                                         <div class="text-muted small fw-bold text-uppercase">एकूण कोटा (Total)</div>
-                                        <div class="display-6 fw-bold text-dark" id="live-total">60</div>
-                                        <small class="text-muted">डबे (1 महिना)</small>
+                                        <div class="display-6 fw-bold text-dark" id="passCustTotal">60</div>
+                                        <small class="text-muted">डबे (१ महिना)</small>
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-6">
                                     <div class="card border-0 shadow-sm p-3 text-center bg-white rounded-3">
                                         <div class="text-muted small fw-bold text-uppercase">घेतलेले डबे (Taken)</div>
-                                        <div class="display-6 fw-bold text-danger" id="live-taken">2</div>
+                                        <div class="display-6 fw-bold text-danger" id="passCustConsumed">2</div>
                                         <small class="text-muted">वापरलेले डबे</small>
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-6">
                                     <div class="card border-0 shadow-sm p-3 text-center rounded-3" style="background: #e8f5e9; border: 1px solid #c8e6c9;">
                                         <div class="text-success small fw-bold text-uppercase">शिल्लक डबे (Remaining)</div>
-                                        <div class="display-6 fw-bold text-success" id="live-remaining">58</div>
+                                        <div class="display-6 fw-bold text-success" id="passCustRemaining">58</div>
                                         <small class="text-success fw-bold">उपलब्ध शिल्लक</small>
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-6">
                                     <div class="card border-0 shadow-sm p-3 text-center bg-white rounded-3">
                                         <div class="text-muted small fw-bold text-uppercase">दैनिक स्लॉट (Slot)</div>
-                                        <div class="fw-bold text-primary mt-2" style="font-size: 18px;">2 डबे / दिवस</div>
+                                        <div class="fw-bold text-primary mt-2" style="font-size: 18px;" id="passCustSlot">२ डबे / दिवस</div>
                                         <small class="text-muted">दुपार + रात्र</small>
                                     </div>
                                 </div>
@@ -405,25 +466,25 @@
                             <div class="bg-white p-3 rounded-3 shadow-sm mb-4">
                                 <div class="d-flex justify-content-between small fw-bold text-muted mb-1">
                                     <span>डबा कोटा वापर प्रगती (Progress)</span>
-                                    <span id="live-pct-text">2 / 60 डबे (3%)</span>
+                                    <span id="passCustPctText">2 / 60 डबे (3%)</span>
                                 </div>
                                 <div class="progress" style="height: 12px;">
-                                    <div class="progress-bar bg-success" id="live-progress" role="progressbar" style="width: 3%;"></div>
+                                    <div class="progress-bar bg-success" id="passCustProgress" role="progressbar" style="width: 3%;"></div>
                                 </div>
                             </div>
 
-                            <!-- Read-Only Notice / Admin Only Access -->
+                            <!-- Admin Control Security Notice -->
                             <div class="card border-0 bg-white p-3 rounded-3 shadow-sm mb-4 border-start border-4 border-success">
                                 <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
                                     <div class="d-flex align-items-center gap-2">
-                                        <span class="badge bg-success text-white fw-bold px-3 py-2"><i class="fa fa-shield me-1"></i> फक्त ॲडमिन नियंत्रण (Admin Access Only)</span>
+                                        <span class="badge bg-success text-white fw-bold px-3 py-2"><i class="fa fa-shield me-1"></i> अधिकृत सुरक्षितता</span>
                                         <small class="text-secondary fw-semibold">
-                                            डबा नोंदवणे, वाढवणे किंवा कमी करण्याचे सर्व अधिकार फक्त अधिकृत ॲडमिनकडे (Sanket Sahane) सुरक्षित आहेत. येथे ग्राहक फक्त आपली अचूक दैनिक नोंद पाहू शकतात.
+                                            डबा नोंदवणे, वाढवणे किंवा कमी करण्याचे अधिकार फक्त ॲडमिनकडे (Sanket Sahane) सुरक्षित आहेत. येथे तुम्हाला फक्त तुमची अधिकृत हजेरी दिसते.
                                         </small>
                                     </div>
                                     <div>
                                         <button type="button" class="btn btn-sm btn-outline-success fw-bold rounded-pill px-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#adminLoginModal">
-                                            <i class="fa fa-lock me-1 text-warning"></i> ॲडमिन लॉगिन (Admin Login)
+                                            <i class="fa fa-lock me-1 text-warning"></i> ॲडमिन लॉगिन
                                         </button>
                                     </div>
                                 </div>
@@ -431,8 +492,9 @@
 
                             <!-- Table of Attendance -->
                             <div class="card border-0 shadow-sm rounded-3 overflow-hidden mb-4">
-                                <div class="card-header bg-dark text-white py-2 px-3 fw-bold small">
-                                    <i class="fa fa-table me-1"></i> तारीखवार डबा नोंद वही (Date-wise Dabba Ledger)
+                                <div class="card-header bg-dark text-white py-2 px-3 fw-bold small d-flex justify-content-between align-items-center">
+                                    <span><i class="fa fa-table me-1"></i> तारीखवार डबा नोंद वही (Date-wise Dabba Ledger)</span>
+                                    <span class="badge bg-warning text-dark" id="passCustLogCount">1 नोंद</span>
                                 </div>
                                 <div class="table-responsive">
                                     <table class="table table-hover table-striped align-middle mb-0 small">
@@ -446,15 +508,8 @@
                                                 <th>शेरा / टीप (Notes)</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="live-ledger-body">
-                                            <tr>
-                                                <td class="fw-bold"><i class="fa fa-calendar text-primary me-1"></i> 05-11-2026</td>
-                                                <td><span class="badge bg-light text-dark border">Lunch + Dinner</span></td>
-                                                <td class="text-center fw-bold text-danger">2 डबे</td>
-                                                <td><span class="badge bg-success">Dabba Taken</span></td>
-                                                <td class="text-center fw-bold text-success">58 शिल्लक</td>
-                                                <td>5 तारखेला 2 डबे (Lunch + Dinner) यशस्वीरीत्या दिले गेले.</td>
-                                            </tr>
+                                        <tbody id="passCustLedgerBody">
+                                            <!-- Dynamically filled -->
                                         </tbody>
                                     </table>
                                 </div>
@@ -463,25 +518,17 @@
                             <!-- Live Notification Log Box -->
                             <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
                                 <div class="card-header bg-white py-2 px-3 border-bottom fw-bold text-dark small d-flex justify-content-between align-items-center">
-                                    <span><i class="fa fa-bell text-warning me-1"></i> ऑनलाईन सूचना व ई-मेल अलर्ट्स (Simulated Notifications)</span>
-                                    <span class="badge bg-success">ऑटोमॅटिक अलर्ट्स सक्रिय</span>
+                                    <span><i class="fa fa-bell text-warning me-1"></i> ऑनलाईन सूचना व ई-मेल अलर्ट्स (Notifications)</span>
+                                    <span class="badge bg-success">थेट सक्रिय</span>
                                 </div>
-                                <div class="list-group list-group-flush small" id="live-notif-box">
-                                    <div class="list-group-item p-3">
-                                        <div class="d-flex justify-content-between align-items-center mb-1">
-                                            <strong class="text-success"><i class="fa fa-check-circle me-1"></i> डबा अपडेट - 05 Nov 2026</strong>
-                                            <span class="text-muted">तारीख: 05-11-2026</span>
-                                        </div>
-                                        <p class="mb-1 text-secondary">
-                                            नमस्कार Onkar! 05-11-2026 रोजी तुम्ही 2 डबे (Lunch + Dinner) घेतले आहेत. तुमचे शिल्लक डबे: 58 आहेत.
-                                        </p>
-                                        <small class="text-muted"><i class="fa fa-envelope text-primary me-1"></i> Email: Sent to onkar@gmail.com | WhatsApp अलर्ट तयार</small>
-                                    </div>
+                                <div class="list-group list-group-flush small" id="passCustNotifBox">
+                                    <!-- Dynamically filled -->
                                 </div>
                             </div>
 
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -856,8 +903,12 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const today = new Date().toISOString().split('T')[0];
-            document.getElementById('m-date').value = today;
-            document.getElementById('m-date').min = today;
+            const mDate = document.getElementById('m-date');
+            if (mDate) {
+                mDate.value = today;
+                mDate.min = today;
+            }
+            checkCustomerSession();
         });
 
         const mapsData = {
@@ -942,17 +993,194 @@
             successModal.show();
         }
 
-        // Read-only customer state
-        let simState = { total: 60, taken: 2, remaining: 58 };
+        // Central storage key synced with Admin Panel
+        const STORAGE_KEY = 'MESSHUB_ADMIN_DATA_V2';
 
-        function updateSimUI() {
-            document.getElementById('live-total').innerText = simState.total;
-            document.getElementById('live-taken').innerText = simState.taken;
-            document.getElementById('live-remaining').innerText = simState.remaining;
-            let pct = Math.round((simState.taken / simState.total) * 100);
+        const DEFAULT_DATA = {
+            subscribers: [
+                {
+                    id: 1,
+                    name: 'Onkar',
+                    mobile: '8263905159',
+                    email: 'onkar@gmail.com',
+                    branch: 'Gangapur Gaon, Nashik',
+                    plan: 'Regular One Month (2 Time Tiffin)',
+                    total_dabbas: 60,
+                    consumed_dabbas: 2,
+                    remaining_dabbas: 58,
+                    price: 3500,
+                    start_date: '2026-11-01',
+                    delivery_type: 'Doorstep Tiffin',
+                    delivery_address: 'Near Someshwar Temple, Gangapur Gaon, Nashik',
+                    status: 'Active',
+                    logs: [
+                        {
+                            log_id: 1,
+                            date: '2026-11-05',
+                            slot: 'Lunch + Dinner',
+                            count: 2,
+                            action: 'Dabba Taken',
+                            remaining_after: 58,
+                            notes: '5 तारखेला 2 डबे (Lunch + Dinner) यशस्वीरीत्या दिले गेले.'
+                        }
+                    ],
+                    notifications: [
+                        {
+                            notif_id: 1,
+                            date: '2026-11-05',
+                            title: 'डबा अपडेट - 05 Nov 2026',
+                            message: 'नमस्कार Onkar! 05-11-2026 रोजी तुम्ही 2 डबे (Lunch + Dinner) घेतले आहेत. तुमचे शिल्लक डबे: 58 आहेत.'
+                        }
+                    ]
+                }
+            ],
+            bookings: []
+        };
+
+        function getAppData() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) return JSON.parse(raw);
+            } catch (e) {
+                console.error("Storage read error", e);
+            }
+            return DEFAULT_DATA;
+        }
+
+        // Customer Login & Privacy Handlers
+        function checkCustomerSession() {
+            const loggedMobile = sessionStorage.getItem('LOGGED_CUSTOMER_MOBILE');
+            if (loggedMobile) {
+                renderCustomerPassbook(loggedMobile);
+            } else {
+                const loginCard = document.getElementById('customerLoginCard');
+                const passbookCard = document.getElementById('customerPassbookCard');
+                if (loginCard) loginCard.style.display = 'block';
+                if (passbookCard) passbookCard.style.display = 'none';
+            }
+        }
+
+        function handleCustomerLogin(e) {
+            e.preventDefault();
+            const alertBox = document.getElementById('custLoginAlert');
+            alertBox.style.display = 'none';
+            alertBox.className = 'alert mt-3 py-2 small fw-bold text-start';
+
+            const mobile = document.getElementById('custLoginMobile').value.trim();
+            const data = getAppData();
+            const customer = (data.subscribers || []).find(s => s.mobile.replace(/\D/g, '').endsWith(mobile.slice(-10)));
+
+            if (!customer) {
+                alertBox.className += ' alert-danger';
+                alertBox.innerHTML = '<i class="fa fa-exclamation-circle me-1"></i> हा मोबाईल नंबर नोंदणीकृत नाही. कृपया आधी मेस बुक करा किंवा ॲडमिनशी संपर्क साधा.';
+                alertBox.style.display = 'block';
+                return;
+            }
+
+            // Privacy Check: Has the customer started dabbas and did admin approve?
+            if (customer.status !== 'Active') {
+                alertBox.className += ' alert-warning';
+                alertBox.innerHTML = `<i class="fa fa-clock-o me-1"></i> नमस्कार ${customer.name}! तुमचे डबे अद्याप सुरू झालेले नाहीत किंवा ॲडमिनकडून ॲप्रूव्हल प्रलंबित आहे (Status: ${customer.status}). कृपया ॲडमिनशी (+91 8263905159) संपर्क साधा.`;
+                alertBox.style.display = 'block';
+                return;
+            }
+
+            // Authorized customer -> set session & render ONLY their passbook
+            sessionStorage.setItem('LOGGED_CUSTOMER_MOBILE', customer.mobile);
+            renderCustomerPassbook(customer.mobile);
+        }
+
+        function logoutCustomer() {
+            sessionStorage.removeItem('LOGGED_CUSTOMER_MOBILE');
+            const mobileInput = document.getElementById('custLoginMobile');
+            if (mobileInput) mobileInput.value = '';
+            const alertBox = document.getElementById('custLoginAlert');
+            if (alertBox) alertBox.style.display = 'none';
+            document.getElementById('customerLoginCard').style.display = 'block';
+            document.getElementById('customerPassbookCard').style.display = 'none';
+        }
+
+        function renderCustomerPassbook(mobile) {
+            const data = getAppData();
+            const customer = (data.subscribers || []).find(s => s.mobile.replace(/\D/g, '').endsWith(mobile.slice(-10)));
+
+            if (!customer || customer.status !== 'Active') {
+                logoutCustomer();
+                return;
+            }
+
+            document.getElementById('customerLoginCard').style.display = 'none';
+            document.getElementById('customerPassbookCard').style.display = 'block';
+
+            document.getElementById('passCustName').innerText = customer.name;
+            document.getElementById('passCustMobile').innerText = customer.mobile;
+            document.getElementById('passCustBranch').innerText = customer.branch;
+            document.getElementById('passCustPlan').innerText = customer.plan;
+
+            document.getElementById('passCustTotal').innerText = customer.total_dabbas;
+            document.getElementById('passCustConsumed').innerText = customer.consumed_dabbas;
+            document.getElementById('passCustRemaining').innerText = customer.remaining_dabbas;
+
+            let slotText = '२ वेळ टिफिन (दुपार + रात्र)';
+            if (customer.plan.includes('1 Time')) slotText = '१ वेळ टिफिन (दुपार किंवा रात्र)';
+            document.getElementById('passCustSlot').innerText = slotText;
+
+            let pct = Math.round((customer.consumed_dabbas / customer.total_dabbas) * 100);
             if (pct > 100) pct = 100;
-            document.getElementById('live-progress').style.width = pct + '%';
-            document.getElementById('live-pct-text').innerText = `${simState.taken} / ${simState.total} डबे (${pct}%)`;
+            document.getElementById('passCustProgress').style.width = pct + '%';
+            document.getElementById('passCustPctText').innerText = `${customer.consumed_dabbas} / ${customer.total_dabbas} डबे (${pct}%)`;
+
+            document.getElementById('passCustWaBtn').href = `https://wa.me/918263905159?text=Hello%20MessHub,%20माझे%20नाव%20${encodeURIComponent(customer.name)}%20आहे,%20डब्याबद्दल%20चौकशी.`;
+
+            // Attendance Logs
+            const tbody = document.getElementById('passCustLedgerBody');
+            tbody.innerHTML = '';
+            const logs = customer.logs || [];
+            document.getElementById('passCustLogCount').innerText = `${logs.length} नोंद`;
+
+            if (logs.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-muted">अद्याप कोणतीही डबा नोंद उपलब्ध नाही.</td></tr>`;
+            } else {
+                logs.forEach(l => {
+                    let badgeClass = 'bg-success';
+                    if (l.action && l.action.includes('Decreased')) badgeClass = 'bg-info text-dark';
+                    else if (l.action && l.action.includes('Adjustment')) badgeClass = 'bg-warning text-dark';
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td class="fw-bold"><i class="fa fa-calendar text-primary me-1"></i> ${l.date}</td>
+                        <td><span class="badge bg-light text-dark border">${l.slot || 'Regular'}</span></td>
+                        <td class="text-center fw-bold text-danger">${l.count} डबे</td>
+                        <td><span class="badge ${badgeClass}">${l.action || 'Dabba Taken'}</span></td>
+                        <td class="text-center fw-bold text-success">${l.remaining_after} शिल्लक</td>
+                        <td>${l.notes || '-'}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            // Notifications
+            const notifBox = document.getElementById('passCustNotifBox');
+            notifBox.innerHTML = '';
+            const notifs = customer.notifications || [];
+
+            if (notifs.length === 0) {
+                notifBox.innerHTML = `<div class="p-3 text-muted text-center">अद्याप कोणतेही नवीन अलर्ट्स नाहीत.</div>`;
+            } else {
+                notifs.forEach(n => {
+                    const div = document.createElement('div');
+                    div.className = 'list-group-item p-3 border-top';
+                    div.innerHTML = `
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <strong class="text-success"><i class="fa fa-check-circle me-1"></i> ${n.title}</strong>
+                            <span class="text-muted small">${n.date || ''}</span>
+                        </div>
+                        <p class="mb-1 text-secondary">${n.message}</p>
+                        <small class="text-muted"><i class="fa fa-envelope text-primary me-1"></i> Email & WhatsApp अलर्ट पाठवला गेला</small>
+                    `;
+                    notifBox.appendChild(div);
+                });
+            }
         }
 
         // Admin Login Modal Handlers

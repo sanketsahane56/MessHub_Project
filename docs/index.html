@@ -165,8 +165,13 @@
                     <li class="nav-item"><a class="nav-link fw-semibold px-3" href="#locations">Branch Maps</a></li>
                     <li class="nav-item"><a class="nav-link fw-semibold px-3" href="#menu">Menu</a></li>
                     <li class="nav-item ms-lg-3 my-2 my-lg-0">
-                        <button type="button" class="btn btn-warning fw-bold px-4 rounded-pill shadow-sm text-dark" data-bs-toggle="modal" data-bs-target="#bookingModal">
+                        <button type="button" class="btn btn-warning fw-bold px-3 py-2 rounded-pill shadow-sm text-dark" data-bs-toggle="modal" data-bs-target="#bookingModal">
                             <i class="fa fa-cutlery me-1 text-danger"></i> Book Mess Online
+                        </button>
+                    </li>
+                    <li class="nav-item ms-lg-2 my-2 my-lg-0">
+                        <button type="button" class="btn btn-outline-success fw-bold px-3 py-2 rounded-pill shadow-sm" data-bs-toggle="modal" data-bs-target="#adminLoginModal">
+                            <i class="fa fa-user-shield me-1"></i> Admin Login
                         </button>
                     </li>
                 </ul>
@@ -402,25 +407,18 @@
                                 </div>
                             </div>
 
-                            <!-- Interactive Admin Simulation Controls -->
-                            <div class="card border-warning border-2 rounded-3 p-3 bg-white mb-4">
+                            <!-- Read-Only Notice / Admin Only Access -->
+                            <div class="card border-0 bg-white p-3 rounded-3 shadow-sm mb-4 border-start border-4 border-success">
                                 <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-                                    <div>
-                                        <span class="badge bg-warning text-dark fw-bold me-1">ॲडमिन कंट्रोल सिम्युलेटर</span>
-                                        <strong>Admin Panel Actions (कमी/जास्त करा व नोटीफिकेशन तपासा):</strong>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span class="badge bg-success text-white fw-bold px-3 py-2"><i class="fa fa-shield me-1"></i> फक्त ॲडमिन नियंत्रण (Admin Access Only)</span>
+                                        <small class="text-secondary fw-semibold">
+                                            डबा नोंदवणे, वाढवणे किंवा कमी करण्याचे सर्व अधिकार फक्त अधिकृत ॲडमिनकडे (Sanket Sahane) सुरक्षित आहेत. येथे ग्राहक फक्त आपली अचूक दैनिक नोंद पाहू शकतात.
+                                        </small>
                                     </div>
-                                    <div class="d-flex flex-wrap gap-2">
-                                        <button type="button" onclick="simDabba(1, 'Dabba Taken', 'आजचा 1 डबा नोंदवला')" class="btn btn-sm btn-outline-success fw-bold">
-                                            +1 डबा नोंदवा
-                                        </button>
-                                        <button type="button" onclick="simDabba(2, 'Dabba Taken', '5 तारखेला 2 डबे नोंदवले')" class="btn btn-sm btn-success fw-bold">
-                                            +2 डबे नोंदवा (Lunch + Dinner)
-                                        </button>
-                                        <button type="button" onclick="simAdjust(-1, 'Admin Decreased', 'ग्राहक हजर नसल्याने 1 डबा कमी केला')" class="btn btn-sm btn-warning text-dark fw-bold">
-                                            -1 डबा कमी करा (रजा/कॅन्सल)
-                                        </button>
-                                        <button type="button" onclick="simReset()" class="btn btn-sm btn-outline-secondary">
-                                            Reset Demo
+                                    <div>
+                                        <button type="button" class="btn btn-sm btn-outline-success fw-bold rounded-pill px-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#adminLoginModal">
+                                            <i class="fa fa-lock me-1 text-warning"></i> ॲडमिन लॉगिन (Admin Login)
                                         </button>
                                     </div>
                                 </div>
@@ -670,10 +668,13 @@
             <hr class="my-4 border-secondary">
             <div class="d-flex justify-content-between align-items-center flex-wrap">
                 <p class="mb-0 text-white-50 small">© 2026 MessHub. All Rights Reserved. Developed by Sanket Vijay Sahane.</p>
-                <div class="small">
+                <div class="small d-flex gap-3 align-items-center">
                     <a href="https://github.com/sanketsahane56/MessHub-Project" target="_blank" class="text-warning text-decoration-none">
                         <i class="fa fa-github me-1"></i> GitHub Repository
                     </a>
+                    <button type="button" class="btn btn-link text-white-50 text-decoration-none p-0 small" data-bs-toggle="modal" data-bs-target="#adminLoginModal">
+                        <i class="fa fa-lock me-1 text-warning"></i> ॲडमिन लॉगिन
+                    </button>
                 </div>
             </div>
         </div>
@@ -797,6 +798,53 @@
         </div>
     </div>
 
+    <!-- Admin Login Modal -->
+    <div class="modal fade" id="adminLoginModal" tabindex="-1" aria-labelledby="adminLoginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0 shadow-lg">
+                <div class="modal-header text-white py-3" style="background: linear-gradient(135deg, #182c23 0%, #1b3d2f 100%);">
+                    <h5 class="modal-title fw-bold" id="adminLoginModalLabel">
+                        <i class="fa fa-user-shield text-warning me-2"></i> MessHub ॲडमिन लॉगिन
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="text-center mb-4">
+                        <img src="https://d3jmn01ri1fzgl.cloudfront.net/photoadking/webp_thumbnail/green-minimalist-tiffin-logo-design-template-w7434z7cea32a4.webp" width="60" class="rounded-3 mb-2 shadow-sm" alt="MessHub">
+                        <h6 class="fw-bold mb-1">फक्त अधिकृत ॲडमिनसाठी सुरक्षित पोर्टल</h6>
+                        <small class="text-muted">डबा हजेरी, वाढवणे/कमी करणे व नवीन बुकिंग्स व्यवस्थापनासाठी लॉगिन करा.</small>
+                    </div>
+                    <form onsubmit="handleWebsiteAdminLogin(event)">
+                        <div class="mb-3 text-start">
+                            <label class="form-label small fw-bold text-secondary">Admin Email:</label>
+                            <input type="email" id="modalAdminEmail" class="form-control" value="sanketsahane56@gmail.com" required>
+                        </div>
+                        <div class="mb-3 text-start">
+                            <label class="form-label small fw-bold text-secondary">Admin Password:</label>
+                            <div class="input-group">
+                                <input type="password" id="modalAdminPass" class="form-control" placeholder="पासवर्ड टाका (उदा. sanket9021)" required>
+                                <button class="btn btn-outline-secondary" type="button" onclick="toggleModalPassVisibility()">
+                                    <i class="fa fa-eye" id="modalPassEye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="modalAdminError" class="alert alert-danger py-2 small mb-3 fw-bold" style="display: none;">
+                            <i class="fa fa-exclamation-circle me-1"></i> चुकीचा पासवर्ड किंवा ईमेल! कृपया पुन्हा प्रयत्न करा.
+                        </div>
+                        <button type="submit" class="btn btn-success w-100 py-2 fw-bold rounded-pill shadow-sm">
+                            <i class="fa fa-lock-open me-2"></i> डॅशबोर्ड उघडा (Login)
+                        </button>
+                    </form>
+                    <div class="text-center mt-3 pt-3 border-top">
+                        <a href="admin.html" class="text-secondary small text-decoration-none">
+                            <i class="fa fa-external-link me-1 text-warning"></i> थेट Admin Portal पेज उघडा
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Bootstrap 5 Bundle JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -889,7 +937,7 @@
             successModal.show();
         }
 
-        // Dabba Simulation functions
+        // Read-only customer state
         let simState = { total: 60, taken: 2, remaining: 58 };
 
         function updateSimUI() {
@@ -902,93 +950,30 @@
             document.getElementById('live-pct-text').innerText = `${simState.taken} / ${simState.total} डबे (${pct}%)`;
         }
 
-        function simDabba(count, action, note) {
-            simState.taken += count;
-            simState.remaining = Math.max(0, simState.total - simState.taken);
-            updateSimUI();
-
-            const d = new Date().toISOString().split('T')[0];
-            const tbody = document.getElementById('live-ledger-body');
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td class="fw-bold"><i class="fa fa-calendar text-primary me-1"></i> ${d}</td>
-                <td><span class="badge bg-light text-dark border">${count === 2 ? 'Lunch + Dinner' : 'Regular'}</span></td>
-                <td class="text-center fw-bold text-danger">+${count} डबे</td>
-                <td><span class="badge bg-success">${action}</span></td>
-                <td class="text-center fw-bold text-success">${simState.remaining} शिल्लक</td>
-                <td>${note}</td>
-            `;
-            tbody.insertBefore(row, tbody.firstChild);
-
-            addSimNotif(`डबा अपडेट: ${count} डबे नोंदवले`, `नमस्कार Onkar! आज तुमचे ${count} डबे नोंदवले गेले. आता तुमचे शिल्लक डबे: ${simState.remaining} आहेत. (${note})`);
-        }
-
-        function simAdjust(count, action, note) {
-            if (count < 0) {
-                simState.taken = Math.max(0, simState.taken + count);
-                simState.remaining = simState.total - simState.taken;
+        // Admin Login Modal Handlers
+        function toggleModalPassVisibility() {
+            const input = document.getElementById('modalAdminPass');
+            const eye = document.getElementById('modalPassEye');
+            if (input.type === 'password') {
+                input.type = 'text';
+                eye.className = 'fa fa-eye-slash';
             } else {
-                simState.taken += count;
-                simState.remaining = Math.max(0, simState.total - simState.taken);
+                input.type = 'password';
+                eye.className = 'fa fa-eye';
             }
-            updateSimUI();
-
-            const d = new Date().toISOString().split('T')[0];
-            const tbody = document.getElementById('live-ledger-body');
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td class="fw-bold"><i class="fa fa-calendar text-primary me-1"></i> ${d}</td>
-                <td><span class="badge bg-light text-dark border">Adjustment</span></td>
-                <td class="text-center fw-bold text-warning">${count > 0 ? '+' + count : count} डबा</td>
-                <td><span class="badge bg-warning text-dark">${action}</span></td>
-                <td class="text-center fw-bold text-success">${simState.remaining} शिल्लक</td>
-                <td>${note}</td>
-            `;
-            tbody.insertBefore(row, tbody.firstChild);
-
-            addSimNotif(`डबा ॲडजस्टमेंट: डब्यांमध्ये बदल`, `नमस्कार Onkar! ॲडमिन द्वारे डब्यांमध्ये बदल करण्यात आला (${note}). अद्ययावत शिल्लक: ${simState.remaining} डबे.`);
         }
 
-        function addSimNotif(title, msg) {
-            const box = document.getElementById('live-notif-box');
-            const div = document.createElement('div');
-            div.className = 'list-group-item p-3 border-top';
-            div.innerHTML = `
-                <div class="d-flex justify-content-between align-items-center mb-1">
-                    <strong class="text-success"><i class="fa fa-bell text-warning me-1"></i> ${title}</strong>
-                    <span class="badge bg-success">Email & Notif Sent</span>
-                </div>
-                <p class="mb-1 text-secondary">${msg}</p>
-                <small class="text-muted"><i class="fa fa-check me-1 text-success"></i> Customer Notified • WhatsApp Alert Available</small>
-            `;
-            box.insertBefore(div, box.firstChild);
-        }
+        function handleWebsiteAdminLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('modalAdminEmail').value.trim();
+            const pass = document.getElementById('modalAdminPass').value.trim();
 
-        function simReset() {
-            simState = { total: 60, taken: 2, remaining: 58 };
-            updateSimUI();
-            document.getElementById('live-ledger-body').innerHTML = `
-                <tr>
-                    <td class="fw-bold"><i class="fa fa-calendar text-primary me-1"></i> 05-11-2026</td>
-                    <td><span class="badge bg-light text-dark border">Lunch + Dinner</span></td>
-                    <td class="text-center fw-bold text-danger">2 डबे</td>
-                    <td><span class="badge bg-success">Dabba Taken</span></td>
-                    <td class="text-center fw-bold text-success">58 शिल्लक</td>
-                    <td>5 तारखेला 2 डबे (Lunch + Dinner) यशस्वीरीत्या दिले गेले.</td>
-                </tr>
-            `;
-            document.getElementById('live-notif-box').innerHTML = `
-                <div class="list-group-item p-3">
-                    <div class="d-flex justify-content-between align-items-center mb-1">
-                        <strong class="text-success"><i class="fa fa-check-circle me-1"></i> डबा अपडेट - 05 Nov 2026</strong>
-                        <span class="text-muted">तारीख: 05-11-2026</span>
-                    </div>
-                    <p class="mb-1 text-secondary">
-                        नमस्कार Onkar! 05-11-2026 रोजी तुम्ही 2 डबे (Lunch + Dinner) घेतले आहेत. तुमचे शिल्लक डबे: 58 आहेत.
-                    </p>
-                    <small class="text-muted"><i class="fa fa-envelope text-primary me-1"></i> Email: Sent to onkar@gmail.com | WhatsApp अलर्ट तयार</small>
-                </div>
-            `;
+            if (email.toLowerCase() === 'sanketsahane56@gmail.com' && pass === 'sanket9021') {
+                localStorage.setItem('MESSHUB_ADMIN_AUTH', 'VALID_SANKET_SESSION');
+                window.location.href = 'admin.html';
+            } else {
+                document.getElementById('modalAdminError').style.display = 'block';
+            }
         }
     </script>
 </body>

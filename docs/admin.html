@@ -163,14 +163,14 @@
                 <div class="mb-3 text-start">
                     <label class="form-label small fw-bold text-secondary">Password / PIN:</label>
                     <div class="input-group">
-                        <input type="password" id="authPass" class="form-control" placeholder="पासवर्ड टाका (उदा. sanket9021)" value="sanket9021" required>
+                        <input type="password" id="authPass" class="form-control" placeholder="पासवर्ड टाका (उदा. sanket9021)" value="" required>
                         <button class="btn btn-outline-secondary" type="button" onclick="togglePassVisibility()">
                             <i class="fa fa-eye" id="passEye"></i>
                         </button>
                     </div>
                 </div>
                 <div class="form-check text-start mb-4">
-                    <input class="form-check-input" type="checkbox" id="rememberMe" checked>
+                    <input class="form-check-input" type="checkbox" id="rememberMe">
                     <label class="form-check-label small text-muted" for="rememberMe">
                         या ब्राउझरवर नेहमी लॉगिन ठेवा (Remember Me)
                     </label>
@@ -251,6 +251,9 @@
                 </button>
                 <button class="btn btn-outline-success fw-bold" onclick="exportDataJson()">
                     <i class="fa fa-download me-1"></i> डेटा बॅकअप घ्या
+                </button>
+                <button class="btn btn-outline-danger fw-bold" onclick="logoutAdmin()">
+                    <i class="fa fa-sign-out-alt me-1"></i> लॉगआउट (Logout)
                 </button>
             </div>
         </div>
@@ -833,7 +836,7 @@
 
         // Authentication Handlers
         function checkAuth() {
-            const token = localStorage.getItem(AUTH_KEY);
+            const token = sessionStorage.getItem(AUTH_KEY) || localStorage.getItem(AUTH_KEY);
             if (token === 'VALID_SANKET_SESSION') {
                 document.getElementById('authOverlay').style.display = 'none';
             } else {
@@ -848,8 +851,11 @@
             const remember = document.getElementById('rememberMe').checked;
 
             if (email.toLowerCase() === 'sanketsahane56@gmail.com' && pass === 'sanket9021') {
+                sessionStorage.setItem(AUTH_KEY, 'VALID_SANKET_SESSION');
                 if (remember) {
                     localStorage.setItem(AUTH_KEY, 'VALID_SANKET_SESSION');
+                } else {
+                    localStorage.removeItem(AUTH_KEY);
                 }
                 document.getElementById('authOverlay').style.display = 'none';
                 initDashboard();
@@ -859,7 +865,10 @@
         }
 
         function logoutAdmin() {
+            sessionStorage.removeItem(AUTH_KEY);
             localStorage.removeItem(AUTH_KEY);
+            document.getElementById('authPass').value = '';
+            document.getElementById('authError').style.display = 'none';
             document.getElementById('authOverlay').style.display = 'flex';
         }
 
